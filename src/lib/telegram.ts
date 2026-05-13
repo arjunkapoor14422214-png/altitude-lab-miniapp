@@ -178,9 +178,9 @@ function applyTelegramChrome(webApp?: TelegramWebApp) {
     webApp.contentSafeAreaInset,
   );
 
-  webApp.setBackgroundColor?.('#070b16');
-  webApp.setHeaderColor?.('#070b16');
-  webApp.setBottomBarColor?.('#091120');
+  webApp.setBackgroundColor?.('#0b0907');
+  webApp.setHeaderColor?.('#0b0907');
+  webApp.setBottomBarColor?.('#191713');
 }
 
 function readTelegramContext(webApp?: TelegramWebApp): TelegramContext {
