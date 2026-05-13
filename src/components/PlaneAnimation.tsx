@@ -8,7 +8,7 @@ interface PlaneAnimationProps {
 
 function getFlightPosition(progress: number) {
   const x = 10 + progress * 78;
-  const y = 80 - Math.pow(progress, 0.62) * 57;
+  const y = 80 - Math.pow(progress, 0.58) * 60;
 
   return { x, y };
 }
@@ -44,9 +44,6 @@ export function PlaneAnimation({
       <div className="arcade-stage__arena">
         <div className="arcade-stage__glow arcade-stage__glow--gold" />
         <div className="arcade-stage__glow arcade-stage__glow--red" />
-        <div className="arcade-stage__cloud arcade-stage__cloud--one" />
-        <div className="arcade-stage__cloud arcade-stage__cloud--two" />
-        <div className="arcade-stage__cloud arcade-stage__cloud--three" />
 
         <svg
           className="arcade-stage__path"
@@ -56,18 +53,18 @@ export function PlaneAnimation({
         >
           <defs>
             <linearGradient id="flightCurveGradient" x1="0%" y1="100%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="rgba(255,255,255,0.2)" />
-              <stop offset="35%" stopColor="#ff675d" />
-              <stop offset="100%" stopColor="#ffd96a" />
+              <stop offset="0%" stopColor="rgba(255,245,220,0.18)" />
+              <stop offset="46%" stopColor="#ff8a67" />
+              <stop offset="100%" stopColor="#ffe08a" />
             </linearGradient>
           </defs>
           <path
-            d="M 10 80 C 20 74, 31 64, 44 50 C 56 37, 71 22, 88 11"
+            d="M 10 80 C 21 75, 32 67, 45 52 S 72 21, 88 11"
             pathLength="100"
             className="arcade-stage__path-base"
           />
           <path
-            d="M 10 80 C 20 74, 31 64, 44 50 C 56 37, 71 22, 88 11"
+            d="M 10 80 C 21 75, 32 67, 45 52 S 72 21, 88 11"
             pathLength="100"
             className="arcade-stage__path-active"
             stroke="url(#flightCurveGradient)"
@@ -91,81 +88,67 @@ export function PlaneAnimation({
             top: `${y}%`,
           }}
         >
-          <svg viewBox="0 0 260 160" className="arcade-plane__svg" aria-hidden="true">
+          <svg viewBox="0 0 280 150" className="arcade-plane__svg" aria-hidden="true">
             <defs>
-              <linearGradient id="planeBodyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#ff7a5a" />
-                <stop offset="55%" stopColor="#da2418" />
-                <stop offset="100%" stopColor="#a70f17" />
+              <linearGradient id="planeMainBody" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ff8664" />
+                <stop offset="55%" stopColor="#da2a1d" />
+                <stop offset="100%" stopColor="#9f1018" />
               </linearGradient>
-              <linearGradient id="planeWingGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#ffd85a" />
-                <stop offset="22%" stopColor="#ffb21e" />
-                <stop offset="24%" stopColor="#f1572f" />
-                <stop offset="100%" stopColor="#b90f1c" />
+              <linearGradient id="planeWingMetal" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#ffd667" />
+                <stop offset="18%" stopColor="#ffbe28" />
+                <stop offset="22%" stopColor="#f46a32" />
+                <stop offset="100%" stopColor="#b4151e" />
               </linearGradient>
-              <linearGradient id="planeWindowGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#b9f0ff" />
-                <stop offset="100%" stopColor="#5ca9ea" />
+              <linearGradient id="planeGlass" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#c4f3ff" />
+                <stop offset="100%" stopColor="#5caee8" />
               </linearGradient>
             </defs>
 
-            <ellipse cx="116" cy="131" rx="76" ry="12" fill="rgba(0,0,0,0.18)" />
+            <ellipse cx="124" cy="126" rx="84" ry="10" fill="rgba(0,0,0,0.15)" />
 
             <path
-              d="M56 89 L180 87 C190 87 198 83 205 76 L216 66 L224 54 L226 47 L219 41 L203 34 C195 31 189 30 182 30 L80 31 C64 31 48 37 37 49 L29 57 L20 72 L20 81 L28 88 Z"
-              fill="url(#planeBodyGradient)"
+              d="M58 82 L186 80 C197 80 206 76 214 69 L230 54 L235 45 L229 38 L211 31 C201 27 193 26 182 26 L88 28 C70 28 56 34 44 46 L30 60 L24 72 L24 80 L35 84 Z"
+              fill="url(#planeMainBody)"
             />
             <path
-              d="M83 37 L178 37 C185 37 194 40 201 43"
-              stroke="rgba(255,230,190,0.34)"
-              strokeWidth="5"
-              fill="none"
-            />
-            <path
-              d="M141 88 L165 88 C177 88 187 84 198 76"
-              stroke="#ffcf52"
-              strokeWidth="7"
+              d="M85 33 L178 33 C192 33 202 36 211 40"
+              stroke="rgba(255,224,188,0.34)"
+              strokeWidth="4"
               fill="none"
             />
 
             <path
-              d="M76 16 L212 24 C216 25 219 27 219 31 C219 35 216 38 211 39 L80 39 C73 39 68 34 68 28 C68 21 72 17 76 16 Z"
-              fill="url(#planeWingGradient)"
+              d="M78 13 L222 19 C228 20 232 23 232 28 C232 32 228 35 221 36 L81 36 C75 36 70 33 70 26 C70 19 74 14 78 13 Z"
+              fill="url(#planeWingMetal)"
             />
             <path
-              d="M58 103 L186 102 C192 102 196 104 196 109 C196 113 192 116 186 116 L63 116 C57 116 53 112 53 108 C53 105 55 103 58 103 Z"
-              fill="url(#planeWingGradient)"
+              d="M60 95 L194 94 C200 94 205 97 205 101 C205 106 200 109 194 109 L62 109 C57 109 53 106 53 101 C53 97 56 95 60 95 Z"
+              fill="url(#planeWingMetal)"
             />
 
-            <path d="M95 40 L88 101" stroke="#b46513" strokeWidth="7" />
-            <path d="M123 40 L116 101" stroke="#b46513" strokeWidth="7" />
-            <path d="M146 40 L140 101" stroke="#b46513" strokeWidth="7" />
+            <path d="M96 35 L89 94" stroke="#a8631d" strokeWidth="6" />
+            <path d="M126 36 L119 95" stroke="#a8631d" strokeWidth="6" />
 
-            <path d="M38 28 L66 44 L66 92 L34 75 Z" fill="#c9131d" />
-            <path d="M26 83 L70 86 L57 98 L24 95 Z" fill="#b10f1a" />
+            <path d="M48 27 L77 42 L77 86 L41 72 Z" fill="#c3161e" />
+            <path d="M35 77 L74 80 L64 91 L33 88 Z" fill="#ac1119" />
 
-            <rect x="96" y="43" width="16" height="18" rx="4" fill="url(#planeWindowGradient)" />
-            <rect x="116" y="43" width="16" height="18" rx="4" fill="url(#planeWindowGradient)" />
-            <rect x="136" y="43" width="16" height="18" rx="4" fill="url(#planeWindowGradient)" />
+            <rect x="100" y="38" width="16" height="17" rx="4" fill="url(#planeGlass)" />
+            <rect x="120" y="38" width="16" height="17" rx="4" fill="url(#planeGlass)" />
+            <rect x="140" y="38" width="16" height="17" rx="4" fill="url(#planeGlass)" />
 
-            <circle cx="216" cy="60" r="30" fill="#f1b217" />
-            <circle cx="216" cy="60" r="23" fill="#212121" />
-            <circle cx="216" cy="60" r="8" fill="#ffbf36" />
+            <circle cx="226" cy="53" r="29" fill="#efb61f" />
+            <circle cx="226" cy="53" r="22" fill="#202020" />
+            <circle cx="226" cy="53" r="7" fill="#ffcb54" />
 
             <g className="arcade-plane__propeller-group">
-              <ellipse cx="216" cy="60" rx="10" ry="42" fill="rgba(40,40,40,0.42)" />
-              <ellipse cx="216" cy="60" rx="42" ry="10" fill="rgba(40,40,40,0.26)" />
+              <ellipse cx="226" cy="53" rx="10" ry="40" fill="rgba(28,28,28,0.44)" />
+              <ellipse cx="226" cy="53" rx="40" ry="10" fill="rgba(28,28,28,0.22)" />
             </g>
           </svg>
         </div>
-
-        {targetMultiplier ? (
-          <div className="arcade-stage__target-beacon">
-            <span>Фикс</span>
-            <strong>x{targetMultiplier.toFixed(2)}</strong>
-          </div>
-        ) : null}
 
         {finished ? (
           <div

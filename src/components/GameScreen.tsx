@@ -27,8 +27,8 @@ export function GameScreen({
   return (
     <section className="game-shell game-shell--arcade">
       <div className="arcade-topline">
-        Нажми старт одновременно со ставкой на сайте и получи точный расчет,
-        когда взорвется самолет.
+        Нажми старт одновременно со ставкой на сайте и получи точный момент,
+        когда самолет завершит полет.
       </div>
 
       <PlaneAnimation
