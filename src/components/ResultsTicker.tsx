@@ -1,7 +1,10 @@
 import { formatMultiplier } from '../lib/multiplierGenerator';
+import { getTranslations } from '../lib/i18n';
 import type { RoundRecord } from '../types/game';
+import type { SupportedLanguage } from '../types/i18n';
 
 interface ResultsTickerProps {
+  language: SupportedLanguage;
   history: RoundRecord[];
   nextTargetMultiplier: number;
 }
@@ -23,29 +26,32 @@ function getTone(multiplier: number) {
 }
 
 export function ResultsTicker({
+  language,
   history,
   nextTargetMultiplier,
 }: ResultsTickerProps) {
+  const copy = getTranslations(language).ticker;
+
   return (
     <section className="panel ticker-panel">
       <div className="panel-header">
         <div>
-          <span className="eyebrow">Лента результатов</span>
-          <h3>Текущий ритм сессии</h3>
+          <span className="eyebrow">{copy.eyebrow}</span>
+          <h3>{copy.title}</h3>
         </div>
-        <span className="panel-caption">Последние и ближайший раунд</span>
+        <span className="panel-caption">{copy.caption}</span>
       </div>
 
       <div className="ticker-row">
         <article className="ticker-pill ticker-pill--next">
-          <span>Next</span>
+          <span>{copy.next}</span>
           <strong>{formatMultiplier(nextTargetMultiplier)}</strong>
         </article>
 
         {history.length === 0 ? (
           <article className="ticker-pill ticker-pill--empty">
-            <span>Пока пусто</span>
-            <strong>Ждем первый финиш</strong>
+            <span>{copy.emptyLabel}</span>
+            <strong>{copy.emptyValue}</strong>
           </article>
         ) : (
           history.slice(0, 8).map((entry) => (
@@ -64,4 +70,3 @@ export function ResultsTicker({
     </section>
   );
 }
-

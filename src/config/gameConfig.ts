@@ -4,10 +4,10 @@ export const gameConfig: GameConfig = {
   minMultiplier: 1,
   maxMultiplier: 100,
   probabilityRanges: [
-    { min: 1, max: 2, probability: 0.9, label: 'Базовый диапазон' },
-    { min: 2, max: 5, probability: 0.07, label: 'Ускоренный диапазон' },
-    { min: 5, max: 20, probability: 0.02, label: 'Продвинутый диапазон' },
-    { min: 20, max: 100, probability: 0.01, label: 'Редкий высокий диапазон' },
+    { id: 'base', min: 1, max: 2, probability: 0.9 },
+    { id: 'boosted', min: 2, max: 5, probability: 0.07 },
+    { id: 'advanced', min: 5, max: 20, probability: 0.02 },
+    { id: 'rare', min: 20, max: 100, probability: 0.01 },
   ],
   animationSpeed: {
     minDurationMs: 3200,

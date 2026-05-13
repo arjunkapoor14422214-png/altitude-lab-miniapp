@@ -54,9 +54,7 @@ interface TelegramBackButton {
 
 interface TelegramHapticFeedback {
   impactOccurred?: (style: 'light' | 'medium' | 'heavy' | 'rigid' | 'soft') => void;
-  notificationOccurred?: (
-    type: 'error' | 'success' | 'warning',
-  ) => void;
+  notificationOccurred?: (type: 'error' | 'success' | 'warning') => void;
   selectionChanged?: () => void;
 }
 
@@ -101,6 +99,7 @@ export interface TelegramContext {
   colorScheme: 'light' | 'dark';
   platform: string;
   version: string;
+  locale: string | null;
 }
 
 export interface TelegramMainButtonState {
@@ -175,6 +174,7 @@ function readTelegramContext(webApp?: TelegramWebApp): TelegramContext {
       colorScheme: 'dark',
       platform: 'browser',
       version: 'dev',
+      locale: null,
     };
   }
 
@@ -184,6 +184,7 @@ function readTelegramContext(webApp?: TelegramWebApp): TelegramContext {
     colorScheme: webApp.colorScheme === 'light' ? 'light' : 'dark',
     platform: webApp.platform ?? 'telegram',
     version: webApp.version ?? 'unknown',
+    locale: webApp.initDataUnsafe?.user?.language_code ?? null,
   };
 }
 
@@ -195,6 +196,7 @@ export function initTelegramApp(): TelegramContext {
       colorScheme: 'dark',
       platform: 'browser',
       version: 'unknown',
+      locale: null,
     };
   }
 
@@ -374,9 +376,12 @@ export function triggerTelegramHaptic(kind: TelegramHapticKind) {
   haptic.notificationOccurred?.(kind);
 }
 
-export function getTelegramDisplayName(user: TelegramWebAppUser | null) {
+export function getTelegramDisplayName(
+  user: TelegramWebAppUser | null,
+  fallback = 'Pilot',
+) {
   if (!user) {
-    return 'Пилот';
+    return fallback;
   }
 
   return [user.first_name, user.last_name].filter(Boolean).join(' ');

@@ -1,3 +1,5 @@
+import type { LanguageSource, RangeKey, SupportedLanguage } from './i18n';
+
 export type AppStage = 'onboarding' | 'verification' | 'connecting' | 'ready';
 
 export type RoundStage = 'round_idle' | 'round_running' | 'round_finished';
@@ -5,10 +7,10 @@ export type RoundStage = 'round_idle' | 'round_running' | 'round_finished';
 export type RoundStatus = 'completed';
 
 export interface ProbabilityRange {
+  id: Exclude<RangeKey, 'custom'>;
   min: number;
   max: number;
   probability: number;
-  label: string;
 }
 
 export interface GameConfig {
@@ -28,7 +30,7 @@ export interface GameConfig {
 export interface PreparedRound {
   roundNumber: number;
   targetMultiplier: number;
-  rangeLabel: string;
+  rangeKey: RangeKey;
   durationMs: number;
   createdAt: string;
 }
@@ -37,7 +39,7 @@ export interface RoundRecord {
   roundNumber: number;
   targetMultiplier: number;
   time: string;
-  rangeLabel: string;
+  rangeKey: RangeKey;
   status: RoundStatus;
   createdAt: string;
 }
@@ -47,5 +49,6 @@ export interface StoredSession {
   verifiedId: string;
   history: RoundRecord[];
   roundCounter: number;
+  language: SupportedLanguage | null;
+  languageSource: LanguageSource;
 }
-

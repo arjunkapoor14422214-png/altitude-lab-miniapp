@@ -1,21 +1,38 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { Button } from './Button';
 
+interface VerificationCopy {
+  eyebrow: string;
+  title: string;
+  stepLabel: string;
+  step1Text: string;
+  promoCodeLabel: string;
+  promoHint: string;
+  step2Title: string;
+  step2Example: string;
+  step2Hint: string;
+  step3Text: string;
+  inputLabel: string;
+  inputPlaceholder: string;
+  note: string;
+  submit: string;
+  connectingEyebrow: string;
+  connectingTitle: string;
+  connectingBody: (pendingId: string) => string;
+  connectingSteps: string[];
+}
+
 interface VerificationProps {
   mode: 'form' | 'connecting';
+  copy: VerificationCopy;
   defaultValue?: string;
   pendingId?: string;
   onSubmit: (value: string) => void;
 }
 
-const statusSteps = [
-  'Зарегистрировался по ссылке',
-  'Ввел промокод',
-  'Сделал депозит',
-];
-
 export function Verification({
   mode,
+  copy,
   defaultValue = '',
   pendingId,
   onSubmit,
@@ -35,7 +52,7 @@ export function Verification({
 
     setCompletedSteps(0);
 
-    const timeoutIds = statusSteps.map((_, index) =>
+    const timeoutIds = copy.connectingSteps.map((_, index) =>
       window.setTimeout(() => {
         setCompletedSteps(index + 1);
       }, (index + 1) * 3000),
@@ -44,7 +61,7 @@ export function Verification({
     return () => {
       timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
     };
-  }, [mode]);
+  }, [copy.connectingSteps, mode]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -60,17 +77,16 @@ export function Verification({
     return (
       <section className="auth-shell">
         <div className="auth-card auth-card--promo">
-          <span className="eyebrow">Проверка доступа</span>
-          <h1>Подключаем проверочный режим</h1>
+          <span className="eyebrow">{copy.connectingEyebrow}</span>
+          <h1>{copy.connectingTitle}</h1>
           <p className="auth-copy auth-copy--bright">
-            ID <strong>{pendingId}</strong> принят. Идет проверка и активация
-            доступа для следующих раундов.
+            {copy.connectingBody(pendingId ?? '')}
           </p>
 
           <div className="spinner" aria-hidden="true" />
 
           <div className="status-list">
-            {statusSteps.map((step, index) => (
+            {copy.connectingSteps.map((step, index) => (
               <div
                 key={step}
                 className={[
@@ -93,14 +109,12 @@ export function Verification({
   return (
     <section className="auth-shell">
       <form className="auth-card auth-card--promo" onSubmit={handleSubmit}>
-        <span className="eyebrow">Активация</span>
-        <h1>Получение доступа</h1>
+        <span className="eyebrow">{copy.eyebrow}</span>
+        <h1>{copy.title}</h1>
 
         <div className="notice-card notice-card--highlight notice-card--offer">
-          <span className="eyebrow">Шаг 1</span>
-          <p className="promo-copy">
-            Чтобы получить доступ, обязательно зарегистрируйся по ссылке:
-          </p>
+          <span className="eyebrow">{`${copy.stepLabel} 1`}</span>
+          <p className="promo-copy">{copy.step1Text}</p>
           <a
             className="promo-link promo-link--offer"
             href="https://lckypr.com/G4DtDxQ"
@@ -111,40 +125,36 @@ export function Verification({
           </a>
 
           <div className="promo-code-card promo-code-card--offer">
-            <span>Промокод</span>
+            <span>{copy.promoCodeLabel}</span>
             <strong>NILE</strong>
           </div>
 
           <p className="promo-copy promo-copy--accent promo-copy--offer">
-            Введи его при регистрации и получи доступ плюс до 150 Free Spins.
+            {copy.promoHint}
           </p>
         </div>
 
         <div className="notice-card">
-          <span className="eyebrow">Шаг 2</span>
+          <span className="eyebrow">{`${copy.stepLabel} 2`}</span>
           <p className="promo-copy">
-            <strong>Твой ID на сайте LuckyPari</strong>
+            <strong>{copy.step2Title}</strong>
           </p>
           <p className="promo-copy promo-copy--accent">
-            Например: <strong>123456789</strong>
+            <strong>{copy.step2Example}</strong>
           </p>
-          <p className="promo-copy">
-            Ты найдешь его на сайте в своем личном профиле.
-          </p>
+          <p className="promo-copy">{copy.step2Hint}</p>
         </div>
 
         <div className="step-block">
-          <span className="eyebrow">Шаг 3</span>
-          <p className="auth-copy auth-copy--bright">
-            Введи свой ID ниже, чтобы активировать доступ внутри приложения.
-          </p>
+          <span className="eyebrow">{`${copy.stepLabel} 3`}</span>
+          <p className="auth-copy auth-copy--bright">{copy.step3Text}</p>
         </div>
 
         <label className="field">
-          <span>ID на сайте LuckyPari</span>
+          <span>{copy.inputLabel}</span>
           <input
             className="input"
-            placeholder="Например, 123456789"
+            placeholder={copy.inputPlaceholder}
             value={value}
             onChange={(event) => setValue(event.target.value)}
             autoComplete="off"
@@ -152,13 +162,10 @@ export function Verification({
           />
         </label>
 
-        <div className="inline-note inline-note--bright">
-          После отправки ID начнется проверка. Обычно она занимает от 5 до 10
-          секунд.
-        </div>
+        <div className="inline-note inline-note--bright">{copy.note}</div>
 
         <Button type="submit" fullWidth>
-          Активировать доступ
+          {copy.submit}
         </Button>
       </form>
     </section>

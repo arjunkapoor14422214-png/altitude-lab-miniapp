@@ -1,5 +1,6 @@
 import { gameConfig } from '../config/gameConfig';
 import type { PreparedRound, ProbabilityRange } from '../types/game';
+import type { RangeKey } from '../types/i18n';
 
 const roundToTwoDecimals = (value: number) => Math.round(value * 100) / 100;
 
@@ -29,12 +30,12 @@ export function formatMultiplier(value: number) {
   return `x${value.toFixed(2)}`;
 }
 
-export function getRangeLabel(multiplier: number) {
+export function getRangeKey(multiplier: number): RangeKey {
   const matchedRange = gameConfig.probabilityRanges.find(
     (range) => multiplier >= range.min && multiplier <= range.max,
   );
 
-  return matchedRange?.label ?? 'Кастомный диапазон';
+  return matchedRange?.id ?? 'custom';
 }
 
 export function calculateRoundDuration(targetMultiplier: number) {
@@ -59,7 +60,6 @@ export function generateTargetMultiplier() {
     gameConfig.maxMultiplier,
   );
 
-  // Bias toward the lower part of a range so high multipliers stay rare but possible.
   const spread = Math.pow(Math.random(), 1.15);
   const rawMultiplier = lowerBound + (upperBound - lowerBound) * spread;
 
@@ -75,9 +75,8 @@ export function createPreparedRound(roundNumber: number): PreparedRound {
   return {
     roundNumber,
     targetMultiplier: multiplier,
-    rangeLabel: range.label,
+    rangeKey: range.id,
     durationMs: calculateRoundDuration(multiplier),
     createdAt: new Date().toISOString(),
   };
 }
-

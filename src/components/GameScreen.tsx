@@ -2,7 +2,21 @@ import { Button } from './Button';
 import { PlaneAnimation } from './PlaneAnimation';
 import type { RoundStage } from '../types/game';
 
+interface GameCopy {
+  topline: string;
+  start: string;
+  running: string;
+  reload: string;
+  waitingStatus: string;
+  flyingStatus: string;
+  explodedStatus: string;
+  exactPoint: string;
+  flightPoint: string;
+  hidden: string;
+}
+
 interface GameScreenProps {
+  copy: GameCopy;
   targetMultiplier: number | null;
   currentMultiplier: number;
   roundStage: RoundStage;
@@ -11,6 +25,7 @@ interface GameScreenProps {
 }
 
 export function GameScreen({
+  copy,
   targetMultiplier,
   currentMultiplier,
   roundStage,
@@ -19,19 +34,17 @@ export function GameScreen({
 }: GameScreenProps) {
   const startButtonLabel =
     roundStage === 'round_idle'
-      ? 'СТАРТ'
+      ? copy.start
       : roundStage === 'round_running'
-        ? 'ПОЛЕТ...'
-        : 'ПЕРЕЗАГРУЗКА';
+        ? copy.running
+        : copy.reload;
 
   return (
     <section className="game-shell game-shell--arcade">
-      <div className="arcade-topline">
-        Нажми старт одновременно со ставкой на сайте и получи точный момент,
-        когда самолет завершит полет.
-      </div>
+      <div className="arcade-topline">{copy.topline}</div>
 
       <PlaneAnimation
+        copy={copy}
         progress={flightProgress}
         running={roundStage === 'round_running'}
         finished={roundStage === 'round_finished'}

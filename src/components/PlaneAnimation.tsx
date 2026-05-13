@@ -1,4 +1,12 @@
 interface PlaneAnimationProps {
+  copy: {
+    waitingStatus: string;
+    flyingStatus: string;
+    explodedStatus: string;
+    exactPoint: string;
+    flightPoint: string;
+    hidden: string;
+  };
   progress: number;
   running: boolean;
   finished: boolean;
@@ -14,6 +22,7 @@ function getFlightPosition(progress: number) {
 }
 
 export function PlaneAnimation({
+  copy,
   progress,
   running,
   finished,
@@ -22,10 +31,10 @@ export function PlaneAnimation({
 }: PlaneAnimationProps) {
   const { x, y } = getFlightPosition(progress);
   const statusLabel = running
-    ? 'Самолет в полете'
+    ? copy.flyingStatus
     : finished
-      ? 'Самолет взорвался'
-      : 'Ожидает генерацию';
+      ? copy.explodedStatus
+      : copy.waitingStatus;
 
   return (
     <div className="arcade-stage arcade-stage--premium">
@@ -36,8 +45,8 @@ export function PlaneAnimation({
         </div>
 
         <div className="arcade-stage__target">
-          <span>{targetMultiplier ? 'Точная точка' : 'Точка полета'}</span>
-          <strong>{targetMultiplier ? `x${targetMultiplier.toFixed(2)}` : 'скрыта'}</strong>
+          <span>{targetMultiplier ? copy.exactPoint : copy.flightPoint}</span>
+          <strong>{targetMultiplier ? `x${targetMultiplier.toFixed(2)}` : copy.hidden}</strong>
         </div>
       </div>
 

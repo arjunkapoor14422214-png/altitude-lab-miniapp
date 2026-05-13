@@ -1,44 +1,32 @@
 import { formatMultiplier } from '../lib/multiplierGenerator';
+import { getTranslations } from '../lib/i18n';
 import type { PreparedRound, RoundRecord } from '../types/game';
+import type { RangeKey, SupportedLanguage } from '../types/i18n';
 
 interface SessionInsightsProps {
+  language: SupportedLanguage;
   preparedRound: PreparedRound;
   history: RoundRecord[];
 }
 
-function getTrainingCue(multiplier: number) {
+function getTrainingCue(multiplier: number): Exclude<RangeKey, 'custom'> {
   if (multiplier < 2) {
-    return {
-      title: 'Короткий спринт',
-      description:
-        'Следующий раунд завершится быстро. Хороший момент, чтобы привыкнуть к стартовой фазе и темпу роста.',
-    };
+    return 'base';
   }
 
   if (multiplier < 5) {
-    return {
-      title: 'Средняя дистанция',
-      description:
-        'Раунд продлится дольше базового диапазона. Можно лучше прочувствовать ускорение и визуальный ритм.',
-    };
+    return 'boosted';
   }
 
   if (multiplier < 20) {
-    return {
-      title: 'Дальний полет',
-      description:
-        'Редкий более высокий диапазон. Удобно изучать поведение множителя на длинной траектории.',
-    };
+    return 'advanced';
   }
 
-  return {
-    title: 'Редкий высокий пик',
-    description:
-      'Это редкий сценарий с длинным разгонным участком. Его полезно сохранять в памяти как эталон длинного раунда.',
-  };
+  return 'rare';
 }
 
 export function SessionInsights({
+  language,
   preparedRound,
   history,
 }: SessionInsightsProps) {
@@ -52,40 +40,41 @@ export function SessionInsights({
       ? history.reduce((sum, entry) => sum + entry.targetMultiplier, 0) /
         history.length
       : preparedRound.targetMultiplier;
-  const cue = getTrainingCue(preparedRound.targetMultiplier);
+  const copy = getTranslations(language).insights;
+  const cue = copy.cues[getTrainingCue(preparedRound.targetMultiplier)];
 
   return (
     <section className="panel insights-panel">
       <div className="panel-header">
         <div>
-          <span className="eyebrow">Тренировочная аналитика</span>
-          <h3>Срез по текущей сессии</h3>
+          <span className="eyebrow">{copy.eyebrow}</span>
+          <h3>{copy.title}</h3>
         </div>
-        <span className="panel-caption">Без реальных ставок</span>
+        <span className="panel-caption">{copy.caption}</span>
       </div>
 
       <div className="insights-grid">
         <div className="metric-card">
-          <span>Завершено раундов</span>
+          <span>{copy.completedRounds}</span>
           <strong>{history.length}</strong>
         </div>
         <div className="metric-card">
-          <span>Средний множитель</span>
+          <span>{copy.averageMultiplier}</span>
           <strong>{formatMultiplier(averageTarget)}</strong>
         </div>
         <div className="metric-card">
-          <span>Ожидаемая длина</span>
+          <span>{copy.expectedLength}</span>
           <strong>{(preparedRound.durationMs / 1000).toFixed(1)}s</strong>
         </div>
       </div>
 
       <div className="distribution-row">
         <div className="distribution-pill">
-          <span>x1.00–x1.99</span>
+          <span>x1.00-x1.99</span>
           <strong>{baseCount}</strong>
         </div>
         <div className="distribution-pill">
-          <span>x2.00–x4.99</span>
+          <span>x2.00-x4.99</span>
           <strong>{midCount}</strong>
         </div>
         <div className="distribution-pill">
@@ -95,11 +84,10 @@ export function SessionInsights({
       </div>
 
       <div className="cue-card">
-        <span className="eyebrow">Фокус раунда</span>
+        <span className="eyebrow">{copy.focusEyebrow}</span>
         <h4>{cue.title}</h4>
         <p>{cue.description}</p>
       </div>
     </section>
   );
 }
-

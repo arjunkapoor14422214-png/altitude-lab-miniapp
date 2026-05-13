@@ -1,8 +1,9 @@
 import { useEffect, useEffectEvent, useReducer, useState } from 'react';
+import { GameScreen } from '../components/GameScreen';
 import { Onboarding } from '../components/Onboarding';
 import { Verification } from '../components/Verification';
-import { GameScreen } from '../components/GameScreen';
 import { gameConfig } from '../config/gameConfig';
+import { detectSupportedLanguage, getTranslations } from '../lib/i18n';
 import {
   createPreparedRound,
   formatMultiplier,
@@ -24,11 +25,14 @@ import type {
   RoundStage,
   StoredSession,
 } from '../types/game';
+import type { LanguageSource, SupportedLanguage } from '../types/i18n';
 
 interface AppState {
   appStage: AppStage;
   roundStage: RoundStage;
   onboardingSeen: boolean;
+  language: SupportedLanguage;
+  languageSource: LanguageSource;
   verificationId: string;
   pendingVerificationId: string | null;
   preparedRound: PreparedRound | null;
@@ -41,6 +45,11 @@ interface AppState {
 
 type AppAction =
   | { type: 'completeOnboarding' }
+  | {
+      type: 'setLanguage';
+      language: SupportedLanguage;
+      source: LanguageSource;
+    }
   | { type: 'revisitOnboarding' }
   | { type: 'openVerification' }
   | { type: 'startConnecting'; verificationId: string }
@@ -56,29 +65,61 @@ type AppAction =
 
 const initialSession = loadSession();
 
+function detectBrowserLanguage() {
+  if (typeof window === 'undefined') {
+    return 'en' as const;
+  }
+
+  return detectSupportedLanguage(
+    window.navigator.language,
+    ...window.navigator.languages,
+    document.documentElement.lang,
+  );
+}
+
+function getPersistentMessage(state: AppState, language: SupportedLanguage) {
+  const copy = getTranslations(language).app;
+
+  if (state.appStage === 'connecting') {
+    return copy.startConnecting;
+  }
+
+  if (state.appStage === 'ready' && state.roundStage === 'round_idle') {
+    return state.verificationId ? copy.readyActivated : copy.prepareProfile;
+  }
+
+  return state.activationMessage;
+}
+
 function createInitialState(session: StoredSession): AppState {
+  const language = session.language ?? detectBrowserLanguage();
+  const copy = getTranslations(language).app;
+  const verificationId = session.verifiedId;
+
   return {
     appStage: session.onboardingSeen
-      ? session.verifiedId
+      ? verificationId
         ? 'ready'
         : 'verification'
       : 'onboarding',
     roundStage: 'round_idle',
     onboardingSeen: session.onboardingSeen,
-    verificationId: session.verifiedId,
+    language,
+    languageSource: session.language ? session.languageSource : 'auto',
+    verificationId,
     pendingVerificationId: null,
     preparedRound: null,
     currentMultiplier: 1,
     flightProgress: 0,
     history: session.history,
     roundCounter: session.roundCounter,
-    activationMessage: session.verifiedId
-      ? 'Тренировочный режим уже активирован. Можно запускать следующий раунд.'
-      : 'Подготовьте профиль для запуска тренировочных раундов.',
+    activationMessage: verificationId ? copy.readyActivated : copy.prepareProfile,
   };
 }
 
 function appReducer(state: AppState, action: AppAction): AppState {
+  const copy = getTranslations(state.language).app;
+
   switch (action.type) {
     case 'completeOnboarding':
       return {
@@ -86,6 +127,19 @@ function appReducer(state: AppState, action: AppAction): AppState {
         onboardingSeen: true,
         appStage: 'verification',
       };
+
+    case 'setLanguage': {
+      const nextState = {
+        ...state,
+        language: action.language,
+        languageSource: action.source,
+      };
+
+      return {
+        ...nextState,
+        activationMessage: getPersistentMessage(nextState, action.language),
+      };
+    }
 
     case 'revisitOnboarding':
       return {
@@ -103,8 +157,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
         preparedRound: null,
         currentMultiplier: 1,
         flightProgress: 0,
-        activationMessage:
-          'Можно обновить тренировочный ID и заново активировать профиль.',
+        activationMessage: copy.updateProfile,
       };
 
     case 'startConnecting':
@@ -112,8 +165,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
         ...state,
         appStage: 'connecting',
         pendingVerificationId: action.verificationId,
-        activationMessage:
-          'Запускаем локальную активацию тренировочного режима...',
+        activationMessage: copy.startConnecting,
       };
 
     case 'finishConnecting':
@@ -133,7 +185,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
         roundStage: 'round_running',
         currentMultiplier: 1,
         flightProgress: 0,
-        activationMessage: `Раунд #${action.round.roundNumber} запущен.`,
+        activationMessage: copy.roundStarted(action.round.roundNumber),
       };
 
     case 'animateRound':
@@ -155,7 +207,10 @@ function appReducer(state: AppState, action: AppAction): AppState {
         flightProgress: 1,
         history: [action.record, ...state.history].slice(0, gameConfig.historyLimit),
         roundCounter: action.record.roundNumber,
-        activationMessage: `Раунд #${action.record.roundNumber} завершен на ${formatMultiplier(action.record.targetMultiplier)}.`,
+        activationMessage: copy.roundFinished(
+          action.record.roundNumber,
+          formatMultiplier(action.record.targetMultiplier),
+        ),
       };
 
     case 'resetRound':
@@ -165,7 +220,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
         preparedRound: null,
         currentMultiplier: 1,
         flightProgress: 0,
-        activationMessage: 'Нажми старт, чтобы сгенерировать новый раунд.',
+        activationMessage: copy.idlePrompt,
       };
 
     default:
@@ -173,8 +228,8 @@ function appReducer(state: AppState, action: AppAction): AppState {
   }
 }
 
-function formatRoundTime(date: Date) {
-  return date.toLocaleTimeString('ru-RU', {
+function formatRoundTime(date: Date, locale: string) {
+  return date.toLocaleTimeString(locale, {
     hour: '2-digit',
     minute: '2-digit',
   });
@@ -195,6 +250,7 @@ const defaultTelegramContext: TelegramContext = {
   colorScheme: 'dark',
   platform: 'browser',
   version: 'dev',
+  locale: null,
 };
 
 export default function App() {
@@ -205,6 +261,7 @@ export default function App() {
   );
   const [telegramContext, setTelegramContext] =
     useState<TelegramContext>(defaultTelegramContext);
+  const copy = getTranslations(state.language);
 
   useEffect(() => {
     const context = initTelegramApp();
@@ -218,14 +275,49 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    if (state.languageSource === 'manual') {
+      return;
+    }
+
+    const nextLanguage = detectSupportedLanguage(
+      telegramContext.locale,
+      telegramContext.user?.language_code,
+      typeof window !== 'undefined' ? window.navigator.language : null,
+      ...(typeof window !== 'undefined' ? window.navigator.languages : []),
+    );
+
+    if (nextLanguage !== state.language) {
+      dispatch({
+        type: 'setLanguage',
+        language: nextLanguage,
+        source: 'auto',
+      });
+    }
+  }, [
+    state.language,
+    state.languageSource,
+    telegramContext.locale,
+    telegramContext.user?.language_code,
+  ]);
+
+  useEffect(() => {
+    document.documentElement.lang = copy.locale;
+    document.documentElement.dir = copy.direction;
+  }, [copy.direction, copy.locale]);
+
+  useEffect(() => {
     saveSession({
       onboardingSeen: state.onboardingSeen,
       verifiedId: state.verificationId,
       history: state.history,
       roundCounter: state.roundCounter,
+      language: state.language,
+      languageSource: state.languageSource,
     });
   }, [
     state.history,
+    state.language,
+    state.languageSource,
     state.onboardingSeen,
     state.roundCounter,
     state.verificationId,
@@ -244,12 +336,12 @@ export default function App() {
     const timeoutId = window.setTimeout(() => {
       dispatch({
         type: 'finishConnecting',
-        message: 'ID принят. Можно начинать тренировку.',
+        message: copy.app.connectSuccess,
       });
     }, delay);
 
     return () => window.clearTimeout(timeoutId);
-  }, [state.appStage, state.pendingVerificationId]);
+  }, [copy.app.connectSuccess, state.appStage, state.pendingVerificationId]);
 
   useEffect(() => {
     if (state.roundStage !== 'round_running' || !state.preparedRound) {
@@ -287,8 +379,8 @@ export default function App() {
         record: {
           roundNumber: round.roundNumber,
           targetMultiplier: round.targetMultiplier,
-          time: formatRoundTime(completedAt),
-          rangeLabel: round.rangeLabel,
+          time: formatRoundTime(completedAt, copy.locale),
+          rangeKey: round.rangeKey,
           status: 'completed',
           createdAt: completedAt.toISOString(),
         },
@@ -298,7 +390,7 @@ export default function App() {
     animationFrameId = window.requestAnimationFrame(playFrame);
 
     return () => window.cancelAnimationFrame(animationFrameId);
-  }, [state.preparedRound, state.roundStage]);
+  }, [copy.locale, state.preparedRound, state.roundStage]);
 
   useEffect(() => {
     const shouldGuardClose =
@@ -364,7 +456,7 @@ export default function App() {
   useEffect(() => {
     if (state.appStage === 'onboarding') {
       return syncTelegramMainButton({
-        text: 'Продолжить',
+        text: copy.app.telegramContinue,
         visible: true,
         enabled: true,
         onClick: handleTelegramMainAction,
@@ -373,7 +465,7 @@ export default function App() {
 
     if (state.appStage === 'connecting') {
       return syncTelegramMainButton({
-        text: 'Активация...',
+        text: copy.app.telegramActivating,
         visible: true,
         enabled: false,
         loading: true,
@@ -381,7 +473,12 @@ export default function App() {
     }
 
     return syncTelegramMainButton(null);
-  }, [state.appStage, handleTelegramMainAction]);
+  }, [
+    copy.app.telegramActivating,
+    copy.app.telegramContinue,
+    handleTelegramMainAction,
+    state.appStage,
+  ]);
 
   useEffect(() => {
     const isVisible =
@@ -390,7 +487,7 @@ export default function App() {
       (state.appStage === 'ready' && state.roundStage !== 'round_running');
 
     return syncTelegramBackButton(isVisible, handleTelegramBackAction);
-  }, [state.appStage, state.roundStage, handleTelegramBackAction]);
+  }, [handleTelegramBackAction, state.appStage, state.roundStage]);
 
   const handleContinueFromOnboarding = () => {
     triggerTelegramHaptic('selection');
@@ -400,6 +497,19 @@ export default function App() {
   const handleVerificationSubmit = (verificationId: string) => {
     triggerTelegramHaptic('selection');
     dispatch({ type: 'startConnecting', verificationId });
+  };
+
+  const handleLanguageChange = (language: SupportedLanguage) => {
+    if (language === state.language) {
+      return;
+    }
+
+    triggerTelegramHaptic('selection');
+    dispatch({
+      type: 'setLanguage',
+      language,
+      source: 'manual',
+    });
   };
 
   const handleStartRound = () => {
@@ -420,12 +530,18 @@ export default function App() {
       <div className="ambient ambient--two" />
 
       {state.appStage === 'onboarding' ? (
-        <Onboarding onContinue={handleContinueFromOnboarding} />
+        <Onboarding
+          language={state.language}
+          copy={copy.onboarding}
+          onLanguageChange={handleLanguageChange}
+          onContinue={handleContinueFromOnboarding}
+        />
       ) : null}
 
       {state.appStage === 'verification' ? (
         <Verification
           mode="form"
+          copy={copy.verification}
           defaultValue={state.verificationId}
           onSubmit={handleVerificationSubmit}
         />
@@ -434,6 +550,7 @@ export default function App() {
       {state.appStage === 'connecting' ? (
         <Verification
           mode="connecting"
+          copy={copy.verification}
           pendingId={state.pendingVerificationId ?? ''}
           onSubmit={handleVerificationSubmit}
         />
@@ -441,6 +558,7 @@ export default function App() {
 
       {state.appStage === 'ready' ? (
         <GameScreen
+          copy={copy.game}
           targetMultiplier={state.preparedRound?.targetMultiplier ?? null}
           currentMultiplier={state.currentMultiplier}
           roundStage={state.roundStage}
