@@ -12,7 +12,7 @@ const description =
 function run(command, args) {
   const result = spawnSync(command, args, {
     stdio: 'inherit',
-    shell: process.platform === 'win32',
+    shell: false,
   });
 
   if (result.status !== 0) {
@@ -24,7 +24,7 @@ function runCapture(command, args) {
   const result = spawnSync(command, args, {
     stdio: ['ignore', 'pipe', 'pipe'],
     encoding: 'utf8',
-    shell: process.platform === 'win32',
+    shell: false,
   });
 
   if (result.status !== 0) {
@@ -43,7 +43,7 @@ function runCapture(command, args) {
 const authStatus = spawnSync('gh', ['auth', 'status'], {
   stdio: ['ignore', 'pipe', 'pipe'],
   encoding: 'utf8',
-  shell: process.platform === 'win32',
+  shell: false,
 });
 
 if (authStatus.status !== 0) {

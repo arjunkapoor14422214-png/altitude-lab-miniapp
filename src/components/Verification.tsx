@@ -9,9 +9,9 @@ interface VerificationProps {
 }
 
 const statusSteps = [
-  'Проверяем формат тренировочного ID',
-  'Подключаем локальный профиль',
-  'Активируем сессию для следующих раундов',
+  'Проверяем ID и доступ к сигнальному режиму',
+  'Подключаем профиль к внутреннему сценарию',
+  'Открываем доступ к следующим раундам',
 ];
 
 export function Verification({
@@ -40,11 +40,11 @@ export function Verification({
     return (
       <section className="auth-shell">
         <div className="auth-card">
-          <span className="eyebrow">Активация</span>
-          <h1>Подключаем тренировочный режим</h1>
+          <span className="eyebrow">Проверка доступа</span>
+          <h1>Подключаем сигнальный режим</h1>
           <p className="auth-copy">
-            ID <strong>{pendingId}</strong> принят. Идет локальная имитация
-            активации, чтобы позже этот поток можно было заменить реальным API.
+            ID <strong>{pendingId}</strong> принят. Идет проверка доступа и
+            активация внутреннего режима для следующих раундов.
           </p>
 
           <div className="spinner" aria-hidden="true" />
@@ -69,30 +69,46 @@ export function Verification({
     <section className="auth-shell">
       <form className="auth-card" onSubmit={handleSubmit}>
         <span className="eyebrow">Шаг 2</span>
-        <h1>Активируйте тренировочный профиль</h1>
+        <h1>Твой ID на сайте LuckyPari</h1>
+        <div className="notice-card">
+          <span className="eyebrow">Важно</span>
+          <p>
+            Чтобы открыть доступ, сначала зарегистрируйся по ссылке{' '}
+            <a href="https://lckypr.com/G4DtDxQ" target="_blank" rel="noreferrer">
+              lckypr.com/G4DtDxQ
+            </a>
+            .
+          </p>
+          <p>
+            При регистрации используй промокод <strong>NILE</strong>. По нему
+            открывается доступ, и если акция на стороне LuckyPari активна, ты
+            дополнительно получаешь до 150 Free Spins.
+          </p>
+        </div>
         <p className="auth-copy">
-          Введите любой ID. На этом этапе он обрабатывается локально и нужен,
-          чтобы подготовить архитектуру под будущий backend.
+          Найди свой ID в личном профиле на сайте LuckyPari и введи его сюда,
+          чтобы активировать доступ внутри приложения.
         </p>
 
         <label className="field">
-          <span>Тренировочный ID</span>
+          <span>ID на сайте LuckyPari</span>
           <input
             className="input"
-            placeholder="Например, pilot-204"
+            placeholder="Например, 123456789"
             value={value}
             onChange={(event) => setValue(event.target.value)}
             autoComplete="off"
-            inputMode="text"
+            inputMode="numeric"
           />
         </label>
 
         <div className="inline-note">
-          Задержка активации имитирует подключение и занимает от 5 до 10 секунд.
+          После отправки ID мы проверим доступ и подключим профиль. Обычно это
+          занимает от 5 до 10 секунд.
         </div>
 
         <Button type="submit" fullWidth>
-          Активировать режим
+          Открыть доступ
         </Button>
       </form>
     </section>
