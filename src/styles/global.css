@@ -1329,6 +1329,408 @@ input {
   }
 }
 
+.app-shell {
+  background:
+    radial-gradient(circle at 14% 12%, rgba(255, 214, 94, 0.08), transparent 18%),
+    radial-gradient(circle at 82% 10%, rgba(222, 25, 52, 0.14), transparent 24%);
+}
+
+.modal-card--promo::after,
+.auth-card--promo::after {
+  content: "";
+  position: absolute;
+  inset: auto -14% -18% auto;
+  width: 240px;
+  height: 240px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 208, 70, 0.14), transparent 68%);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+.modal-title {
+  letter-spacing: -0.04em;
+}
+
+.arcade-stage--premium {
+  border-color: rgba(255, 204, 74, 0.26);
+  background:
+    radial-gradient(circle at 82% 12%, rgba(255, 220, 108, 0.14), transparent 18%),
+    radial-gradient(circle at 12% 22%, rgba(190, 18, 42, 0.46), transparent 26%),
+    radial-gradient(circle at 68% 78%, rgba(255, 132, 22, 0.08), transparent 20%),
+    linear-gradient(180deg, #140d09 0%, #090705 60%, #070504 100%);
+}
+
+.arcade-stage--premium .arcade-stage__arena {
+  min-height: 500px;
+  padding: 24px 18px 18px;
+}
+
+.arcade-stage__glow,
+.arcade-stage__cloud,
+.arcade-stage__runway,
+.arcade-stage__path,
+.arcade-stage__target-beacon {
+  position: absolute;
+}
+
+.arcade-stage__glow {
+  border-radius: 999px;
+  filter: blur(18px);
+  pointer-events: none;
+}
+
+.arcade-stage__glow--gold {
+  top: 20px;
+  right: 8px;
+  width: 168px;
+  height: 168px;
+  background: radial-gradient(circle, rgba(255, 223, 109, 0.44), transparent 70%);
+}
+
+.arcade-stage__glow--red {
+  left: -18px;
+  bottom: 90px;
+  width: 220px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(206, 19, 49, 0.24), transparent 72%);
+}
+
+.arcade-stage__cloud {
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
+  filter: blur(10px);
+  opacity: 0.46;
+}
+
+.arcade-stage__cloud--one {
+  top: 96px;
+  right: 80px;
+  width: 108px;
+  height: 38px;
+}
+
+.arcade-stage__cloud--two {
+  top: 132px;
+  right: 20px;
+  width: 138px;
+  height: 52px;
+}
+
+.arcade-stage__cloud--three {
+  left: 26px;
+  bottom: 106px;
+  width: 120px;
+  height: 40px;
+}
+
+.arcade-stage__runway {
+  left: -18px;
+  bottom: 16px;
+  width: 52%;
+  height: 110px;
+  border-radius: 18px 18px 0 0;
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.08) 0 4%, transparent 4% 14%, rgba(255, 255, 255, 0.08) 14% 18%, transparent 18%),
+    linear-gradient(160deg, rgba(42, 41, 40, 0.96), rgba(9, 8, 8, 0.96));
+  transform: perspective(320px) rotateX(64deg) rotateY(-18deg) rotateZ(-11deg);
+  transform-origin: bottom left;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 -18px 40px rgba(255, 183, 0, 0.04);
+  opacity: 0.78;
+}
+
+.arcade-stage__path {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.arcade-stage__path-base,
+.arcade-stage__path-active {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.arcade-stage__path-base {
+  stroke: rgba(255, 223, 146, 0.2);
+  stroke-width: 1.8;
+}
+
+.arcade-stage__path-active {
+  stroke: url(#unused-gradient);
+  stroke: rgba(255, 92, 92, 0.98);
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 10px rgba(255, 78, 78, 0.4));
+}
+
+.arcade-stage__target {
+  min-width: 126px;
+  background: linear-gradient(180deg, rgba(30, 23, 17, 0.96), rgba(15, 12, 10, 0.96));
+}
+
+.arcade-stage__target strong {
+  text-transform: uppercase;
+}
+
+.arcade-stage__target-beacon {
+  right: 18px;
+  bottom: 26px;
+  display: grid;
+  gap: 3px;
+  justify-items: end;
+  padding: 12px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 205, 71, 0.26);
+  background:
+    radial-gradient(circle at top right, rgba(255, 210, 74, 0.12), transparent 36%),
+    linear-gradient(180deg, rgba(27, 20, 15, 0.92), rgba(14, 11, 9, 0.95));
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.26);
+}
+
+.arcade-stage__target-beacon span {
+  color: #efd4a4;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.arcade-stage__target-beacon strong {
+  color: #ffd556;
+  font-family: "Space Grotesk", "Bahnschrift", "Segoe UI", sans-serif;
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.arcade-stage__grid,
+.arcade-stage__curve,
+.arcade-stage__trail,
+.arcade-stage__target-line {
+  display: none;
+}
+
+.arcade-multiplier {
+  max-width: 250px;
+  margin-top: 12px;
+}
+
+.arcade-multiplier strong {
+  font-size: clamp(3.8rem, 19vw, 6rem);
+}
+
+.arcade-plane {
+  width: 150px;
+  height: 100px;
+  margin-left: 0;
+  margin-top: 0;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  transform-origin: center;
+  filter:
+    drop-shadow(0 12px 28px rgba(0, 0, 0, 0.34))
+    drop-shadow(0 0 28px rgba(255, 88, 72, 0.18));
+}
+
+.arcade-plane--flying {
+  animation: planeFloat 950ms ease-in-out infinite alternate;
+}
+
+.arcade-plane--finished {
+  opacity: 0.1;
+  transform: translate(-50%, -50%) rotate(-8deg) scale(0.96);
+}
+
+.arcade-plane__shadow {
+  position: absolute;
+  left: 26px;
+  right: 22px;
+  bottom: 8px;
+  height: 16px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.28), transparent 70%);
+  filter: blur(5px);
+}
+
+.arcade-plane__body {
+  left: 30px;
+  top: 34px;
+  width: 74px;
+  height: 26px;
+  border-radius: 18px 26px 26px 18px;
+  background: linear-gradient(180deg, #ff6a57, #b70d1b);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 193, 170, 0.34),
+    inset 0 -3px 0 rgba(128, 0, 0, 0.22);
+}
+
+.arcade-plane__stripe {
+  position: absolute;
+  left: 56px;
+  top: 36px;
+  width: 42px;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 203, 70, 0), #ffcf53 34%, #ffae16 100%);
+  opacity: 0.9;
+}
+
+.arcade-plane__tail-fin {
+  position: absolute;
+  left: 18px;
+  top: 24px;
+  width: 24px;
+  height: 30px;
+  border-radius: 12px 6px 10px 8px;
+  background: linear-gradient(180deg, #ea412d, #a10917);
+  transform: skewY(-16deg);
+}
+
+.arcade-plane__tail-wing {
+  position: absolute;
+  left: 12px;
+  top: 52px;
+  width: 34px;
+  height: 12px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #e73c27, #9c0817);
+  transform: rotate(-6deg);
+}
+
+.arcade-plane__wing {
+  height: 15px;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, #ffcf54 0%, #f79618 24%, #d62b1d 25%, #bb0d1e 100%);
+  box-shadow: inset 0 2px 0 rgba(255, 245, 215, 0.22);
+}
+
+.arcade-plane__wing--top {
+  left: 28px;
+  top: 18px;
+  width: 92px;
+  transform: rotate(3deg);
+}
+
+.arcade-plane__wing--bottom {
+  left: 24px;
+  top: 60px;
+  width: 86px;
+  transform: rotate(-2deg);
+}
+
+.arcade-plane__strut {
+  width: 4px;
+  height: 34px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #f6b11e, #8f2f0c);
+}
+
+.arcade-plane__strut--front {
+  left: 72px;
+  top: 26px;
+  transform: rotate(18deg);
+}
+
+.arcade-plane__strut--rear {
+  left: 54px;
+  top: 28px;
+  transform: rotate(-14deg);
+}
+
+.arcade-plane__cockpit {
+  position: absolute;
+  top: 30px;
+  width: 12px;
+  height: 14px;
+  border-radius: 4px 4px 6px 6px;
+  background: linear-gradient(180deg, #99ddff, #5eaef0);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.arcade-plane__cockpit.cockpit-one {
+  left: 56px;
+}
+
+.arcade-plane__cockpit.cockpit-two {
+  left: 70px;
+}
+
+.arcade-plane__cockpit.cockpit-three {
+  left: 84px;
+}
+
+.arcade-plane__engine {
+  position: absolute;
+  right: 18px;
+  top: 24px;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: radial-gradient(circle, #38261f 10%, #1d1d1d 40%, #080808 100%);
+}
+
+.arcade-plane__engine-ring {
+  position: absolute;
+  right: 14px;
+  top: 20px;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 8px solid #f0b114;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 243, 206, 0.36),
+    0 0 0 2px rgba(145, 78, 0, 0.18);
+}
+
+.arcade-plane__hub {
+  position: absolute;
+  right: 27px;
+  top: 33px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: radial-gradient(circle, #ffdb82 0%, #f4a41d 56%, #a65b00 100%);
+  z-index: 2;
+}
+
+.arcade-plane__propeller {
+  position: absolute;
+  right: -3px;
+  top: 14px;
+  width: 36px;
+  height: 54px;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(38, 32, 32, 0.08), rgba(40, 40, 40, 0.7) 22%, rgba(22, 22, 22, 0.12) 46%, rgba(40, 40, 40, 0.74) 72%, rgba(38, 32, 32, 0.08));
+  filter: blur(0.2px);
+  transform-origin: 7px 27px;
+  opacity: 0.92;
+}
+
+.arcade-plane--flying .arcade-plane__propeller {
+  animation: propellerSpin 180ms linear infinite;
+}
+
+@keyframes planeFloat {
+  from {
+    transform: translate(-50%, -50%) rotate(-8deg) translateY(0);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-7deg) translateY(-3px);
+  }
+}
+
+@keyframes propellerSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 480px) {
   .modal-card,
   .auth-card,
@@ -1376,6 +1778,10 @@ input {
     padding: 22px 16px 16px;
   }
 
+  .arcade-stage--premium .arcade-stage__arena {
+    min-height: 470px;
+  }
+
   .arcade-stage__target {
     min-width: 104px;
     padding: 10px 12px;
@@ -1386,7 +1792,7 @@ input {
   }
 
   .arcade-plane {
-    transform: scale(0.9);
-    transform-origin: center;
+    width: 126px;
+    height: 86px;
   }
 }

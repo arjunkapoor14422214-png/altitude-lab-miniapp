@@ -1,9 +1,9 @@
 import { Button } from './Button';
 import { PlaneAnimation } from './PlaneAnimation';
-import type { PreparedRound, RoundStage } from '../types/game';
+import type { RoundStage } from '../types/game';
 
 interface GameScreenProps {
-  preparedRound: PreparedRound;
+  targetMultiplier: number | null;
   currentMultiplier: number;
   roundStage: RoundStage;
   flightProgress: number;
@@ -11,7 +11,7 @@ interface GameScreenProps {
 }
 
 export function GameScreen({
-  preparedRound,
+  targetMultiplier,
   currentMultiplier,
   roundStage,
   flightProgress,
@@ -36,7 +36,7 @@ export function GameScreen({
         running={roundStage === 'round_running'}
         finished={roundStage === 'round_finished'}
         currentMultiplier={currentMultiplier}
-        targetMultiplier={preparedRound.targetMultiplier}
+        targetMultiplier={targetMultiplier}
       />
 
       <Button

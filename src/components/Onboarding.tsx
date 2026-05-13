@@ -19,10 +19,7 @@ const instructions = [
 
 export function Onboarding({ onContinue }: OnboardingProps) {
   return (
-    <Modal
-      title="Altitude Lab"
-      subtitle="Сигнальный доступ к раундам в ярком тренировочном режиме."
-    >
+    <Modal title="Aviator Signal">
       <section className="stack stack--tight">
         <div className="promo-hero">
           <span className="eyebrow">Signal access</span>

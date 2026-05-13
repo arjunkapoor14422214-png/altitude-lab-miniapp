@@ -9,7 +9,6 @@ import {
 } from '../lib/multiplierGenerator';
 import { loadSession, saveSession } from '../lib/storage';
 import {
-  getTelegramDisplayName,
   initTelegramApp,
   setTelegramInteractionGuards,
   subscribeTelegramContext,
@@ -46,14 +45,14 @@ type AppAction =
   | { type: 'openVerification' }
   | { type: 'startConnecting'; verificationId: string }
   | { type: 'finishConnecting'; message: string }
-  | { type: 'prepareRound'; round: PreparedRound }
-  | { type: 'startRound' }
+  | { type: 'startRound'; round: PreparedRound }
   | {
       type: 'animateRound';
       currentMultiplier: number;
       flightProgress: number;
     }
-  | { type: 'finishRound'; record: RoundRecord };
+  | { type: 'finishRound'; record: RoundRecord }
+  | { type: 'resetRound' };
 
 const initialSession = loadSession();
 
@@ -104,7 +103,8 @@ function appReducer(state: AppState, action: AppAction): AppState {
         preparedRound: null,
         currentMultiplier: 1,
         flightProgress: 0,
-        activationMessage: 'Можно обновить тренировочный ID и заново активировать профиль.',
+        activationMessage:
+          'Можно обновить тренировочный ID и заново активировать профиль.',
       };
 
     case 'startConnecting':
@@ -112,7 +112,8 @@ function appReducer(state: AppState, action: AppAction): AppState {
         ...state,
         appStage: 'connecting',
         pendingVerificationId: action.verificationId,
-        activationMessage: 'Запускаем локальную активацию тренировочного режима...',
+        activationMessage:
+          'Запускаем локальную активацию тренировочного режима...',
       };
 
     case 'finishConnecting':
@@ -125,26 +126,14 @@ function appReducer(state: AppState, action: AppAction): AppState {
         activationMessage: action.message,
       };
 
-    case 'prepareRound':
-      return {
-        ...state,
-        roundStage: 'round_idle',
-        preparedRound: action.round,
-        currentMultiplier: 1,
-        flightProgress: 0,
-      };
-
     case 'startRound':
-      if (!state.preparedRound) {
-        return state;
-      }
-
       return {
         ...state,
+        preparedRound: action.round,
         roundStage: 'round_running',
         currentMultiplier: 1,
         flightProgress: 0,
-        activationMessage: `Раунд #${state.preparedRound.roundNumber} выполняется. Цель ${formatMultiplier(state.preparedRound.targetMultiplier)}.`,
+        activationMessage: `Раунд #${action.round.roundNumber} запущен.`,
       };
 
     case 'animateRound':
@@ -167,6 +156,16 @@ function appReducer(state: AppState, action: AppAction): AppState {
         history: [action.record, ...state.history].slice(0, gameConfig.historyLimit),
         roundCounter: action.record.roundNumber,
         activationMessage: `Раунд #${action.record.roundNumber} завершен на ${formatMultiplier(action.record.targetMultiplier)}.`,
+      };
+
+    case 'resetRound':
+      return {
+        ...state,
+        roundStage: 'round_idle',
+        preparedRound: null,
+        currentMultiplier: 1,
+        flightProgress: 0,
+        activationMessage: 'Нажми старт, чтобы сгенерировать новый раунд.',
       };
 
     default:
@@ -253,21 +252,11 @@ export default function App() {
   }, [state.appStage, state.pendingVerificationId]);
 
   useEffect(() => {
-    if (state.appStage !== 'ready' || state.preparedRound) {
-      return;
-    }
-
-    dispatch({
-      type: 'prepareRound',
-      round: createPreparedRound(state.roundCounter + 1),
-    });
-  }, [state.appStage, state.preparedRound, state.roundCounter]);
-
-  useEffect(() => {
     if (state.roundStage !== 'round_running' || !state.preparedRound) {
       return;
     }
 
+    const round = state.preparedRound;
     let animationFrameId = 0;
     let startTime: number | null = null;
 
@@ -277,11 +266,8 @@ export default function App() {
       }
 
       const elapsed = timestamp - startTime;
-      const progress = Math.min(elapsed / state.preparedRound!.durationMs, 1);
-      const nextValue = animateMultiplier(
-        progress,
-        state.preparedRound!.targetMultiplier,
-      );
+      const progress = Math.min(elapsed / round.durationMs, 1);
+      const nextValue = animateMultiplier(progress, round.targetMultiplier);
 
       dispatch({
         type: 'animateRound',
@@ -299,10 +285,10 @@ export default function App() {
       dispatch({
         type: 'finishRound',
         record: {
-          roundNumber: state.preparedRound!.roundNumber,
-          targetMultiplier: state.preparedRound!.targetMultiplier,
+          roundNumber: round.roundNumber,
+          targetMultiplier: round.targetMultiplier,
           time: formatRoundTime(completedAt),
-          rangeLabel: state.preparedRound!.rangeLabel,
+          rangeLabel: round.rangeLabel,
           status: 'completed',
           createdAt: completedAt.toISOString(),
         },
@@ -336,14 +322,11 @@ export default function App() {
     }
 
     const timeoutId = window.setTimeout(() => {
-      dispatch({
-        type: 'prepareRound',
-        round: createPreparedRound(state.roundCounter + 1),
-      });
+      dispatch({ type: 'resetRound' });
     }, 1800);
 
     return () => window.clearTimeout(timeoutId);
-  }, [state.appStage, state.roundCounter, state.roundStage]);
+  }, [state.appStage, state.roundStage]);
 
   const handleTelegramMainAction = useEffectEvent(() => {
     if (state.appStage === 'onboarding') {
@@ -352,23 +335,15 @@ export default function App() {
       return;
     }
 
-    if (state.appStage !== 'ready') {
+    if (state.appStage !== 'ready' || state.roundStage !== 'round_idle') {
       return;
     }
 
-    if (state.roundStage === 'round_idle') {
-      triggerTelegramHaptic('selection');
-      dispatch({ type: 'startRound' });
-      return;
-    }
-
-    if (state.roundStage === 'round_finished') {
-      triggerTelegramHaptic('selection');
-      dispatch({
-        type: 'prepareRound',
-        round: createPreparedRound(state.roundCounter + 1),
-      });
-    }
+    triggerTelegramHaptic('selection');
+    dispatch({
+      type: 'startRound',
+      round: createPreparedRound(state.roundCounter + 1),
+    });
   });
 
   const handleTelegramBackAction = useEffectEvent(() => {
@@ -405,20 +380,8 @@ export default function App() {
       });
     }
 
-    if (state.appStage === 'ready' && state.roundStage === 'round_idle') {
-      return syncTelegramMainButton(null);
-    }
-
-    if (state.appStage === 'ready' && state.roundStage === 'round_running') {
-      return syncTelegramMainButton(null);
-    }
-
-    if (state.appStage === 'ready' && state.roundStage === 'round_finished') {
-      return syncTelegramMainButton(null);
-    }
-
     return syncTelegramMainButton(null);
-  }, [state.appStage, state.roundStage, handleTelegramMainAction]);
+  }, [state.appStage, handleTelegramMainAction]);
 
   useEffect(() => {
     const isVisible =
@@ -440,24 +403,16 @@ export default function App() {
   };
 
   const handleStartRound = () => {
-    triggerTelegramHaptic('selection');
-    dispatch({ type: 'startRound' });
-  };
+    if (state.roundStage !== 'round_idle') {
+      return;
+    }
 
-  const handleNextRound = () => {
     triggerTelegramHaptic('selection');
     dispatch({
-      type: 'prepareRound',
+      type: 'startRound',
       round: createPreparedRound(state.roundCounter + 1),
     });
   };
-
-  const handleResetProfile = () => {
-    triggerTelegramHaptic('warning');
-    dispatch({ type: 'openVerification' });
-  };
-
-  const pilotName = getTelegramDisplayName(telegramContext.user);
 
   return (
     <main className="app-shell">
@@ -484,9 +439,9 @@ export default function App() {
         />
       ) : null}
 
-      {state.appStage === 'ready' && state.preparedRound ? (
+      {state.appStage === 'ready' ? (
         <GameScreen
-          preparedRound={state.preparedRound}
+          targetMultiplier={state.preparedRound?.targetMultiplier ?? null}
           currentMultiplier={state.currentMultiplier}
           roundStage={state.roundStage}
           flightProgress={state.flightProgress}
