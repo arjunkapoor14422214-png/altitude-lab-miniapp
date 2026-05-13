@@ -115,6 +115,10 @@ input {
   gap: 16px;
 }
 
+.game-shell--arcade {
+  gap: 18px;
+}
+
 .modal-backdrop,
 .auth-shell {
   min-height: calc(100dvh - 40px);
@@ -745,6 +749,364 @@ input {
   background: rgba(255, 255, 255, 0.02);
 }
 
+.arcade-topline {
+  padding: 16px 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 188, 137, 0.18);
+  background:
+    radial-gradient(circle at right top, rgba(255, 178, 73, 0.14), transparent 32%),
+    linear-gradient(180deg, rgba(53, 14, 10, 0.94), rgba(22, 8, 12, 0.96));
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+  color: rgba(255, 239, 224, 0.96);
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+.arcade-stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: 32px;
+  border: 1px solid rgba(255, 138, 77, 0.22);
+  background:
+    radial-gradient(circle at top right, rgba(255, 179, 71, 0.16), transparent 28%),
+    radial-gradient(circle at top left, rgba(255, 92, 92, 0.2), transparent 34%),
+    linear-gradient(180deg, #4f090f 0%, #22050a 54%, #120408 100%);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.arcade-stage__chrome {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 18px 0;
+}
+
+.arcade-stage__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(19, 7, 9, 0.45);
+  color: rgba(255, 231, 213, 0.86);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.arcade-stage__status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #9dff72;
+  box-shadow: 0 0 18px rgba(157, 255, 114, 0.65);
+}
+
+.arcade-stage__target {
+  min-width: 118px;
+  padding: 12px 14px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(45, 9, 8, 0.9), rgba(26, 7, 11, 0.94));
+  border: 1px solid rgba(255, 179, 89, 0.22);
+  color: rgba(255, 214, 186, 0.84);
+  text-align: right;
+  display: grid;
+  gap: 4px;
+}
+
+.arcade-stage__target span,
+.arcade-stage__target-line span,
+.arcade-multiplier__label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.arcade-stage__target strong {
+  font-family: "Space Grotesk", "Bahnschrift", "Segoe UI", sans-serif;
+  color: #fff2db;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.arcade-stage__arena {
+  position: relative;
+  min-height: 470px;
+  padding: 26px 20px 20px;
+  overflow: hidden;
+}
+
+.arcade-stage__sun {
+  position: absolute;
+  top: 18px;
+  right: -18px;
+  width: 150px;
+  height: 150px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 189, 97, 0.8), rgba(255, 123, 72, 0.25) 52%, transparent 72%);
+  filter: blur(4px);
+  opacity: 0.72;
+}
+
+.arcade-stage__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(180deg, transparent 0%, black 14%, black 82%, transparent 100%);
+  opacity: 0.32;
+}
+
+.arcade-stage__curve {
+  position: absolute;
+  inset: 16% 11% 11% 7%;
+  border-top: 3px solid rgba(255, 187, 106, 0.92);
+  border-right: 3px solid transparent;
+  border-radius: 999px 999px 0 0;
+  transform: rotate(-12deg);
+  opacity: 0.52;
+  filter: drop-shadow(0 0 18px rgba(255, 166, 84, 0.42));
+}
+
+.arcade-stage__horizon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 36%;
+  background:
+    linear-gradient(180deg, rgba(18, 7, 9, 0), rgba(18, 7, 9, 0.4) 30%, rgba(12, 4, 6, 0.9) 100%);
+}
+
+.arcade-multiplier {
+  position: relative;
+  z-index: 1;
+  max-width: 220px;
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.arcade-multiplier strong {
+  font-family: "Space Grotesk", "Bahnschrift", "Segoe UI", sans-serif;
+  font-size: clamp(3.3rem, 18vw, 5.8rem);
+  line-height: 0.86;
+  letter-spacing: -0.07em;
+  color: #fff4eb;
+  text-shadow: 0 0 28px rgba(255, 162, 103, 0.3);
+}
+
+.arcade-stage__trail {
+  position: absolute;
+  left: 0;
+  top: 74%;
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 201, 98, 0.02), rgba(255, 196, 95, 0.92));
+  box-shadow:
+    0 0 16px rgba(255, 194, 84, 0.44),
+    0 0 34px rgba(255, 107, 72, 0.18);
+  transition: width 120ms linear;
+}
+
+.arcade-stage__trail--running {
+  animation: trailPulse 900ms ease-in-out infinite alternate;
+}
+
+.arcade-plane {
+  position: absolute;
+  width: 66px;
+  height: 42px;
+  margin-left: -24px;
+  margin-top: -18px;
+  transition:
+    left 120ms linear,
+    top 120ms linear,
+    filter 180ms ease,
+    opacity 180ms ease;
+  filter:
+    drop-shadow(0 10px 24px rgba(0, 0, 0, 0.32))
+    drop-shadow(0 0 24px rgba(255, 183, 75, 0.18));
+}
+
+.arcade-plane--finished {
+  opacity: 0.18;
+  filter: blur(1px) drop-shadow(0 0 18px rgba(255, 153, 73, 0.3));
+}
+
+.arcade-plane__body,
+.arcade-plane__nose,
+.arcade-plane__cockpit,
+.arcade-plane__wing,
+.arcade-plane__tail,
+.arcade-plane__fire {
+  position: absolute;
+  display: block;
+}
+
+.arcade-plane__body {
+  left: 12px;
+  top: 11px;
+  width: 32px;
+  height: 18px;
+  border-radius: 18px 14px 14px 18px;
+  background: linear-gradient(180deg, #ffe6d2, #ff7357);
+}
+
+.arcade-plane__nose {
+  right: 12px;
+  top: 13px;
+  width: 16px;
+  height: 14px;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  background: linear-gradient(180deg, #fff0de, #ff8a55);
+}
+
+.arcade-plane__cockpit {
+  left: 29px;
+  top: 8px;
+  width: 10px;
+  height: 8px;
+  border-radius: 999px 999px 2px 2px;
+  background: linear-gradient(180deg, #93dfff, #57b8ff);
+}
+
+.arcade-plane__wing {
+  background: linear-gradient(180deg, #ffd7b6, #ff694f);
+}
+
+.arcade-plane__wing--left {
+  left: 16px;
+  top: 7px;
+  width: 20px;
+  height: 10px;
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+}
+
+.arcade-plane__wing--right {
+  left: 16px;
+  top: 24px;
+  width: 20px;
+  height: 10px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+.arcade-plane__wing--center {
+  left: 22px;
+  top: 12px;
+  width: 24px;
+  height: 18px;
+  clip-path: polygon(0 50%, 100% 0, 84% 100%);
+  opacity: 0.45;
+}
+
+.arcade-plane__tail {
+  left: 6px;
+  top: 11px;
+  width: 10px;
+  height: 18px;
+  clip-path: polygon(0 50%, 100% 0, 100% 100%);
+  background: linear-gradient(180deg, #ffcfa3, #f84e41);
+}
+
+.arcade-plane__fire {
+  left: 0;
+  top: 15px;
+  width: 14px;
+  height: 12px;
+  border-radius: 999px;
+  background: radial-gradient(circle, #fff1b0 0%, #ffb74c 48%, rgba(255, 98, 58, 0) 78%);
+  filter: blur(0.4px);
+}
+
+.arcade-burst {
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  margin-left: -55px;
+  margin-top: -55px;
+  pointer-events: none;
+  animation: burstPop 560ms ease-out both;
+}
+
+.arcade-burst__core,
+.arcade-burst__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+}
+
+.arcade-burst__core {
+  inset: 29%;
+  background: radial-gradient(circle, #fff8d4 0%, #ffca68 42%, #ff6a45 80%, rgba(255, 77, 77, 0) 100%);
+  box-shadow: 0 0 28px rgba(255, 171, 69, 0.65);
+}
+
+.arcade-burst__ring {
+  border: 3px solid rgba(255, 220, 132, 0.56);
+}
+
+.arcade-burst__ring--one {
+  animation: burstRing 620ms ease-out both;
+}
+
+.arcade-burst__ring--two {
+  inset: 12%;
+  border-color: rgba(255, 128, 88, 0.48);
+  animation: burstRing 620ms ease-out 70ms both;
+}
+
+.arcade-stage__target-line {
+  position: absolute;
+  top: 10%;
+  bottom: 16%;
+  width: 2px;
+  margin-left: -1px;
+  background: linear-gradient(180deg, rgba(255, 224, 163, 0.12), rgba(255, 224, 163, 0.85), rgba(255, 224, 163, 0.12));
+  box-shadow: 0 0 22px rgba(255, 188, 86, 0.24);
+}
+
+.arcade-stage__target-line span {
+  position: absolute;
+  top: -6px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(33, 10, 9, 0.82);
+  border: 1px solid rgba(255, 190, 104, 0.24);
+  color: rgba(255, 236, 212, 0.95);
+}
+
+.arcade-start-button.button--primary {
+  min-height: 64px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #53f07d 0%, #23b547 100%);
+  color: #051408;
+  font-family: "Space Grotesk", "Bahnschrift", "Segoe UI", sans-serif;
+  font-size: 1.18rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow:
+    0 20px 38px rgba(47, 199, 87, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32);
+}
+
+.arcade-start-button.button--primary:disabled {
+  opacity: 0.78;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -768,6 +1130,28 @@ input {
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes burstPop {
+  from {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes burstRing {
+  from {
+    opacity: 0.8;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.18);
   }
 }
 
@@ -796,5 +1180,32 @@ input {
   .insights-grid,
   .distribution-row {
     grid-template-columns: 1fr;
+  }
+
+  .arcade-stage {
+    border-radius: 28px;
+  }
+
+  .arcade-stage__chrome {
+    padding: 14px 14px 0;
+  }
+
+  .arcade-stage__arena {
+    min-height: 420px;
+    padding: 22px 16px 16px;
+  }
+
+  .arcade-stage__target {
+    min-width: 104px;
+    padding: 10px 12px;
+  }
+
+  .arcade-stage__target strong {
+    font-size: 1.28rem;
+  }
+
+  .arcade-plane {
+    transform: scale(0.9);
+    transform-origin: center;
   }
 }

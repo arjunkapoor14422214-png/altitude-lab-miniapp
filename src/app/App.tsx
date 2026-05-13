@@ -330,6 +330,21 @@ export default function App() {
     }
   }, [state.roundStage]);
 
+  useEffect(() => {
+    if (state.appStage !== 'ready' || state.roundStage !== 'round_finished') {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      dispatch({
+        type: 'prepareRound',
+        round: createPreparedRound(state.roundCounter + 1),
+      });
+    }, 1800);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [state.appStage, state.roundCounter, state.roundStage]);
+
   const handleTelegramMainAction = useEffectEvent(() => {
     if (state.appStage === 'onboarding') {
       triggerTelegramHaptic('selection');
@@ -391,30 +406,15 @@ export default function App() {
     }
 
     if (state.appStage === 'ready' && state.roundStage === 'round_idle') {
-      return syncTelegramMainButton({
-        text: 'Начать раунд',
-        visible: true,
-        enabled: true,
-        onClick: handleTelegramMainAction,
-      });
+      return syncTelegramMainButton(null);
     }
 
     if (state.appStage === 'ready' && state.roundStage === 'round_running') {
-      return syncTelegramMainButton({
-        text: 'Раунд идет',
-        visible: true,
-        enabled: false,
-        loading: true,
-      });
+      return syncTelegramMainButton(null);
     }
 
     if (state.appStage === 'ready' && state.roundStage === 'round_finished') {
-      return syncTelegramMainButton({
-        text: 'Следующий раунд',
-        visible: true,
-        enabled: true,
-        onClick: handleTelegramMainAction,
-      });
+      return syncTelegramMainButton(null);
     }
 
     return syncTelegramMainButton(null);
@@ -490,15 +490,7 @@ export default function App() {
           currentMultiplier={state.currentMultiplier}
           roundStage={state.roundStage}
           flightProgress={state.flightProgress}
-          history={state.history}
-          activationMessage={state.activationMessage}
-          verificationId={state.verificationId}
-          pilotName={pilotName}
-          telegramUsername={telegramContext.user?.username}
-          isTelegram={telegramContext.isTelegram}
           onStartRound={handleStartRound}
-          onNextRound={handleNextRound}
-          onResetProfile={handleResetProfile}
         />
       ) : null}
     </main>
