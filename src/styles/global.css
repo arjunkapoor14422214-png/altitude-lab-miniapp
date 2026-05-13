@@ -268,11 +268,14 @@ input {
 .notice-card--highlight,
 .content-block--glow {
   position: relative;
-  border-color: rgba(255, 207, 74, 0.22);
+  border-color: rgba(190, 255, 84, 0.34);
   background:
-    radial-gradient(circle at top right, rgba(255, 205, 57, 0.08), transparent 30%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 211, 62, 0.03));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    radial-gradient(circle at top right, rgba(210, 255, 126, 0.18), transparent 30%),
+    radial-gradient(circle at bottom left, rgba(110, 255, 126, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(239, 255, 213, 0.08), rgba(139, 255, 120, 0.07));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 18px 44px rgba(123, 255, 86, 0.12);
 }
 
 .eyebrow {
@@ -471,7 +474,7 @@ input {
 }
 
 .promo-copy--accent {
-  color: #ffe177;
+  color: #e5ff89;
   font-weight: 700;
 }
 
@@ -482,17 +485,27 @@ input {
   min-height: 54px;
   padding: 0 18px;
   border-radius: 18px;
-  border: 1px solid rgba(255, 205, 70, 0.28);
-  background: linear-gradient(180deg, rgba(255, 217, 94, 0.14), rgba(255, 196, 0, 0.12));
-  color: #ffd95a;
+  border: 1px solid rgba(183, 255, 82, 0.42);
+  background:
+    linear-gradient(180deg, rgba(227, 255, 170, 0.88), rgba(171, 255, 104, 0.9));
+  color: #183400;
   font-family: "Space Grotesk", "Bahnschrift", "Segoe UI", sans-serif;
   font-size: 1.12rem;
   font-weight: 700;
   letter-spacing: 0.02em;
   text-decoration: none;
   box-shadow:
-    0 14px 32px rgba(255, 196, 0, 0.08),
-    inset 0 1px 0 rgba(255, 246, 196, 0.18);
+    0 16px 32px rgba(136, 255, 76, 0.24),
+    0 0 0 1px rgba(245, 255, 216, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.promo-link:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 20px 38px rgba(136, 255, 76, 0.28),
+    0 0 0 1px rgba(245, 255, 216, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.48);
 }
 
 .promo-code-card {
@@ -501,15 +514,17 @@ input {
   justify-items: start;
   padding: 16px 18px;
   border-radius: 18px;
-  border: 1px solid rgba(255, 203, 68, 0.3);
+  border: 1px solid rgba(181, 255, 81, 0.38);
   background:
-    radial-gradient(circle at top right, rgba(255, 204, 58, 0.16), transparent 42%),
-    linear-gradient(180deg, rgba(44, 29, 10, 0.86), rgba(27, 18, 7, 0.94));
-  box-shadow: 0 16px 34px rgba(255, 196, 0, 0.1);
+    radial-gradient(circle at top right, rgba(229, 255, 155, 0.22), transparent 42%),
+    linear-gradient(180deg, rgba(40, 64, 16, 0.88), rgba(22, 38, 9, 0.94));
+  box-shadow:
+    0 16px 34px rgba(129, 255, 71, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .promo-code-card span {
-  color: #f7deb0;
+  color: #efffd1;
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -517,12 +532,14 @@ input {
 }
 
 .promo-code-card strong {
-  color: #ffd02c;
+  color: #f7ff84;
   font-family: "Space Grotesk", "Bahnschrift", "Segoe UI", sans-serif;
   font-size: clamp(1.9rem, 7vw, 2.4rem);
   line-height: 1;
   letter-spacing: 0.06em;
-  text-shadow: 0 0 24px rgba(255, 202, 43, 0.2);
+  text-shadow:
+    0 0 18px rgba(208, 255, 91, 0.24),
+    0 0 32px rgba(163, 255, 78, 0.14);
 }
 
 .spinner {
