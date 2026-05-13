@@ -93,16 +93,16 @@ export function Verification({
   return (
     <section className="auth-shell">
       <form className="auth-card auth-card--promo" onSubmit={handleSubmit}>
-        <span className="eyebrow">Шаг 2</span>
+        <span className="eyebrow">Активация</span>
         <h1>Получение доступа</h1>
 
-        <div className="notice-card notice-card--highlight">
-          <span className="eyebrow">Важно</span>
+        <div className="notice-card notice-card--highlight notice-card--offer">
+          <span className="eyebrow">Шаг 1</span>
           <p className="promo-copy">
             Чтобы получить доступ, обязательно зарегистрируйся по ссылке:
           </p>
           <a
-            className="promo-link"
+            className="promo-link promo-link--offer"
             href="https://lckypr.com/G4DtDxQ"
             target="_blank"
             rel="noreferrer"
@@ -110,18 +110,18 @@ export function Verification({
             lckypr.com/G4DtDxQ
           </a>
 
-          <div className="promo-code-card">
+          <div className="promo-code-card promo-code-card--offer">
             <span>Промокод</span>
             <strong>NILE</strong>
           </div>
 
-          <p className="promo-copy promo-copy--accent">
+          <p className="promo-copy promo-copy--accent promo-copy--offer">
             Введи его при регистрации и получи доступ плюс до 150 Free Spins.
           </p>
         </div>
 
         <div className="notice-card">
-          <span className="eyebrow">Шаг 3</span>
+          <span className="eyebrow">Шаг 2</span>
           <p className="promo-copy">
             <strong>Твой ID на сайте LuckyPari</strong>
           </p>
@@ -133,9 +133,12 @@ export function Verification({
           </p>
         </div>
 
-        <p className="auth-copy auth-copy--bright">
-          Введи свой ID ниже, чтобы активировать доступ внутри приложения.
-        </p>
+        <div className="step-block">
+          <span className="eyebrow">Шаг 3</span>
+          <p className="auth-copy auth-copy--bright">
+            Введи свой ID ниже, чтобы активировать доступ внутри приложения.
+          </p>
+        </div>
 
         <label className="field">
           <span>ID на сайте LuckyPari</span>
