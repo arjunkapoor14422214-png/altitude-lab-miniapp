@@ -19,20 +19,31 @@ const instructions = [
 
 export function Onboarding({ onContinue }: OnboardingProps) {
   return (
-    <Modal title="Altitude Lab">
-      <section className="stack">
-        <div className="content-block">
+    <Modal
+      title="Altitude Lab"
+      subtitle="Сигнальный доступ к раундам в ярком тренировочном режиме."
+    >
+      <section className="stack stack--tight">
+        <div className="promo-hero">
+          <span className="eyebrow">Signal access</span>
+          <p className="promo-hero__copy">
+            Внутри приложения ты получаешь готовый сигнал и заранее видишь
+            ключевую точку раунда.
+          </p>
+        </div>
+
+        <div className="content-block content-block--glow">
           <h3>Что внутри</h3>
-          <ul className="feature-list">
+          <ul className="feature-list feature-list--bright">
             {advantages.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
         </div>
 
-        <div className="content-block">
+        <div className="content-block content-block--glow">
           <h3>Как начать</h3>
-          <ul className="feature-list">
+          <ul className="feature-list feature-list--bright">
             {instructions.map((item) => (
               <li key={item}>{item}</li>
             ))}

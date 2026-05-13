@@ -9,7 +9,7 @@ interface VerificationProps {
 }
 
 const statusSteps = [
-  'Зарегестрировался по ссылке',
+  'Зарегистрировался по ссылке',
   'Ввел промокод',
   'Сделал депозит',
 ];
@@ -59,10 +59,10 @@ export function Verification({
   if (mode === 'connecting') {
     return (
       <section className="auth-shell">
-        <div className="auth-card">
+        <div className="auth-card auth-card--promo">
           <span className="eyebrow">Проверка доступа</span>
           <h1>Подключаем проверочный режим</h1>
-          <p className="auth-copy">
+          <p className="auth-copy auth-copy--bright">
             ID <strong>{pendingId}</strong> принят. Идет проверка и активация
             доступа для следующих раундов.
           </p>
@@ -92,36 +92,48 @@ export function Verification({
 
   return (
     <section className="auth-shell">
-      <form className="auth-card" onSubmit={handleSubmit}>
+      <form className="auth-card auth-card--promo" onSubmit={handleSubmit}>
         <span className="eyebrow">Шаг 2</span>
         <h1>Получение доступа</h1>
-        <div className="notice-card">
+
+        <div className="notice-card notice-card--highlight">
           <span className="eyebrow">Важно</span>
-          <p>
-            Помни: чтобы получить доступ, обязательно зарегистрируйся по ссылке{' '}
-            <a href="https://lckypr.com/G4DtDxQ" target="_blank" rel="noreferrer">
-              lckypr.com/G4DtDxQ
-            </a>
-            .
+          <p className="promo-copy">
+            Чтобы получить доступ, обязательно зарегистрируйся по ссылке:
           </p>
-          <p>
-            При регистрации используй промокод <strong>NILE</strong>. Тогда ты
-            получишь доступ и дополнительно до 150 Free Spins.
+          <a
+            className="promo-link"
+            href="https://lckypr.com/G4DtDxQ"
+            target="_blank"
+            rel="noreferrer"
+          >
+            lckypr.com/G4DtDxQ
+          </a>
+
+          <div className="promo-code-card">
+            <span>Промокод</span>
+            <strong>NILE</strong>
+          </div>
+
+          <p className="promo-copy promo-copy--accent">
+            Введи его при регистрации и получи доступ плюс до 150 Free Spins.
           </p>
         </div>
 
         <div className="notice-card">
           <span className="eyebrow">Шаг 3</span>
-          <p>
+          <p className="promo-copy">
             <strong>Твой ID на сайте LuckyPari</strong>
           </p>
-          <p>
+          <p className="promo-copy promo-copy--accent">
             Например: <strong>123456789</strong>
           </p>
-          <p>Ты найдешь его на сайте в своем личном профиле.</p>
+          <p className="promo-copy">
+            Ты найдешь его на сайте в своем личном профиле.
+          </p>
         </div>
 
-        <p className="auth-copy">
+        <p className="auth-copy auth-copy--bright">
           Введи свой ID ниже, чтобы активировать доступ внутри приложения.
         </p>
 
@@ -137,8 +149,9 @@ export function Verification({
           />
         </label>
 
-        <div className="inline-note">
-          После отправки ID начнется проверка. Обычно она занимает от 5 до 10 секунд.
+        <div className="inline-note inline-note--bright">
+          После отправки ID начнется проверка. Обычно она занимает от 5 до 10
+          секунд.
         </div>
 
         <Button type="submit" fullWidth>

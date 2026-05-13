@@ -4,9 +4,9 @@
   line-height: 1.5;
   font-weight: 400;
   background:
-    radial-gradient(circle at top left, rgba(255, 176, 31, 0.18), transparent 30%),
-    radial-gradient(circle at 80% 0%, rgba(180, 13, 25, 0.22), transparent 28%),
-    linear-gradient(180deg, #090805 0%, #12100c 42%, #060504 100%);
+    radial-gradient(circle at top left, rgba(255, 198, 44, 0.24), transparent 30%),
+    radial-gradient(circle at 80% 0%, rgba(209, 23, 40, 0.26), transparent 28%),
+    linear-gradient(180deg, #090805 0%, #15110d 42%, #050403 100%);
   color: var(--tg-text, #ecf5ff);
   --tg-bg: #0b0907;
   --tg-surface: rgba(24, 21, 17, 0.88);
@@ -43,9 +43,9 @@ body {
   margin: 0;
   min-height: 100dvh;
   background:
-    radial-gradient(circle at 15% 18%, rgba(255, 189, 47, 0.12), transparent 18%),
-    radial-gradient(circle at 84% 0%, rgba(156, 12, 32, 0.22), transparent 24%),
-    linear-gradient(180deg, #090805 0%, #12100c 52%, #050403 100%);
+    radial-gradient(circle at 15% 18%, rgba(255, 204, 58, 0.16), transparent 18%),
+    radial-gradient(circle at 84% 0%, rgba(185, 18, 38, 0.28), transparent 24%),
+    linear-gradient(180deg, #090805 0%, #15110d 52%, #050403 100%);
   color: var(--tg-text, #ecf5ff);
 }
 
@@ -84,13 +84,14 @@ input {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 18% 22%, rgba(255, 198, 28, 0.12), transparent 14%),
-    radial-gradient(circle at 74% 14%, rgba(255, 193, 36, 0.08), transparent 12%),
-    radial-gradient(circle at 38% 56%, rgba(255, 193, 36, 0.08), transparent 10%),
-    radial-gradient(circle at 86% 44%, rgba(255, 193, 36, 0.08), transparent 12%),
-    radial-gradient(circle at 8% 76%, rgba(122, 11, 20, 0.24), transparent 18%),
-    radial-gradient(circle at 78% 78%, rgba(122, 11, 20, 0.22), transparent 18%);
-  opacity: 0.9;
+    radial-gradient(circle at 18% 22%, rgba(255, 210, 51, 0.2), transparent 14%),
+    radial-gradient(circle at 74% 14%, rgba(255, 202, 60, 0.12), transparent 12%),
+    radial-gradient(circle at 38% 56%, rgba(255, 202, 60, 0.1), transparent 10%),
+    radial-gradient(circle at 86% 44%, rgba(255, 202, 60, 0.1), transparent 12%),
+    radial-gradient(circle at 8% 76%, rgba(153, 16, 27, 0.32), transparent 18%),
+    radial-gradient(circle at 78% 78%, rgba(153, 16, 27, 0.28), transparent 18%),
+    linear-gradient(130deg, rgba(255, 209, 71, 0.04), transparent 34%, rgba(201, 23, 45, 0.08) 76%, transparent 100%);
+  opacity: 1;
   z-index: -2;
 }
 
@@ -99,7 +100,8 @@ input {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(135deg, transparent 0%, rgba(255, 199, 22, 0.03) 40%, transparent 100%);
+    radial-gradient(circle at top center, rgba(255, 230, 153, 0.08), transparent 28%),
+    linear-gradient(135deg, transparent 0%, rgba(255, 199, 22, 0.05) 40%, transparent 100%);
   mix-blend-mode: screen;
   z-index: -1;
   pointer-events: none;
@@ -168,6 +170,28 @@ input {
   backdrop-filter: blur(18px);
 }
 
+.modal-card--promo,
+.auth-card--promo {
+  overflow: hidden;
+  border-color: rgba(255, 204, 72, 0.28);
+  box-shadow:
+    0 26px 90px rgba(0, 0, 0, 0.56),
+    0 0 0 1px rgba(255, 209, 71, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.modal-card--promo::before,
+.auth-card--promo::before {
+  content: "";
+  position: absolute;
+  inset: -20% -10% auto;
+  height: 220px;
+  background:
+    radial-gradient(circle at 18% 34%, rgba(255, 210, 70, 0.18), transparent 22%),
+    radial-gradient(circle at 82% 18%, rgba(203, 24, 47, 0.18), transparent 26%);
+  pointer-events: none;
+}
+
 .modal-card,
 .auth-card,
 .hero-panel,
@@ -184,6 +208,8 @@ input {
   font-family: "Space Grotesk", "Bahnschrift", "Segoe UI", sans-serif;
   line-height: 1.08;
   letter-spacing: -0.03em;
+  color: #fff6e8;
+  text-shadow: 0 2px 24px rgba(255, 189, 41, 0.08);
 }
 
 .modal-title,
@@ -207,9 +233,19 @@ input {
   color: var(--tg-muted, #8ea0bc);
 }
 
+.modal-subtitle,
+.auth-copy--bright,
+.inline-note--bright {
+  color: #eee0cb;
+}
+
 .stack {
   display: grid;
   gap: 16px;
+}
+
+.stack--tight {
+  gap: 14px;
 }
 
 .notice-card,
@@ -227,6 +263,16 @@ input {
 .notice-card,
 .content-block {
   padding: 16px;
+}
+
+.notice-card--highlight,
+.content-block--glow {
+  position: relative;
+  border-color: rgba(255, 207, 74, 0.22);
+  background:
+    radial-gradient(circle at top right, rgba(255, 205, 57, 0.08), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 211, 62, 0.03));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .eyebrow {
@@ -252,6 +298,12 @@ input {
 .content-block h3,
 .panel h3 {
   margin: 0 0 12px;
+  color: #fff4dd;
+  font-size: 1.3rem;
+}
+
+.content-block h3 {
+  font-family: "Space Grotesk", "Bahnschrift", "Segoe UI", sans-serif;
 }
 
 .feature-list {
@@ -259,6 +311,16 @@ input {
   gap: 10px;
   margin: 0;
   padding-left: 18px;
+}
+
+.feature-list--bright {
+  color: #efe1cd;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.feature-list--bright li::marker {
+  color: #ffd14a;
 }
 
 .resource-list,
@@ -327,9 +389,9 @@ input {
 
 .button--primary {
   color: var(--tg-accent-contrast, #07141d);
-  background: linear-gradient(180deg, #ffd850 0%, #ffbf00 100%);
+  background: linear-gradient(180deg, #ffe36d 0%, #ffc400 100%);
   box-shadow:
-    0 18px 34px rgba(255, 196, 22, 0.22),
+    0 18px 34px rgba(255, 196, 22, 0.3),
     inset 0 1px 0 rgba(255, 246, 196, 0.55);
 }
 
@@ -351,6 +413,24 @@ input {
   gap: 18px;
 }
 
+.promo-hero {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 210, 79, 0.2);
+  background:
+    linear-gradient(135deg, rgba(255, 208, 57, 0.1), rgba(168, 21, 36, 0.12)),
+    rgba(255, 255, 255, 0.02);
+}
+
+.promo-hero__copy {
+  margin: 0;
+  color: #fff2dd;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
 .field {
   display: grid;
   gap: 8px;
@@ -358,7 +438,8 @@ input {
 
 .field span {
   font-size: 0.92rem;
-  color: var(--tg-muted, #8ea0bc);
+  color: #f1d7ae;
+  font-weight: 600;
 }
 
 .input {
@@ -381,6 +462,67 @@ input {
 
 .inline-note {
   font-size: 0.9rem;
+}
+
+.promo-copy {
+  margin: 0;
+  color: #f4e6d5;
+  line-height: 1.55;
+}
+
+.promo-copy--accent {
+  color: #ffe177;
+  font-weight: 700;
+}
+
+.promo-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 0 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 205, 70, 0.28);
+  background: linear-gradient(180deg, rgba(255, 217, 94, 0.14), rgba(255, 196, 0, 0.12));
+  color: #ffd95a;
+  font-family: "Space Grotesk", "Bahnschrift", "Segoe UI", sans-serif;
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  box-shadow:
+    0 14px 32px rgba(255, 196, 0, 0.08),
+    inset 0 1px 0 rgba(255, 246, 196, 0.18);
+}
+
+.promo-code-card {
+  display: grid;
+  gap: 4px;
+  justify-items: start;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 203, 68, 0.3);
+  background:
+    radial-gradient(circle at top right, rgba(255, 204, 58, 0.16), transparent 42%),
+    linear-gradient(180deg, rgba(44, 29, 10, 0.86), rgba(27, 18, 7, 0.94));
+  box-shadow: 0 16px 34px rgba(255, 196, 0, 0.1);
+}
+
+.promo-code-card span {
+  color: #f7deb0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.promo-code-card strong {
+  color: #ffd02c;
+  font-family: "Space Grotesk", "Bahnschrift", "Segoe UI", sans-serif;
+  font-size: clamp(1.9rem, 7vw, 2.4rem);
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 24px rgba(255, 202, 43, 0.2);
 }
 
 .spinner {
@@ -783,8 +925,8 @@ input {
   border-radius: 22px;
   border: 1px solid rgba(255, 199, 34, 0.2);
   background:
-    radial-gradient(circle at right top, rgba(255, 199, 27, 0.16), transparent 32%),
-    linear-gradient(180deg, rgba(33, 29, 24, 0.96), rgba(14, 12, 9, 0.96));
+    radial-gradient(circle at right top, rgba(255, 214, 89, 0.18), transparent 32%),
+    linear-gradient(180deg, rgba(41, 31, 20, 0.96), rgba(16, 12, 9, 0.96));
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
   color: rgba(255, 239, 224, 0.96);
   font-size: 0.98rem;
@@ -797,9 +939,10 @@ input {
   border-radius: 32px;
   border: 1px solid rgba(255, 198, 32, 0.22);
   background:
-    radial-gradient(circle at top right, rgba(255, 195, 37, 0.14), transparent 24%),
-    radial-gradient(circle at 14% 18%, rgba(143, 9, 28, 0.34), transparent 24%),
-    linear-gradient(180deg, #16120e 0%, #0d0b09 54%, #090705 100%);
+    radial-gradient(circle at top right, rgba(255, 209, 62, 0.18), transparent 24%),
+    radial-gradient(circle at 14% 18%, rgba(174, 14, 34, 0.42), transparent 24%),
+    radial-gradient(circle at 50% 78%, rgba(255, 128, 0, 0.08), transparent 24%),
+    linear-gradient(180deg, #1a140f 0%, #0d0b09 54%, #090705 100%);
   box-shadow:
     0 30px 80px rgba(0, 0, 0, 0.42),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -881,7 +1024,7 @@ input {
   border-radius: 999px;
   background: radial-gradient(circle, rgba(255, 204, 64, 0.76), rgba(255, 193, 38, 0.2) 48%, transparent 72%);
   filter: blur(4px);
-  opacity: 0.58;
+  opacity: 0.72;
 }
 
 .arcade-stage__grid {
@@ -892,7 +1035,7 @@ input {
     linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
   background-size: 28px 28px;
   mask-image: linear-gradient(180deg, transparent 0%, black 14%, black 82%, transparent 100%);
-  opacity: 0.16;
+  opacity: 0.22;
 }
 
 .arcade-stage__curve {
@@ -932,8 +1075,8 @@ input {
   letter-spacing: -0.07em;
   color: #fff9ee;
   text-shadow:
-    0 0 24px rgba(255, 199, 48, 0.08),
-    0 0 34px rgba(255, 86, 67, 0.12);
+    0 0 24px rgba(255, 199, 48, 0.12),
+    0 0 42px rgba(255, 86, 67, 0.16);
 }
 
 .arcade-stage__trail {
@@ -1123,14 +1266,14 @@ input {
 .arcade-start-button.button--primary {
   min-height: 64px;
   border-radius: 22px;
-  background: linear-gradient(180deg, #ffe15f 0%, #ffc400 100%);
+  background: linear-gradient(180deg, #ffe875 0%, #ffc400 100%);
   color: #2a1600;
   font-family: "Space Grotesk", "Bahnschrift", "Segoe UI", sans-serif;
   font-size: 1.18rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   box-shadow:
-    0 20px 38px rgba(255, 196, 0, 0.26),
+    0 20px 38px rgba(255, 196, 0, 0.34),
     inset 0 1px 0 rgba(255, 255, 255, 0.36);
 }
 
@@ -1202,6 +1345,13 @@ input {
   .panel,
   .multiplier-card {
     padding: 18px;
+  }
+
+  .promo-link {
+    width: 100%;
+    justify-content: center;
+    font-size: 1rem;
+    text-align: center;
   }
 
   .metrics-grid {

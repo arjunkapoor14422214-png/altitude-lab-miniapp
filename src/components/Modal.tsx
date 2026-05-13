@@ -12,7 +12,7 @@ export function Modal({
 }: PropsWithChildren<ModalProps>) {
   return (
     <div className="modal-backdrop">
-      <div className="modal-card">
+      <div className="modal-card modal-card--promo">
         {title ? <h2 className="modal-title">{title}</h2> : null}
         {subtitle ? <p className="modal-subtitle">{subtitle}</p> : null}
         {children}
@@ -20,4 +20,3 @@ export function Modal({
     </div>
   );
 }
-
