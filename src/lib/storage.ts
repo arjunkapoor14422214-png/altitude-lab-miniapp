@@ -14,7 +14,13 @@ const defaultSession: StoredSession = {
 };
 
 function sanitizeLanguage(value: unknown): SupportedLanguage | null {
-  if (value === 'en' || value === 'ar' || value === 'si' || value === 'fr') {
+  if (
+    value === 'en' ||
+    value === 'ar' ||
+    value === 'si' ||
+    value === 'fr' ||
+    value === 'ru'
+  ) {
     return value;
   }
 

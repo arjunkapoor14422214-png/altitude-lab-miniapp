@@ -1,4 +1,4 @@
-export type SupportedLanguage = 'en' | 'ar' | 'si' | 'fr';
+export type SupportedLanguage = 'en' | 'ar' | 'si' | 'fr' | 'ru';
 
 export type LanguageSource = 'auto' | 'manual';
 

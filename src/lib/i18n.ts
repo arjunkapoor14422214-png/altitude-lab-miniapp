@@ -1,12 +1,13 @@
 import type { RangeKey, SupportedLanguage } from '../types/i18n';
 
-export const supportedLanguages: SupportedLanguage[] = ['en', 'ar', 'si', 'fr'];
+export const supportedLanguages: SupportedLanguage[] = ['en', 'ar', 'si', 'fr', 'ru'];
 
 export const languageLabels: Record<SupportedLanguage, string> = {
   en: 'English',
   ar: 'العربية',
   si: 'සිංහල',
   fr: 'Français',
+  ru: 'Русский',
 };
 
 type AppCopy = {
@@ -148,7 +149,7 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
     },
     onboarding: {
       title: 'Aviator Signal',
-      heroEyebrow: 'دخول الإشارة',
+      heroEyebrow: 'Signal access',
       heroCopy:
         'Inside the app you receive a ready signal and see the key point of the round in advance.',
       insideTitle: 'What is inside',
@@ -685,6 +686,145 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
     },
     pilot: 'Pilote',
   },
+  ru: {
+    locale: 'ru-RU',
+    direction: 'ltr',
+    languages: languageLabels,
+    app: {
+      readyActivated: 'Тренировочный режим уже активирован. Можно запускать следующий раунд.',
+      prepareProfile: 'Подготовьте профиль для запуска тренировочных раундов.',
+      updateProfile: 'Можно обновить тренировочный ID и заново активировать профиль.',
+      startConnecting: 'Запускаем локальную активацию тренировочного режима...',
+      connectSuccess: 'ID принят. Можно начинать тренировку.',
+      idlePrompt: 'Нажми старт, чтобы сгенерировать новый раунд.',
+      roundStarted: (roundNumber) => `Раунд #${roundNumber} запущен.`,
+      roundFinished: (roundNumber, multiplier) =>
+        `Раунд #${roundNumber} завершен на ${multiplier}.`,
+      telegramContinue: 'Продолжить',
+      telegramActivating: 'Активация...',
+    },
+    onboarding: {
+      title: 'Aviator Signal',
+      heroEyebrow: 'Сигнальный доступ',
+      heroCopy:
+        'Внутри приложения ты получаешь готовый сигнал и заранее видишь ключевую точку раунда.',
+      insideTitle: 'Что внутри',
+      insideItems: [
+        'Мы подключаемся к провайдеру и получаем внутренний сигнал по игре Aviator.',
+        'Затем передаем его тебе внутри приложения, чтобы ты мог использовать это в своей игре.',
+        'Точность определения исхода событий достигает 99%.',
+      ],
+      startTitle: 'Как начать',
+      startItems: [
+        'Сначала активируй тренировочный профиль по своему ID.',
+        'После активации запускай раунды в приложении и параллельно следи за множителем на сайте.',
+        'Приложение заранее покажет, где разобьется самолет, чтобы ты мог ориентироваться по движению раунда.',
+      ],
+      continue: 'Продолжить',
+    },
+    verification: {
+      eyebrow: 'Активация',
+      title: 'Получение доступа',
+      stepLabel: 'Шаг',
+      step1Text: 'Чтобы получить доступ, обязательно зарегистрируйся по ссылке:',
+      promoCodeLabel: 'Промокод',
+      promoHint: 'Введи его при регистрации и получи доступ плюс до 150 Free Spins.',
+      step2Title: 'Твой ID на сайте LuckyPari',
+      step2Example: 'Например: 123456789',
+      step2Hint: 'Ты найдешь его на сайте в своем личном профиле.',
+      step3Text: 'Введи свой ID ниже, чтобы активировать доступ внутри приложения.',
+      inputLabel: 'ID на сайте LuckyPari',
+      inputPlaceholder: 'Например, 123456789',
+      note: 'После отправки ID начнется проверка. Обычно она занимает от 5 до 10 секунд.',
+      submit: 'Активировать доступ',
+      connectingEyebrow: 'Проверка доступа',
+      connectingTitle: 'Подключаем проверочный режим',
+      connectingBody: (pendingId) =>
+        `ID ${pendingId} принят. Идет проверка и активация доступа для следующих раундов.`,
+      connectingSteps: [
+        'Зарегистрировался по ссылке',
+        'Ввел промокод',
+        'Сделал депозит',
+      ],
+    },
+    game: {
+      topline:
+        'Нажми старт одновременно со ставкой на сайте и получи точный момент, когда самолет завершит полет.',
+      start: 'СТАРТ',
+      running: 'ПОЛЕТ...',
+      reload: 'ПЕРЕЗАГРУЗКА',
+      waitingStatus: 'Ожидает генерацию',
+      flyingStatus: 'Самолет в полете',
+      explodedStatus: 'Самолет взорвался',
+      exactPoint: 'Точная точка',
+      flightPoint: 'Точка полета',
+      hidden: 'скрыта',
+    },
+    history: {
+      eyebrow: 'Журнал раундов',
+      title: 'Последние результаты',
+      records: (count) => `${count} записей`,
+      empty: 'История появится после завершения первого тренировочного раунда.',
+      round: (roundNumber) => `Раунд #${roundNumber}`,
+      completed: 'Завершен',
+    },
+    ticker: {
+      eyebrow: 'Лента результатов',
+      title: 'Текущий ритм сессии',
+      caption: 'Последние и ближайший раунд',
+      next: 'Следующий',
+      emptyLabel: 'Пока пусто',
+      emptyValue: 'Ждем первый финиш',
+    },
+    insights: {
+      eyebrow: 'Тренировочная аналитика',
+      title: 'Срез по текущей сессии',
+      caption: 'Без реальных ставок',
+      completedRounds: 'Завершено раундов',
+      averageMultiplier: 'Средний множитель',
+      expectedLength: 'Ожидаемая длина',
+      focusEyebrow: 'Фокус раунда',
+      cues: {
+        base: {
+          title: 'Короткий спринт',
+          description:
+            'Следующий раунд завершится быстро. Хороший момент, чтобы привыкнуть к стартовой фазе и темпу роста.',
+        },
+        boosted: {
+          title: 'Средняя дистанция',
+          description:
+            'Раунд продлится дольше базового диапазона. Можно лучше прочувствовать ускорение и визуальный ритм.',
+        },
+        advanced: {
+          title: 'Дальний полет',
+          description:
+            'Редкий более высокий диапазон. Удобно изучать поведение множителя на длинной траектории.',
+        },
+        rare: {
+          title: 'Редкий высокий пик',
+          description:
+            'Это редкий сценарий с длинным разгонным участком. Его полезно сохранять в памяти как эталон длинного раунда.',
+        },
+      },
+    },
+    multiplier: {
+      current: 'Текущий множитель',
+      targetKnown: 'Цель известна заранее',
+      stages: {
+        round_idle: 'Раунд готов',
+        round_running: 'Рост множителя',
+        round_finished: 'Цель достигнута',
+      },
+    },
+    ranges: {
+      base: 'Базовый диапазон',
+      boosted: 'Ускоренный диапазон',
+      advanced: 'Продвинутый диапазон',
+      rare: 'Редкий высокий диапазон',
+      custom: 'Кастомный диапазон',
+    },
+    pilot: 'Пилот',
+  },
 };
 
 function mapLocaleToLanguage(locale: string): SupportedLanguage | null {
@@ -696,6 +836,10 @@ function mapLocaleToLanguage(locale: string): SupportedLanguage | null {
 
   if (normalized.startsWith('ar')) {
     return 'ar';
+  }
+
+  if (normalized.startsWith('ru')) {
+    return 'ru';
   }
 
   if (

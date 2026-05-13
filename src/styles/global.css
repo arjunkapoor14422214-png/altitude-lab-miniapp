@@ -1600,11 +1600,11 @@ input {
 }
 
 .arcade-plane {
-  width: 150px;
-  height: 100px;
+  width: 166px;
+  height: 104px;
   margin-left: 0;
   margin-top: 0;
-  transform: translate(-50%, -50%) rotate(-8deg);
+  transform: translate(-50%, -50%) rotate(-7deg);
   transform-origin: center;
   filter:
     drop-shadow(0 10px 20px rgba(0, 0, 0, 0.28))
@@ -1617,7 +1617,7 @@ input {
 
 .arcade-plane--finished {
   opacity: 0.1;
-  transform: translate(-50%, -50%) rotate(-8deg) scale(0.96);
+  transform: translate(-50%, -50%) rotate(-7deg) scale(0.96);
 }
 
 .arcade-plane__shadow {
@@ -1880,8 +1880,8 @@ input {
   }
 
   .arcade-plane {
-    width: 126px;
-    height: 86px;
+    width: 144px;
+    height: 92px;
   }
 }
 
@@ -2043,7 +2043,7 @@ input {
 }
 
 .arcade-plane__propeller-group {
-  transform-origin: 226px 53px;
+  transform-origin: 290px 50px;
 }
 
 .arcade-plane--flying .arcade-plane__propeller-group {

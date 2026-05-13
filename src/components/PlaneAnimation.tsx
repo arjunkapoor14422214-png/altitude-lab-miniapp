@@ -97,64 +97,98 @@ export function PlaneAnimation({
             top: `${y}%`,
           }}
         >
-          <svg viewBox="0 0 280 150" className="arcade-plane__svg" aria-hidden="true">
+          <svg viewBox="0 0 320 180" className="arcade-plane__svg" aria-hidden="true">
             <defs>
-              <linearGradient id="planeMainBody" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#ff8664" />
-                <stop offset="55%" stopColor="#da2a1d" />
-                <stop offset="100%" stopColor="#9f1018" />
+              <linearGradient id="planeBodyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ff8f6e" />
+                <stop offset="42%" stopColor="#e13a24" />
+                <stop offset="100%" stopColor="#93101c" />
               </linearGradient>
-              <linearGradient id="planeWingMetal" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#ffd667" />
-                <stop offset="18%" stopColor="#ffbe28" />
-                <stop offset="22%" stopColor="#f46a32" />
-                <stop offset="100%" stopColor="#b4151e" />
+              <linearGradient id="planeWingGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#ffd873" />
+                <stop offset="14%" stopColor="#ffc52d" />
+                <stop offset="28%" stopColor="#f77a2f" />
+                <stop offset="100%" stopColor="#bc181d" />
               </linearGradient>
-              <linearGradient id="planeGlass" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#c4f3ff" />
-                <stop offset="100%" stopColor="#5caee8" />
+              <linearGradient id="planeCanopyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#d8f6ff" />
+                <stop offset="100%" stopColor="#5ca8eb" />
+              </linearGradient>
+              <linearGradient id="planeWheelGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#2a2a2a" />
+                <stop offset="100%" stopColor="#0d0d0d" />
               </linearGradient>
             </defs>
 
-            <ellipse cx="124" cy="126" rx="84" ry="10" fill="rgba(0,0,0,0.15)" />
+            <ellipse cx="150" cy="152" rx="88" ry="11" fill="rgba(0,0,0,0.18)" />
 
             <path
-              d="M58 82 L186 80 C197 80 206 76 214 69 L230 54 L235 45 L229 38 L211 31 C201 27 193 26 182 26 L88 28 C70 28 56 34 44 46 L30 60 L24 72 L24 80 L35 84 Z"
-              fill="url(#planeMainBody)"
+              d="M66 102 C80 92 102 83 133 80 L194 74 C222 71 246 70 260 64 C274 58 284 51 292 42 L300 36 L308 40 L306 49 L297 61 C290 70 282 78 270 84 C252 92 224 96 194 99 L135 105 C109 108 87 111 69 118 L58 122 L50 118 L54 109 Z"
+              fill="url(#planeBodyGradient)"
             />
             <path
-              d="M85 33 L178 33 C192 33 202 36 211 40"
-              stroke="rgba(255,224,188,0.34)"
-              strokeWidth="4"
+              d="M95 86 C118 80 150 75 199 70"
+              stroke="rgba(255,236,204,0.34)"
+              strokeWidth="5"
               fill="none"
             />
 
             <path
-              d="M78 13 L222 19 C228 20 232 23 232 28 C232 32 228 35 221 36 L81 36 C75 36 70 33 70 26 C70 19 74 14 78 13 Z"
-              fill="url(#planeWingMetal)"
+              d="M102 46 C138 36 184 30 242 29 C252 29 258 33 258 38 C258 44 250 48 238 49 C184 53 139 59 104 71 C96 73 88 69 86 63 C84 56 90 49 102 46 Z"
+              fill="url(#planeWingGradient)"
             />
             <path
-              d="M60 95 L194 94 C200 94 205 97 205 101 C205 106 200 109 194 109 L62 109 C57 109 53 106 53 101 C53 97 56 95 60 95 Z"
-              fill="url(#planeWingMetal)"
+              d="M108 106 C147 100 187 97 232 96 C241 96 246 100 246 105 C246 110 240 114 229 115 C192 118 154 124 116 132 C107 134 99 130 96 124 C93 117 98 110 108 106 Z"
+              fill="url(#planeWingGradient)"
             />
 
-            <path d="M96 35 L89 94" stroke="#a8631d" strokeWidth="6" />
-            <path d="M126 36 L119 95" stroke="#a8631d" strokeWidth="6" />
+            <path d="M128 60 L122 111" stroke="#9c5c16" strokeWidth="7" strokeLinecap="round" />
+            <path d="M165 55 L156 116" stroke="#9c5c16" strokeWidth="7" strokeLinecap="round" />
+            <path d="M136 60 L165 55" stroke="#8f4b13" strokeWidth="5" strokeLinecap="round" />
+            <path d="M122 111 L156 116" stroke="#8f4b13" strokeWidth="5" strokeLinecap="round" />
 
-            <path d="M48 27 L77 42 L77 86 L41 72 Z" fill="#c3161e" />
-            <path d="M35 77 L74 80 L64 91 L33 88 Z" fill="#ac1119" />
+            <path
+              d="M62 80 C52 68 50 55 57 46 L68 35 L80 38 L76 52 C74 61 75 72 81 83 Z"
+              fill="#bd171c"
+            />
+            <path
+              d="M58 110 C46 110 39 104 38 96 C37 88 44 82 57 80 L86 77 L87 89 C88 98 79 107 67 109 Z"
+              fill="#9d1119"
+            />
 
-            <rect x="100" y="38" width="16" height="17" rx="4" fill="url(#planeGlass)" />
-            <rect x="120" y="38" width="16" height="17" rx="4" fill="url(#planeGlass)" />
-            <rect x="140" y="38" width="16" height="17" rx="4" fill="url(#planeGlass)" />
+            <path
+              d="M142 72 C149 60 161 55 177 54 C190 53 201 58 208 67 L184 74 L152 78 Z"
+              fill="url(#planeCanopyGradient)"
+            />
+            <path d="M164 56 L168 76" stroke="rgba(255,255,255,0.3)" strokeWidth="2.5" />
+            <path d="M184 55 L188 72" stroke="rgba(255,255,255,0.26)" strokeWidth="2.5" />
 
-            <circle cx="226" cy="53" r="29" fill="#efb61f" />
-            <circle cx="226" cy="53" r="22" fill="#202020" />
-            <circle cx="226" cy="53" r="7" fill="#ffcb54" />
+            <path
+              d="M81 119 L110 118 L102 139 L78 139 Z"
+              fill="#c01a21"
+            />
+            <path
+              d="M88 138 L83 150"
+              stroke="#8e5312"
+              strokeWidth="5"
+              strokeLinecap="round"
+            />
+            <path
+              d="M108 137 L104 150"
+              stroke="#8e5312"
+              strokeWidth="5"
+              strokeLinecap="round"
+            />
+            <circle cx="82" cy="152" r="8" fill="url(#planeWheelGradient)" />
+            <circle cx="104" cy="152" r="8" fill="url(#planeWheelGradient)" />
+
+            <circle cx="290" cy="50" r="24" fill="#efb61f" />
+            <circle cx="290" cy="50" r="18" fill="#202020" />
+            <circle cx="290" cy="50" r="6" fill="#ffcb54" />
 
             <g className="arcade-plane__propeller-group">
-              <ellipse cx="226" cy="53" rx="10" ry="40" fill="rgba(28,28,28,0.44)" />
-              <ellipse cx="226" cy="53" rx="40" ry="10" fill="rgba(28,28,28,0.22)" />
+              <ellipse cx="290" cy="50" rx="9" ry="44" fill="rgba(28,28,28,0.42)" />
+              <ellipse cx="290" cy="50" rx="44" ry="9" fill="rgba(28,28,28,0.22)" />
             </g>
           </svg>
         </div>

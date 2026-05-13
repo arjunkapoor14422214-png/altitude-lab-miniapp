@@ -1,6 +1,6 @@
 import { Button } from './Button';
 import { Modal } from './Modal';
-import { languageLabels } from '../lib/i18n';
+import { languageLabels, supportedLanguages } from '../lib/i18n';
 import type { SupportedLanguage } from '../types/i18n';
 
 interface OnboardingProps {
@@ -30,7 +30,7 @@ export function Onboarding({
       title={copy.title}
       headerAddon={
         <div className="language-switcher" aria-label="Language switcher">
-          {(['en', 'ar', 'si', 'fr'] as SupportedLanguage[]).map((item) => (
+          {supportedLanguages.map((item) => (
             <button
               key={item}
               type="button"
