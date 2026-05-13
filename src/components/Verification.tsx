@@ -9,9 +9,9 @@ interface VerificationProps {
 }
 
 const statusSteps = [
-  'Проверяем ID и доступ',
-  'Подключаем профиль к системе',
-  'Открываем доступ к следующим раундам',
+  'Зарегестрировался по ссылке',
+  'Ввел промокод',
+  'Сделал депозит',
 ];
 
 export function Verification({
@@ -21,10 +21,30 @@ export function Verification({
   onSubmit,
 }: VerificationProps) {
   const [value, setValue] = useState(defaultValue);
+  const [completedSteps, setCompletedSteps] = useState(0);
 
   useEffect(() => {
     setValue(defaultValue);
   }, [defaultValue]);
+
+  useEffect(() => {
+    if (mode !== 'connecting') {
+      setCompletedSteps(0);
+      return;
+    }
+
+    setCompletedSteps(0);
+
+    const timeoutIds = statusSteps.map((_, index) =>
+      window.setTimeout(() => {
+        setCompletedSteps(index + 1);
+      }, (index + 1) * 3000),
+    );
+
+    return () => {
+      timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
+    };
+  }, [mode]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -53,9 +73,14 @@ export function Verification({
             {statusSteps.map((step, index) => (
               <div
                 key={step}
-                className="status-item"
-                style={{ animationDelay: `${index * 0.25}s` }}
+                className={[
+                  'status-item',
+                  completedSteps > index ? 'status-item--completed' : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
               >
+                <span className="status-item__dot" aria-hidden="true" />
                 {step}
               </div>
             ))}

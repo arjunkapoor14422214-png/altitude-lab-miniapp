@@ -365,7 +365,37 @@ input {
 .status-item {
   padding: 14px 16px;
   opacity: 0.72;
-  animation: pulseIn 1.6s ease-in-out infinite alternate;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition:
+    background 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    box-shadow 220ms ease,
+    opacity 220ms ease;
+}
+
+.status-item__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  flex: 0 0 auto;
+}
+
+.status-item--completed {
+  opacity: 1;
+  color: #d9ffe2;
+  border-color: rgba(72, 214, 126, 0.34);
+  background: linear-gradient(180deg, rgba(46, 140, 83, 0.26), rgba(24, 72, 45, 0.22));
+  box-shadow: 0 0 0 1px rgba(72, 214, 126, 0.06);
+}
+
+.status-item--completed .status-item__dot {
+  background: linear-gradient(180deg, #79ff9d, #3dd86c);
+  box-shadow: 0 0 16px rgba(61, 216, 108, 0.45);
 }
 
 .hero-panel {

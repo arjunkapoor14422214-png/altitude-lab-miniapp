@@ -14,8 +14,7 @@ export const gameConfig: GameConfig = {
     maxDurationMs: 7800,
     durationFactor: 420,
   },
-  verificationDelayMin: 5000,
-  verificationDelayMax: 10000,
+  verificationDelayMin: 9000,
+  verificationDelayMax: 11000,
   historyLimit: 10,
 };
-
