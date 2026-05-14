@@ -76,17 +76,17 @@ function angleFromTangent(tangent: Point) {
 }
 
 const firstCurve = {
-  p0: { x: 10, y: 80 },
-  p1: { x: 21, y: 75 },
-  p2: { x: 32, y: 67 },
-  p3: { x: 45, y: 52 },
+  p0: { x: 8, y: 86 },
+  p1: { x: 20, y: 86 },
+  p2: { x: 34, y: 84 },
+  p3: { x: 48, y: 74 },
 };
 
 const secondCurve = {
-  p0: { x: 45, y: 52 },
-  p1: { x: 58, y: 37 },
-  p2: { x: 72, y: 21 },
-  p3: { x: 88, y: 11 },
+  p0: { x: 48, y: 74 },
+  p1: { x: 61, y: 62 },
+  p2: { x: 73, y: 39 },
+  p3: { x: 88, y: 12 },
 };
 
 function buildFlightPath() {
@@ -174,6 +174,7 @@ export function PlaneAnimation({
     : finished
       ? copy.explodedStatus
       : copy.waitingStatus;
+  const activeProgress = Math.max(progress, running || finished ? 0.01 : 0);
 
   return (
     <div className="arcade-stage arcade-stage--premium">
@@ -201,24 +202,36 @@ export function PlaneAnimation({
         >
           <defs>
             <linearGradient id="flightCurveGradient" x1="0%" y1="100%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#f8a61b" />
-              <stop offset="36%" stopColor="#ffc92f" />
-              <stop offset="72%" stopColor="#ffe17b" />
-              <stop offset="100%" stopColor="#fff2bf" />
+              <stop offset="0%" stopColor="#ff4c5f" />
+              <stop offset="56%" stopColor="#ff304f" />
+              <stop offset="100%" stopColor="#ff6c8e" />
             </linearGradient>
+            <linearGradient id="flightAreaGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="rgba(153, 8, 28, 0.14)" />
+              <stop offset="100%" stopColor="rgba(255, 47, 79, 0.3)" />
+            </linearGradient>
+            <clipPath id="flightAreaClip">
+              <rect x="0" y="0" width={flightState.x} height="100" />
+            </clipPath>
           </defs>
           <path
-            d="M 10 80 C 21 75, 32 67, 45 52 S 72 21, 88 11"
+            d="M 8 86 C 20 86, 34 84, 48 74 C 61 62, 73 39, 88 12 L 88 86 L 8 86 Z"
+            clipPath="url(#flightAreaClip)"
+            className="arcade-stage__area-active"
+            fill="url(#flightAreaGradient)"
+          />
+          <path
+            d="M 8 86 C 20 86, 34 84, 48 74 C 61 62, 73 39, 88 12"
             pathLength="100"
             className="arcade-stage__path-base"
           />
           <path
-            d="M 10 80 C 21 75, 32 67, 45 52 S 72 21, 88 11"
+            d="M 8 86 C 20 86, 34 84, 48 74 C 61 62, 73 39, 88 12"
             pathLength="100"
             className="arcade-stage__path-active"
             stroke="url(#flightCurveGradient)"
             style={{
-              strokeDasharray: `${Math.max(progress * 100, running || finished ? 1 : 0)} 100`,
+              strokeDasharray: `${activeProgress * 100} 100`,
             }}
           />
         </svg>
