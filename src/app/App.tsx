@@ -525,7 +525,6 @@ export default function App() {
 
       {showLanguagePrompt ? (
         <LanguagePrompt
-          language={state.language}
           selectedLanguage={state.language}
           dontShowAgain={languagePromptOptOut}
           onSelectLanguage={handleLanguageChange}

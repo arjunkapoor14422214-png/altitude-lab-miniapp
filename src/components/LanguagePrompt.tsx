@@ -11,7 +11,6 @@ interface PromptCopy {
 }
 
 interface LanguagePromptProps {
-  language: SupportedLanguage;
   selectedLanguage: SupportedLanguage;
   dontShowAgain: boolean;
   onSelectLanguage: (language: SupportedLanguage) => void;
@@ -53,14 +52,13 @@ const promptCopy: Record<SupportedLanguage, PromptCopy> = {
 };
 
 export function LanguagePrompt({
-  language,
   selectedLanguage,
   dontShowAgain,
   onSelectLanguage,
   onToggleDontShowAgain,
   onContinue,
 }: LanguagePromptProps) {
-  const copy = promptCopy[language];
+  const copy = promptCopy.en;
 
   return (
     <div className="language-prompt-layer">
