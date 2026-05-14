@@ -12,6 +12,8 @@ const promoCode = 'NILE';
 const mimeTypes = {
   '.css': 'text/css; charset=utf-8',
   '.html': 'text/html; charset=utf-8',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
   '.js': 'application/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
   '.png': 'image/png',
@@ -72,6 +74,7 @@ function buildStartCaption() {
     '<b>Welcome to Aviator Signal</b>',
     '',
     '1. Register through the link below.',
+    promoRegistrationUrl,
     `2. Enter promo code <b>${promoCode}</b> during registration.`,
     '3. Make a deposit on the site.',
     '4. Open Signal and launch the round together with your live bet on the website.',
