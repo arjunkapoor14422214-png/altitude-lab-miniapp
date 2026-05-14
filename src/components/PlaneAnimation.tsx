@@ -245,7 +245,13 @@ export function PlaneAnimation({
             src={planeSignalSprite}
             alt=""
             aria-hidden="true"
-            className="arcade-plane__image"
+            className={[
+              'arcade-plane__image',
+              running ? 'arcade-plane__image--flying' : '',
+              finished ? 'arcade-plane__image--finished' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
             draggable={false}
           />
         </div>

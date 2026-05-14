@@ -140,11 +140,11 @@ input {
 
 .game-shell {
   display: grid;
-  gap: 16px;
+  gap: 12px;
 }
 
 .game-shell--arcade {
-  gap: 18px;
+  gap: 14px;
 }
 
 .modal-backdrop,
@@ -1033,7 +1033,7 @@ input {
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  padding: 18px 18px 0;
+  padding: 16px 16px 0;
 }
 
 .arcade-stage__status {
@@ -1090,8 +1090,8 @@ input {
 
 .arcade-stage__arena {
   position: relative;
-  min-height: 470px;
-  padding: 26px 20px 20px;
+  min-height: 390px;
+  padding: 18px 18px 16px;
   overflow: hidden;
 }
 
@@ -1142,15 +1142,15 @@ input {
 .arcade-multiplier {
   position: relative;
   z-index: 1;
-  max-width: 220px;
+  max-width: 200px;
   display: grid;
-  gap: 6px;
-  margin-top: 8px;
+  gap: 4px;
+  margin-top: 2px;
 }
 
 .arcade-multiplier strong {
   font-family: "Space Grotesk", "Bahnschrift", "Segoe UI", sans-serif;
-  font-size: clamp(3.3rem, 18vw, 5.8rem);
+  font-size: clamp(2.8rem, 15vw, 4.7rem);
   line-height: 0.86;
   letter-spacing: -0.07em;
   color: #fff9ee;
@@ -1180,11 +1180,10 @@ input {
   position: absolute;
   width: 66px;
   height: 42px;
-  margin-left: -24px;
-  margin-top: -18px;
   transition:
     left 120ms linear,
     top 120ms linear,
+    transform 120ms linear,
     filter 180ms ease,
     opacity 180ms ease;
   filter:
@@ -1862,12 +1861,12 @@ input {
   }
 
   .arcade-stage__arena {
-    min-height: 420px;
-    padding: 22px 16px 16px;
+    min-height: 330px;
+    padding: 16px 14px 14px;
   }
 
   .arcade-stage--premium .arcade-stage__arena {
-    min-height: 470px;
+    min-height: 350px;
   }
 
   .arcade-stage__target {
@@ -2032,10 +2031,6 @@ input {
     drop-shadow(0 0 14px rgba(255, 184, 102, 0.08));
 }
 
-.arcade-plane--flying {
-  animation: planeFloat 1800ms ease-in-out infinite alternate;
-}
-
 .arcade-plane__svg {
   width: 100%;
   height: 100%;
@@ -2048,15 +2043,6 @@ input {
 
 .arcade-plane--flying .arcade-plane__propeller-group {
   animation: propellerSpin 180ms linear infinite;
-}
-
-@keyframes planeFloat {
-  from {
-    transform: translate(-50%, -50%) rotate(-8deg) translateY(0);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(-7.4deg) translateY(-1px);
-  }
 }
 
 [data-theme="light"] {
@@ -2320,9 +2306,28 @@ input {
   pointer-events: none;
 }
 
+.arcade-plane__image--flying {
+  animation: planeSpriteFloat 1500ms ease-in-out infinite alternate;
+}
+
+.arcade-plane__image--finished {
+  opacity: 0.72;
+}
+
 @media (max-width: 480px) {
   .arcade-plane {
-    width: 144px;
-    height: 72px;
+    width: 132px;
+    height: 66px;
+  }
+}
+
+@keyframes planeSpriteFloat {
+  from {
+    transform: translateY(0) scale(1);
+    filter: brightness(1);
+  }
+  to {
+    transform: translateY(-1px) scale(1.01);
+    filter: brightness(1.03);
   }
 }
