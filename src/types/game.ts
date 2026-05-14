@@ -41,7 +41,7 @@ export interface GameConfig {
   animationSpeed: {
     minDurationMs: number;
     maxDurationMs: number;
-    durationFactor: number;
+    exponentialRatePerSecond: number;
   };
   verificationDelayMin: number;
   verificationDelayMax: number;

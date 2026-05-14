@@ -135,10 +135,11 @@ export function getRangeKey(multiplier: number): RangeKey {
 }
 
 export function calculateRoundDuration(targetMultiplier: number) {
-  const { minDurationMs, maxDurationMs, durationFactor } =
+  const { minDurationMs, maxDurationMs, exponentialRatePerSecond } =
     gameConfig.animationSpeed;
+  const safeMultiplier = Math.max(targetMultiplier, gameConfig.minMultiplier);
   const duration =
-    minDurationMs + Math.sqrt(Math.max(targetMultiplier, 1)) * durationFactor;
+    (Math.log(Math.max(safeMultiplier, 1.0001)) / exponentialRatePerSecond) * 1000;
 
   return Math.round(clamp(duration, minDurationMs, maxDurationMs));
 }
