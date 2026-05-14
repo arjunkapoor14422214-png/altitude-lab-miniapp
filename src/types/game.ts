@@ -52,5 +52,4 @@ export interface StoredSession {
   language: SupportedLanguage | null;
   languageSource: LanguageSource;
   hideLanguagePrompt: boolean;
-  startGuideSeen: boolean;
 }

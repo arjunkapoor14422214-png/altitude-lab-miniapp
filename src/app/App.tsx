@@ -2,7 +2,6 @@ import { useEffect, useEffectEvent, useReducer, useState } from 'react';
 import { GameScreen } from '../components/GameScreen';
 import { LanguagePrompt } from '../components/LanguagePrompt';
 import { Onboarding } from '../components/Onboarding';
-import { StartGuideModal } from '../components/StartGuideModal';
 import { Verification } from '../components/Verification';
 import { gameConfig } from '../config/gameConfig';
 import { detectSupportedLanguage, getTranslations } from '../lib/i18n';
@@ -272,8 +271,6 @@ export default function App() {
   const [languagePromptOptOut, setLanguagePromptOptOut] = useState(
     initialSession.hideLanguagePrompt,
   );
-  const [showStartGuide, setShowStartGuide] = useState(false);
-  const [startGuideSeen, setStartGuideSeen] = useState(initialSession.startGuideSeen);
   const copy = getTranslations(state.language);
 
   useEffect(() => {
@@ -327,11 +324,9 @@ export default function App() {
       language: state.language,
       languageSource: state.languageSource,
       hideLanguagePrompt,
-      startGuideSeen,
     });
   }, [
     hideLanguagePrompt,
-    startGuideSeen,
     state.history,
     state.language,
     state.languageSource,
@@ -503,7 +498,7 @@ export default function App() {
   ]);
 
   useEffect(() => {
-    if (showLanguagePrompt || showStartGuide) {
+    if (showLanguagePrompt) {
       return syncTelegramBackButton(false);
     }
 
@@ -516,7 +511,6 @@ export default function App() {
   }, [
     handleTelegramBackAction,
     showLanguagePrompt,
-    showStartGuide,
     state.appStage,
     state.roundStage,
   ]);
@@ -529,14 +523,6 @@ export default function App() {
   const handleVerificationSubmit = (verificationId: string) => {
     triggerTelegramHaptic('selection');
     dispatch({ type: 'startConnecting', verificationId });
-  };
-
-  const startRound = () => {
-    triggerTelegramHaptic('selection');
-    dispatch({
-      type: 'startRound',
-      round: createPreparedRound(state.roundCounter + 1),
-    });
   };
 
   const handleLanguageChange = (language: SupportedLanguage) => {
@@ -557,25 +543,17 @@ export default function App() {
       return;
     }
 
-    if (!startGuideSeen) {
-      triggerTelegramHaptic('selection');
-      setShowStartGuide(true);
-      return;
-    }
-
-    startRound();
+    triggerTelegramHaptic('selection');
+    dispatch({
+      type: 'startRound',
+      round: createPreparedRound(state.roundCounter + 1),
+    });
   };
 
   const handleCloseLanguagePrompt = () => {
     triggerTelegramHaptic('selection');
     setHideLanguagePrompt(languagePromptOptOut);
     setShowLanguagePrompt(false);
-  };
-
-  const handleStartGuideContinue = () => {
-    setStartGuideSeen(true);
-    setShowStartGuide(false);
-    startRound();
   };
 
   return (
@@ -592,10 +570,6 @@ export default function App() {
           onToggleDontShowAgain={setLanguagePromptOptOut}
           onContinue={handleCloseLanguagePrompt}
         />
-      ) : null}
-
-      {showStartGuide ? (
-        <StartGuideModal onContinue={handleStartGuideContinue} />
       ) : null}
 
       {state.appStage === 'onboarding' ? (

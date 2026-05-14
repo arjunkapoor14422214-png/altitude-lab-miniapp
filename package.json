@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "start": "node server/index.mjs",
     "preview": "vite preview",
     "telegram:setup": "node scripts/setup-telegram.mjs",
     "github:publish": "node scripts/publish-github.mjs"
