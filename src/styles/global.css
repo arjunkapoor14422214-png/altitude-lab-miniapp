@@ -2657,3 +2657,54 @@ input {
     width: 100%;
   }
 }
+
+.arcade-stage__path-active {
+  stroke-width: 2.75;
+  filter:
+    drop-shadow(0 0 8px rgba(255, 193, 47, 0.24))
+    drop-shadow(0 0 18px rgba(255, 130, 74, 0.16));
+}
+
+.arcade-plane {
+  width: 172px;
+  height: 84px;
+  transform-origin: center center;
+  filter:
+    drop-shadow(0 12px 24px rgba(0, 0, 0, 0.34))
+    drop-shadow(0 0 16px rgba(255, 195, 61, 0.12));
+}
+
+.arcade-plane--flying {
+  animation: none;
+}
+
+.arcade-plane--finished {
+  opacity: 0.08;
+}
+
+.arcade-plane__glow {
+  position: absolute;
+  inset: 22% auto auto 14%;
+  width: 48%;
+  height: 46%;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 214, 87, 0.2), transparent 72%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.arcade-plane__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+
+@media (max-width: 480px) {
+  .arcade-plane {
+    width: 144px;
+    height: 72px;
+  }
+}
