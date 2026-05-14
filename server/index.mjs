@@ -6,6 +6,8 @@ import { extname, join, normalize, resolve } from 'node:path';
 const port = Number(process.env.PORT || 3000);
 const distDir = resolve(process.cwd(), 'dist');
 const indexFile = join(distDir, 'index.html');
+const publicDir = resolve(process.cwd(), 'public');
+const welcomePosterFile = join(publicDir, 'bot-welcome-poster.jpg');
 const promoRegistrationUrl = 'https://lckypr.com/G4DtDxQ';
 const promoCode = 'NILE';
 
@@ -69,6 +71,21 @@ async function callTelegram(token, method, body) {
   return data.result;
 }
 
+async function callTelegramMultipart(token, method, formData) {
+  const response = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  const data = await response.json();
+
+  if (!response.ok || !data.ok) {
+    throw new Error(data.description || `Telegram API error on ${method}`);
+  }
+
+  return data.result;
+}
+
 function buildStartCaption() {
   return [
     '<b>Welcome to Aviator Signal</b>',
@@ -82,9 +99,7 @@ function buildStartCaption() {
 }
 
 async function sendStartMessage(token, chatId, request) {
-  const baseUrl = getBaseUrl(request);
   const miniAppUrl = getMiniAppUrl(request);
-  const posterUrl = `${baseUrl}/bot-welcome-poster.jpg`;
   const caption = buildStartCaption();
   const replyMarkup = {
     inline_keyboard: [
@@ -94,13 +109,17 @@ async function sendStartMessage(token, chatId, request) {
   };
 
   try {
-    await callTelegram(token, 'sendPhoto', {
-      chat_id: chatId,
-      photo: posterUrl,
-      caption,
-      parse_mode: 'HTML',
-      reply_markup: replyMarkup,
-    });
+    const posterBytes = await readFile(welcomePosterFile);
+    const formData = new FormData();
+    const blob = new Blob([posterBytes], { type: 'image/jpeg' });
+
+    formData.set('chat_id', String(chatId));
+    formData.set('caption', caption);
+    formData.set('parse_mode', 'HTML');
+    formData.set('reply_markup', JSON.stringify(replyMarkup));
+    formData.set('photo', blob, 'bot-welcome-poster.jpg');
+
+    await callTelegramMultipart(token, 'sendPhoto', formData);
     return;
   } catch {
     await callTelegram(token, 'sendMessage', {
