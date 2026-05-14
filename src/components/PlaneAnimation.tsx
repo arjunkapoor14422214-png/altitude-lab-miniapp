@@ -89,6 +89,9 @@ const secondCurve = {
   p3: { x: 88, y: 12 },
 };
 
+const flightCurvePath = 'M 8 86 C 20 86, 34 84, 48 74 C 61 62, 73 39, 88 12';
+const flightAreaPath = `${flightCurvePath} L 88 86 L 8 86 Z`;
+
 function buildFlightPath() {
   const points: Array<FlightState & { length: number }> = [];
   let totalLength = 0;
@@ -118,8 +121,8 @@ function buildFlightPath() {
     }
   };
 
-  appendCurve(firstCurve, 48, true);
-  appendCurve(secondCurve, 64, false);
+  appendCurve(firstCurve, 220, true);
+  appendCurve(secondCurve, 280, false);
 
   return {
     totalLength,
@@ -215,18 +218,18 @@ export function PlaneAnimation({
             </clipPath>
           </defs>
           <path
-            d="M 8 86 C 20 86, 34 84, 48 74 C 61 62, 73 39, 88 12 L 88 86 L 8 86 Z"
+            d={flightAreaPath}
             clipPath="url(#flightAreaClip)"
             className="arcade-stage__area-active"
             fill="url(#flightAreaGradient)"
           />
           <path
-            d="M 8 86 C 20 86, 34 84, 48 74 C 61 62, 73 39, 88 12"
+            d={flightCurvePath}
             pathLength="100"
             className="arcade-stage__path-base"
           />
           <path
-            d="M 8 86 C 20 86, 34 84, 48 74 C 61 62, 73 39, 88 12"
+            d={flightCurvePath}
             pathLength="100"
             className="arcade-stage__path-active"
             stroke="url(#flightCurveGradient)"
