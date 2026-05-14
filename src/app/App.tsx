@@ -259,6 +259,7 @@ export default function App() {
   const [languagePromptOptOut, setLanguagePromptOptOut] = useState(
     initialSession.hideLanguagePrompt,
   );
+  const [promptLanguage, setPromptLanguage] = useState<SupportedLanguage>('en');
   const copy = getTranslations(state.language);
 
   useEffect(() => {
@@ -487,17 +488,13 @@ export default function App() {
     dispatch({ type: 'startConnecting', verificationId });
   };
 
-  const handleLanguageChange = (language: SupportedLanguage) => {
-    if (language === state.language) {
+  const handlePromptLanguageChange = (language: SupportedLanguage) => {
+    if (language === promptLanguage) {
       return;
     }
 
     triggerTelegramHaptic('selection');
-    dispatch({
-      type: 'setLanguage',
-      language,
-      source: 'manual',
-    });
+    setPromptLanguage(language);
   };
 
   const handleStartRound = () => {
@@ -514,6 +511,11 @@ export default function App() {
 
   const handleCloseLanguagePrompt = () => {
     triggerTelegramHaptic('selection');
+    dispatch({
+      type: 'setLanguage',
+      language: promptLanguage,
+      source: 'manual',
+    });
     setHideLanguagePrompt(languagePromptOptOut);
     setShowLanguagePrompt(false);
   };
@@ -525,9 +527,9 @@ export default function App() {
 
       {showLanguagePrompt ? (
         <LanguagePrompt
-          selectedLanguage={state.language}
+          selectedLanguage={promptLanguage}
           dontShowAgain={languagePromptOptOut}
-          onSelectLanguage={handleLanguageChange}
+          onSelectLanguage={handlePromptLanguageChange}
           onToggleDontShowAgain={setLanguagePromptOptOut}
           onContinue={handleCloseLanguagePrompt}
         />
