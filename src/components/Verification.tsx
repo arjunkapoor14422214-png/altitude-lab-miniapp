@@ -38,11 +38,13 @@ export function Verification({
   pendingId,
   onSubmit,
 }: VerificationProps) {
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState(defaultValue.replace(/\D+/g, ''));
   const [completedSteps, setCompletedSteps] = useState(0);
+  const sanitizedValue = value.replace(/\D+/g, '');
+  const canSubmit = sanitizedValue.length > 0;
 
   useEffect(() => {
-    setValue(defaultValue);
+    setValue(defaultValue.replace(/\D+/g, ''));
   }, [defaultValue]);
 
   useEffect(() => {
@@ -67,11 +69,11 @@ export function Verification({
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!value.trim()) {
+    if (!canSubmit) {
       return;
     }
 
-    onSubmit(value.trim());
+    onSubmit(sanitizedValue);
   };
 
   if (mode === 'connecting') {
@@ -157,15 +159,19 @@ export function Verification({
             className="input"
             placeholder={copy.inputPlaceholder}
             value={value}
-            onChange={(event) => setValue(event.target.value)}
+            onChange={(event) =>
+              setValue(event.target.value.replace(/\D+/g, ''))
+            }
             autoComplete="off"
             inputMode="numeric"
+            pattern="[0-9]*"
+            enterKeyHint="done"
           />
         </label>
 
         <div className="inline-note inline-note--bright">{copy.note}</div>
 
-        <Button type="submit" fullWidth>
+        <Button type="submit" fullWidth disabled={!canSubmit}>
           {copy.submit}
         </Button>
       </form>

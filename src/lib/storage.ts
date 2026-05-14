@@ -32,6 +32,10 @@ function sanitizeLanguageSource(value: unknown): LanguageSource {
   return value === 'manual' ? 'manual' : 'auto';
 }
 
+function sanitizeVerificationId(value: unknown) {
+  return typeof value === 'string' ? value.replace(/\D+/g, '') : '';
+}
+
 function migrateLegacyRangeKey(value: unknown): RangeKey {
   if (
     value === 'base' ||
@@ -113,7 +117,7 @@ export function loadSession(): StoredSession {
 
     return {
       onboardingSeen: Boolean(parsed.onboardingSeen),
-      verifiedId: typeof parsed.verifiedId === 'string' ? parsed.verifiedId : '',
+      verifiedId: sanitizeVerificationId(parsed.verifiedId),
       history,
       roundCounter: Math.max(
         typeof parsed.roundCounter === 'number' ? parsed.roundCounter : 0,

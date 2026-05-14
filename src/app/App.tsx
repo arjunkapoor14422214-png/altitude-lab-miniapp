@@ -4,7 +4,7 @@ import { LanguagePrompt } from '../components/LanguagePrompt';
 import { Onboarding } from '../components/Onboarding';
 import { Verification } from '../components/Verification';
 import { gameConfig } from '../config/gameConfig';
-import { detectSupportedLanguage, getTranslations } from '../lib/i18n';
+import { getTranslations } from '../lib/i18n';
 import {
   createPreparedRound,
   formatMultiplier,
@@ -66,18 +66,6 @@ type AppAction =
 
 const initialSession = loadSession();
 
-function detectBrowserLanguage() {
-  if (typeof window === 'undefined') {
-    return 'en' as const;
-  }
-
-  return detectSupportedLanguage(
-    window.navigator.language,
-    ...window.navigator.languages,
-    document.documentElement.lang,
-  );
-}
-
 function getPersistentMessage(state: AppState, language: SupportedLanguage) {
   const copy = getTranslations(language).app;
 
@@ -93,7 +81,7 @@ function getPersistentMessage(state: AppState, language: SupportedLanguage) {
 }
 
 function createInitialState(session: StoredSession): AppState {
-  const language = session.language ?? detectBrowserLanguage();
+  const language = session.language ?? 'en';
   const copy = getTranslations(language).app;
   const verificationId = session.verifiedId;
 
@@ -106,7 +94,7 @@ function createInitialState(session: StoredSession): AppState {
     roundStage: 'round_idle',
     onboardingSeen: session.onboardingSeen,
     language,
-    languageSource: session.language ? session.languageSource : 'auto',
+    languageSource: session.language ? session.languageSource : 'manual',
     verificationId,
     pendingVerificationId: null,
     preparedRound: null,
@@ -283,32 +271,6 @@ export default function App() {
       document.documentElement.dataset.theme = nextContext.colorScheme;
     });
   }, []);
-
-  useEffect(() => {
-    if (state.languageSource === 'manual') {
-      return;
-    }
-
-    const nextLanguage = detectSupportedLanguage(
-      telegramContext.locale,
-      telegramContext.user?.language_code,
-      typeof window !== 'undefined' ? window.navigator.language : null,
-      ...(typeof window !== 'undefined' ? window.navigator.languages : []),
-    );
-
-    if (nextLanguage !== state.language) {
-      dispatch({
-        type: 'setLanguage',
-        language: nextLanguage,
-        source: 'auto',
-      });
-    }
-  }, [
-    state.language,
-    state.languageSource,
-    telegramContext.locale,
-    telegramContext.user?.language_code,
-  ]);
 
   useEffect(() => {
     document.documentElement.lang = copy.locale;
