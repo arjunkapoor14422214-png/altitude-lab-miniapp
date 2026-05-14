@@ -10,8 +10,10 @@ const normalizedBotUsername = normalizeBotUsername(botUsername);
 export const appConfig = {
   botUsername: normalizedBotUsername,
   publicAppUrl,
+  promoRegistrationUrl: 'https://lckypr.com/G4DtDxQ',
+  promoRegistrationLabel: 'lckypr.com/G4DtDxQ',
+  promoCode: 'NILE',
   telegramBotProfileUrl: normalizedBotUsername
     ? `https://t.me/${normalizedBotUsername}`
     : '',
 };
-

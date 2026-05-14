@@ -1,6 +1,6 @@
 const token = process.env.TELEGRAM_BOT_TOKEN?.trim();
 const miniAppUrl = process.env.MINI_APP_URL?.trim();
-const menuText = process.env.TELEGRAM_MENU_TEXT?.trim() || 'Open Trainer';
+const menuText = process.env.TELEGRAM_MENU_TEXT?.trim() || 'Open Signal';
 
 if (!token) {
   console.error('Missing TELEGRAM_BOT_TOKEN');
@@ -54,11 +54,11 @@ async function main() {
     commands: [
       {
         command: 'start',
-        description: 'Open the training bot',
+        description: 'Open the signal bot',
       },
       {
         command: 'app',
-        description: 'Open the mini app',
+        description: 'Open the signal app',
       },
     ],
   });

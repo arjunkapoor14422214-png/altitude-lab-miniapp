@@ -12,6 +12,7 @@ const defaultSession: StoredSession = {
   language: null,
   languageSource: 'auto',
   hideLanguagePrompt: false,
+  startGuideSeen: false,
 };
 
 function sanitizeLanguage(value: unknown): SupportedLanguage | null {
@@ -122,6 +123,7 @@ export function loadSession(): StoredSession {
       language: sanitizeLanguage(parsed.language),
       languageSource: sanitizeLanguageSource(parsed.languageSource),
       hideLanguagePrompt: Boolean(parsed.hideLanguagePrompt),
+      startGuideSeen: Boolean(parsed.startGuideSeen),
     };
   } catch {
     return defaultSession;

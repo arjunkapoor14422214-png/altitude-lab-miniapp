@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { Button } from './Button';
+import { appConfig } from '../config/appConfig';
 
 interface VerificationCopy {
   eyebrow: string;
@@ -117,16 +118,16 @@ export function Verification({
           <p className="promo-copy">{copy.step1Text}</p>
           <a
             className="promo-link promo-link--offer"
-            href="https://lckypr.com/G4DtDxQ"
+            href={appConfig.promoRegistrationUrl}
             target="_blank"
             rel="noreferrer"
           >
-            lckypr.com/G4DtDxQ
+            {appConfig.promoRegistrationLabel}
           </a>
 
           <div className="promo-code-card promo-code-card--offer">
             <span>{copy.promoCodeLabel}</span>
-            <strong>NILE</strong>
+            <strong>{appConfig.promoCode}</strong>
           </div>
 
           <p className="promo-copy promo-copy--accent promo-copy--offer">
