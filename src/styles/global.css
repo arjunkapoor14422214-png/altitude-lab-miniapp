@@ -1604,7 +1604,7 @@ input {
   height: 104px;
   margin-left: 0;
   margin-top: 0;
-  transform: translate(-50%, -50%) rotate(-7deg);
+  transform: translate(-50%, -50%);
   transform-origin: center;
   filter:
     drop-shadow(0 10px 20px rgba(0, 0, 0, 0.28))
@@ -1612,12 +1612,12 @@ input {
 }
 
 .arcade-plane--flying {
-  animation: planeFloat 1800ms ease-in-out infinite alternate;
+  animation: none;
 }
 
 .arcade-plane--finished {
   opacity: 0.1;
-  transform: translate(-50%, -50%) rotate(-7deg) scale(0.96);
+  transform: translate(-50%, -50%) scale(0.96);
 }
 
 .arcade-plane__shadow {
@@ -2043,7 +2043,7 @@ input {
 }
 
 .arcade-plane__propeller-group {
-  transform-origin: 290px 50px;
+  transform-origin: 323px 39px;
 }
 
 .arcade-plane--flying .arcade-plane__propeller-group {

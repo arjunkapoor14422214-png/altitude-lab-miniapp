@@ -14,11 +14,147 @@ interface PlaneAnimationProps {
   targetMultiplier: number | null;
 }
 
-function getFlightPosition(progress: number) {
-  const x = 10 + progress * 78;
-  const y = 80 - Math.pow(progress, 0.58) * 60;
+type Point = {
+  x: number;
+  y: number;
+};
 
-  return { x, y };
+type FlightState = Point & {
+  angle: number;
+};
+
+function cubicBezierPoint(
+  t: number,
+  p0: Point,
+  p1: Point,
+  p2: Point,
+  p3: Point,
+): Point {
+  const mt = 1 - t;
+  const mt2 = mt * mt;
+  const t2 = t * t;
+
+  return {
+    x:
+      mt2 * mt * p0.x +
+      3 * mt2 * t * p1.x +
+      3 * mt * t2 * p2.x +
+      t2 * t * p3.x,
+    y:
+      mt2 * mt * p0.y +
+      3 * mt2 * t * p1.y +
+      3 * mt * t2 * p2.y +
+      t2 * t * p3.y,
+  };
+}
+
+function cubicBezierTangent(
+  t: number,
+  p0: Point,
+  p1: Point,
+  p2: Point,
+  p3: Point,
+): Point {
+  const mt = 1 - t;
+
+  return {
+    x:
+      3 * mt * mt * (p1.x - p0.x) +
+      6 * mt * t * (p2.x - p1.x) +
+      3 * t * t * (p3.x - p2.x),
+    y:
+      3 * mt * mt * (p1.y - p0.y) +
+      6 * mt * t * (p2.y - p1.y) +
+      3 * t * t * (p3.y - p2.y),
+  };
+}
+
+function angleFromTangent(tangent: Point) {
+  return (Math.atan2(tangent.y, tangent.x) * 180) / Math.PI;
+}
+
+const firstCurve = {
+  p0: { x: 10, y: 80 },
+  p1: { x: 21, y: 75 },
+  p2: { x: 32, y: 67 },
+  p3: { x: 45, y: 52 },
+};
+
+const secondCurve = {
+  p0: { x: 45, y: 52 },
+  p1: { x: 58, y: 37 },
+  p2: { x: 72, y: 21 },
+  p3: { x: 88, y: 11 },
+};
+
+function buildFlightPath() {
+  const points: Array<FlightState & { length: number }> = [];
+  let totalLength = 0;
+  let previousPoint: Point | null = null;
+
+  const appendCurve = (
+    curve: typeof firstCurve,
+    sampleCount: number,
+    includeFirstPoint: boolean,
+  ) => {
+    for (let index = includeFirstPoint ? 0 : 1; index <= sampleCount; index += 1) {
+      const t = index / sampleCount;
+      const point = cubicBezierPoint(t, curve.p0, curve.p1, curve.p2, curve.p3);
+      const tangent = cubicBezierTangent(t, curve.p0, curve.p1, curve.p2, curve.p3);
+
+      if (previousPoint) {
+        totalLength += Math.hypot(point.x - previousPoint.x, point.y - previousPoint.y);
+      }
+
+      points.push({
+        ...point,
+        angle: angleFromTangent(tangent),
+        length: totalLength,
+      });
+
+      previousPoint = point;
+    }
+  };
+
+  appendCurve(firstCurve, 48, true);
+  appendCurve(secondCurve, 64, false);
+
+  return {
+    totalLength,
+    points,
+  };
+}
+
+const flightPath = buildFlightPath();
+
+function getFlightState(progress: number): FlightState {
+  const clampedProgress = Math.min(Math.max(progress, 0), 1);
+  const targetLength = flightPath.totalLength * clampedProgress;
+  const points = flightPath.points;
+
+  for (let index = 1; index < points.length; index += 1) {
+    const previous = points[index - 1];
+    const current = points[index];
+
+    if (targetLength <= current.length) {
+      const segmentLength = current.length - previous.length || 1;
+      const localProgress = (targetLength - previous.length) / segmentLength;
+
+      return {
+        x: previous.x + (current.x - previous.x) * localProgress,
+        y: previous.y + (current.y - previous.y) * localProgress,
+        angle: previous.angle + (current.angle - previous.angle) * localProgress,
+      };
+    }
+  }
+
+  const lastPoint = points[points.length - 1];
+
+  return {
+    x: lastPoint.x,
+    y: lastPoint.y,
+    angle: lastPoint.angle,
+  };
 }
 
 export function PlaneAnimation({
@@ -29,7 +165,7 @@ export function PlaneAnimation({
   currentMultiplier,
   targetMultiplier,
 }: PlaneAnimationProps) {
-  const { x, y } = getFlightPosition(progress);
+  const flightState = getFlightState(progress);
   const statusLabel = running
     ? copy.flyingStatus
     : finished
@@ -93,102 +229,97 @@ export function PlaneAnimation({
             finished ? 'arcade-plane--finished' : ''
           }`}
           style={{
-            left: `${x}%`,
-            top: `${y}%`,
+            left: `${flightState.x}%`,
+            top: `${flightState.y}%`,
+            transform: `translate(-50%, -50%) rotate(${flightState.angle}deg) ${
+              finished ? 'scale(0.96)' : ''
+            }`,
           }}
         >
-          <svg viewBox="0 0 320 180" className="arcade-plane__svg" aria-hidden="true">
+          <svg viewBox="0 0 360 210" className="arcade-plane__svg" aria-hidden="true">
             <defs>
-              <linearGradient id="planeBodyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#ff8f6e" />
-                <stop offset="42%" stopColor="#e13a24" />
-                <stop offset="100%" stopColor="#93101c" />
+              <linearGradient id="planeYellowPaint" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#fff08b" />
+                <stop offset="22%" stopColor="#ffd53f" />
+                <stop offset="65%" stopColor="#ffc400" />
+                <stop offset="100%" stopColor="#de9600" />
               </linearGradient>
-              <linearGradient id="planeWingGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#ffd873" />
-                <stop offset="14%" stopColor="#ffc52d" />
-                <stop offset="28%" stopColor="#f77a2f" />
-                <stop offset="100%" stopColor="#bc181d" />
+              <linearGradient id="planeDarkPaint" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#3b3b3f" />
+                <stop offset="40%" stopColor="#111214" />
+                <stop offset="100%" stopColor="#050506" />
               </linearGradient>
-              <linearGradient id="planeCanopyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#d8f6ff" />
-                <stop offset="100%" stopColor="#5ca8eb" />
-              </linearGradient>
-              <linearGradient id="planeWheelGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#2a2a2a" />
-                <stop offset="100%" stopColor="#0d0d0d" />
+              <linearGradient id="planeGlassPaint" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#f7fcff" />
+                <stop offset="35%" stopColor="#93b6db" />
+                <stop offset="100%" stopColor="#223752" />
               </linearGradient>
             </defs>
 
-            <ellipse cx="150" cy="152" rx="88" ry="11" fill="rgba(0,0,0,0.18)" />
+            <ellipse cx="156" cy="178" rx="98" ry="12" fill="rgba(0,0,0,0.16)" />
 
             <path
-              d="M66 102 C80 92 102 83 133 80 L194 74 C222 71 246 70 260 64 C274 58 284 51 292 42 L300 36 L308 40 L306 49 L297 61 C290 70 282 78 270 84 C252 92 224 96 194 99 L135 105 C109 108 87 111 69 118 L58 122 L50 118 L54 109 Z"
-              fill="url(#planeBodyGradient)"
+              d="M38 145 C66 134 102 122 154 106 C188 95 218 86 245 74 C270 63 296 48 324 30 L332 32 L332 42 L323 54 C305 77 284 95 258 107 C234 118 201 128 155 139 L102 151 C75 157 55 160 42 158 C35 157 32 151 38 145 Z"
+              fill="url(#planeYellowPaint)"
             />
             <path
-              d="M95 86 C118 80 150 75 199 70"
-              stroke="rgba(255,236,204,0.34)"
-              strokeWidth="5"
-              fill="none"
-            />
-
-            <path
-              d="M102 46 C138 36 184 30 242 29 C252 29 258 33 258 38 C258 44 250 48 238 49 C184 53 139 59 104 71 C96 73 88 69 86 63 C84 56 90 49 102 46 Z"
-              fill="url(#planeWingGradient)"
-            />
-            <path
-              d="M108 106 C147 100 187 97 232 96 C241 96 246 100 246 105 C246 110 240 114 229 115 C192 118 154 124 116 132 C107 134 99 130 96 124 C93 117 98 110 108 106 Z"
-              fill="url(#planeWingGradient)"
-            />
-
-            <path d="M128 60 L122 111" stroke="#9c5c16" strokeWidth="7" strokeLinecap="round" />
-            <path d="M165 55 L156 116" stroke="#9c5c16" strokeWidth="7" strokeLinecap="round" />
-            <path d="M136 60 L165 55" stroke="#8f4b13" strokeWidth="5" strokeLinecap="round" />
-            <path d="M122 111 L156 116" stroke="#8f4b13" strokeWidth="5" strokeLinecap="round" />
-
-            <path
-              d="M62 80 C52 68 50 55 57 46 L68 35 L80 38 L76 52 C74 61 75 72 81 83 Z"
-              fill="#bd171c"
-            />
-            <path
-              d="M58 110 C46 110 39 104 38 96 C37 88 44 82 57 80 L86 77 L87 89 C88 98 79 107 67 109 Z"
-              fill="#9d1119"
+              d="M146 109 C188 97 226 87 249 76 C274 64 301 48 322 32 L328 33 L326 40 C322 51 311 63 295 76 C277 90 255 102 228 112 C202 121 170 129 132 137 Z"
+              fill="url(#planeDarkPaint)"
             />
 
             <path
-              d="M142 72 C149 60 161 55 177 54 C190 53 201 58 208 67 L184 74 L152 78 Z"
-              fill="url(#planeCanopyGradient)"
+              d="M68 146 C102 136 146 124 203 112 L211 129 C161 138 114 149 72 162 C64 164 58 162 56 156 C54 151 58 148 68 146 Z"
+              fill="url(#planeDarkPaint)"
             />
-            <path d="M164 56 L168 76" stroke="rgba(255,255,255,0.3)" strokeWidth="2.5" />
-            <path d="M184 55 L188 72" stroke="rgba(255,255,255,0.26)" strokeWidth="2.5" />
 
             <path
-              d="M81 119 L110 118 L102 139 L78 139 Z"
-              fill="#c01a21"
+              d="M111 86 C144 74 182 62 224 54 C241 51 260 50 274 52 C281 53 285 58 284 64 C283 70 276 74 267 76 C228 84 191 95 153 110 C145 113 136 111 130 106 C123 100 123 91 111 86 Z"
+              fill="url(#planeYellowPaint)"
             />
             <path
-              d="M88 138 L83 150"
-              stroke="#8e5312"
-              strokeWidth="5"
+              d="M101 138 C140 126 185 116 229 110 C238 109 245 114 245 120 C245 126 239 131 230 133 C190 142 149 154 110 169 C101 173 91 169 88 162 C84 154 90 145 101 138 Z"
+              fill="url(#planeYellowPaint)"
+            />
+
+            <path
+              d="M130 108 C150 90 170 78 194 72 C212 68 225 71 234 82 C239 88 238 93 231 96 L184 106 Z"
+              fill="url(#planeGlassPaint)"
+            />
+            <path
+              d="M156 85 C162 97 169 104 178 108"
+              stroke="rgba(255,255,255,0.34)"
+              strokeWidth="3"
               strokeLinecap="round"
             />
             <path
-              d="M108 137 L104 150"
-              stroke="#8e5312"
-              strokeWidth="5"
+              d="M188 75 C193 88 198 95 205 101"
+              stroke="rgba(255,255,255,0.28)"
+              strokeWidth="3"
               strokeLinecap="round"
             />
-            <circle cx="82" cy="152" r="8" fill="url(#planeWheelGradient)" />
-            <circle cx="104" cy="152" r="8" fill="url(#planeWheelGradient)" />
 
-            <circle cx="290" cy="50" r="24" fill="#efb61f" />
-            <circle cx="290" cy="50" r="18" fill="#202020" />
-            <circle cx="290" cy="50" r="6" fill="#ffcb54" />
+            <path
+              d="M44 136 C31 129 25 118 28 106 C31 94 42 85 59 78 L73 72 L79 75 L73 87 C66 101 64 115 68 130 Z"
+              fill="url(#planeYellowPaint)"
+            />
+            <path
+              d="M22 155 C15 149 13 141 18 133 C23 126 31 122 45 121 L74 118 L73 130 C72 141 64 149 50 153 Z"
+              fill="url(#planeYellowPaint)"
+            />
+
+            <path
+              d="M232 98 C244 95 254 95 262 99 C267 102 266 107 259 111 C252 115 243 118 233 119 C229 120 227 118 226 114 C225 109 227 102 232 98 Z"
+              fill="url(#planeYellowPaint)"
+            />
+
+            <circle cx="323" cy="39" r="25" fill="#0f1012" />
+            <circle cx="323" cy="39" r="18" fill="url(#planeDarkPaint)" />
+            <circle cx="323" cy="39" r="30" fill="none" stroke="url(#planeYellowPaint)" strokeWidth="10" />
+            <circle cx="323" cy="39" r="7" fill="#111214" />
 
             <g className="arcade-plane__propeller-group">
-              <ellipse cx="290" cy="50" rx="9" ry="44" fill="rgba(28,28,28,0.42)" />
-              <ellipse cx="290" cy="50" rx="44" ry="9" fill="rgba(28,28,28,0.22)" />
+              <ellipse cx="323" cy="39" rx="11" ry="56" fill="rgba(42,42,42,0.44)" />
+              <ellipse cx="323" cy="39" rx="56" ry="11" fill="rgba(42,42,42,0.18)" />
             </g>
           </svg>
         </div>
@@ -197,8 +328,8 @@ export function PlaneAnimation({
           <div
             className="arcade-burst"
             style={{
-              left: `${x}%`,
-              top: `${y}%`,
+              left: `${flightState.x}%`,
+              top: `${flightState.y}%`,
             }}
           >
             <span className="arcade-burst__core" />
