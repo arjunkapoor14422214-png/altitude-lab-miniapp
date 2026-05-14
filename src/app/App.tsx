@@ -1,5 +1,6 @@
 import { useEffect, useEffectEvent, useReducer, useState } from 'react';
 import { GameScreen } from '../components/GameScreen';
+import { LanguagePrompt } from '../components/LanguagePrompt';
 import { Onboarding } from '../components/Onboarding';
 import { Verification } from '../components/Verification';
 import { gameConfig } from '../config/gameConfig';
@@ -261,6 +262,15 @@ export default function App() {
   );
   const [telegramContext, setTelegramContext] =
     useState<TelegramContext>(defaultTelegramContext);
+  const [showLanguagePrompt, setShowLanguagePrompt] = useState(
+    !initialSession.hideLanguagePrompt,
+  );
+  const [hideLanguagePrompt, setHideLanguagePrompt] = useState(
+    initialSession.hideLanguagePrompt,
+  );
+  const [languagePromptOptOut, setLanguagePromptOptOut] = useState(
+    initialSession.hideLanguagePrompt,
+  );
   const copy = getTranslations(state.language);
 
   useEffect(() => {
@@ -313,8 +323,10 @@ export default function App() {
       roundCounter: state.roundCounter,
       language: state.language,
       languageSource: state.languageSource,
+      hideLanguagePrompt,
     });
   }, [
+    hideLanguagePrompt,
     state.history,
     state.language,
     state.languageSource,
@@ -454,6 +466,10 @@ export default function App() {
   });
 
   useEffect(() => {
+    if (showLanguagePrompt) {
+      return syncTelegramMainButton(null);
+    }
+
     if (state.appStage === 'onboarding') {
       return syncTelegramMainButton({
         text: copy.app.telegramContinue,
@@ -477,17 +493,22 @@ export default function App() {
     copy.app.telegramActivating,
     copy.app.telegramContinue,
     handleTelegramMainAction,
+    showLanguagePrompt,
     state.appStage,
   ]);
 
   useEffect(() => {
+    if (showLanguagePrompt) {
+      return syncTelegramBackButton(false);
+    }
+
     const isVisible =
       state.appStage === 'verification' ||
       state.appStage === 'connecting' ||
       (state.appStage === 'ready' && state.roundStage !== 'round_running');
 
     return syncTelegramBackButton(isVisible, handleTelegramBackAction);
-  }, [handleTelegramBackAction, state.appStage, state.roundStage]);
+  }, [handleTelegramBackAction, showLanguagePrompt, state.appStage, state.roundStage]);
 
   const handleContinueFromOnboarding = () => {
     triggerTelegramHaptic('selection');
@@ -524,16 +545,31 @@ export default function App() {
     });
   };
 
+  const handleCloseLanguagePrompt = () => {
+    triggerTelegramHaptic('selection');
+    setHideLanguagePrompt(languagePromptOptOut);
+    setShowLanguagePrompt(false);
+  };
+
   return (
     <main className="app-shell">
       <div className="ambient ambient--one" />
       <div className="ambient ambient--two" />
 
+      {showLanguagePrompt ? (
+        <LanguagePrompt
+          language={state.language}
+          selectedLanguage={state.language}
+          dontShowAgain={languagePromptOptOut}
+          onSelectLanguage={handleLanguageChange}
+          onToggleDontShowAgain={setLanguagePromptOptOut}
+          onContinue={handleCloseLanguagePrompt}
+        />
+      ) : null}
+
       {state.appStage === 'onboarding' ? (
         <Onboarding
-          language={state.language}
           copy={copy.onboarding}
-          onLanguageChange={handleLanguageChange}
           onContinue={handleContinueFromOnboarding}
         />
       ) : null}

@@ -1,10 +1,7 @@
 import { Button } from './Button';
 import { Modal } from './Modal';
-import { languageLabels, supportedLanguages } from '../lib/i18n';
-import type { SupportedLanguage } from '../types/i18n';
 
 interface OnboardingProps {
-  language: SupportedLanguage;
   copy: {
     title: string;
     heroEyebrow: string;
@@ -15,39 +12,15 @@ interface OnboardingProps {
     startItems: string[];
     continue: string;
   };
-  onLanguageChange: (language: SupportedLanguage) => void;
   onContinue: () => void;
 }
 
 export function Onboarding({
-  language,
   copy,
-  onLanguageChange,
   onContinue,
 }: OnboardingProps) {
   return (
-    <Modal
-      title={copy.title}
-      headerAddon={
-        <div className="language-switcher" aria-label="Language switcher">
-          {supportedLanguages.map((item) => (
-            <button
-              key={item}
-              type="button"
-              className={[
-                'language-chip',
-                language === item ? 'language-chip--active' : '',
-              ]
-                .filter(Boolean)
-                .join(' ')}
-              onClick={() => onLanguageChange(item)}
-            >
-              {languageLabels[item]}
-            </button>
-          ))}
-        </div>
-      }
-    >
+    <Modal title={copy.title}>
       <section className="stack stack--tight">
         <div className="promo-hero">
           <span className="eyebrow">{copy.heroEyebrow}</span>
