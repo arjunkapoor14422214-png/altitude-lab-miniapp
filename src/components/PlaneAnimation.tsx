@@ -236,90 +236,96 @@ export function PlaneAnimation({
             }`,
           }}
         >
-          <svg viewBox="0 0 360 210" className="arcade-plane__svg" aria-hidden="true">
+          <svg viewBox="0 0 420 240" className="arcade-plane__svg" aria-hidden="true">
             <defs>
               <linearGradient id="planeYellowPaint" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#fff08b" />
-                <stop offset="22%" stopColor="#ffd53f" />
-                <stop offset="65%" stopColor="#ffc400" />
-                <stop offset="100%" stopColor="#de9600" />
+                <stop offset="0%" stopColor="#fff39d" />
+                <stop offset="18%" stopColor="#ffd94f" />
+                <stop offset="58%" stopColor="#ffc107" />
+                <stop offset="100%" stopColor="#d98f00" />
               </linearGradient>
               <linearGradient id="planeDarkPaint" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#3b3b3f" />
-                <stop offset="40%" stopColor="#111214" />
+                <stop offset="0%" stopColor="#45474d" />
+                <stop offset="40%" stopColor="#17181b" />
                 <stop offset="100%" stopColor="#050506" />
               </linearGradient>
               <linearGradient id="planeGlassPaint" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#f7fcff" />
-                <stop offset="35%" stopColor="#93b6db" />
-                <stop offset="100%" stopColor="#223752" />
+                <stop offset="24%" stopColor="#a8c8ea" />
+                <stop offset="100%" stopColor="#1f3147" />
               </linearGradient>
             </defs>
 
-            <ellipse cx="156" cy="178" rx="98" ry="12" fill="rgba(0,0,0,0.16)" />
+            <ellipse cx="188" cy="204" rx="126" ry="12" fill="rgba(0,0,0,0.18)" />
 
             <path
-              d="M38 145 C66 134 102 122 154 106 C188 95 218 86 245 74 C270 63 296 48 324 30 L332 32 L332 42 L323 54 C305 77 284 95 258 107 C234 118 201 128 155 139 L102 151 C75 157 55 160 42 158 C35 157 32 151 38 145 Z"
+              d="M64 173 C84 159 116 147 165 128 C219 108 263 89 301 70 C327 56 351 40 372 24 L386 25 L388 35 L377 52 C360 77 338 98 307 117 C277 136 236 153 182 171 L123 191 C100 199 81 202 68 198 C59 195 57 185 64 173 Z"
               fill="url(#planeYellowPaint)"
             />
             <path
-              d="M146 109 C188 97 226 87 249 76 C274 64 301 48 322 32 L328 33 L326 40 C322 51 311 63 295 76 C277 90 255 102 228 112 C202 121 170 129 132 137 Z"
+              d="M184 133 C231 113 272 93 303 70 C329 52 353 37 374 24 L384 25 L383 34 C377 49 365 64 347 79 C324 99 293 118 254 135 C228 146 197 155 161 162 Z"
               fill="url(#planeDarkPaint)"
             />
 
             <path
-              d="M68 146 C102 136 146 124 203 112 L211 129 C161 138 114 149 72 162 C64 164 58 162 56 156 C54 151 58 148 68 146 Z"
+              d="M82 187 C122 174 177 161 248 149 L257 170 C194 180 137 193 86 208 C77 211 69 208 67 201 C65 194 70 191 82 187 Z"
               fill="url(#planeDarkPaint)"
             />
 
             <path
-              d="M111 86 C144 74 182 62 224 54 C241 51 260 50 274 52 C281 53 285 58 284 64 C283 70 276 74 267 76 C228 84 191 95 153 110 C145 113 136 111 130 106 C123 100 123 91 111 86 Z"
+              d="M128 109 C170 90 210 76 252 66 C269 62 284 63 295 71 C303 76 303 84 296 88 C287 93 275 99 259 105 C218 119 178 136 137 157 C128 161 117 157 113 147 C109 137 114 125 128 109 Z"
               fill="url(#planeYellowPaint)"
             />
             <path
-              d="M101 138 C140 126 185 116 229 110 C238 109 245 114 245 120 C245 126 239 131 230 133 C190 142 149 154 110 169 C101 173 91 169 88 162 C84 154 90 145 101 138 Z"
+              d="M123 169 C166 155 212 145 262 140 C273 139 282 144 282 151 C282 159 274 164 261 167 C215 177 169 192 123 213 C111 219 100 215 96 205 C91 193 100 179 123 169 Z"
               fill="url(#planeYellowPaint)"
             />
 
             <path
-              d="M130 108 C150 90 170 78 194 72 C212 68 225 71 234 82 C239 88 238 93 231 96 L184 106 Z"
+              d="M170 114 C190 90 213 74 240 67 C262 61 278 65 291 79 C301 90 298 101 283 107 L230 118 Z"
               fill="url(#planeGlassPaint)"
             />
             <path
-              d="M156 85 C162 97 169 104 178 108"
+              d="M206 83 C211 99 219 109 229 117"
               stroke="rgba(255,255,255,0.34)"
               strokeWidth="3"
               strokeLinecap="round"
             />
             <path
-              d="M188 75 C193 88 198 95 205 101"
+              d="M244 72 C247 86 253 96 262 104"
               stroke="rgba(255,255,255,0.28)"
               strokeWidth="3"
               strokeLinecap="round"
             />
 
             <path
-              d="M44 136 C31 129 25 118 28 106 C31 94 42 85 59 78 L73 72 L79 75 L73 87 C66 101 64 115 68 130 Z"
+              d="M70 170 C47 159 35 145 35 126 C35 111 44 98 63 86 L91 70 L99 74 L91 98 C84 121 84 145 95 166 Z"
               fill="url(#planeYellowPaint)"
             />
             <path
-              d="M22 155 C15 149 13 141 18 133 C23 126 31 122 45 121 L74 118 L73 130 C72 141 64 149 50 153 Z"
+              d="M33 197 C20 191 16 180 22 170 C29 160 41 154 60 152 L98 149 L95 165 C92 180 82 193 65 199 Z"
               fill="url(#planeYellowPaint)"
+            />
+            <path
+              d="M82 157 C71 147 65 132 66 113"
+              stroke="rgba(18,18,18,0.68)"
+              strokeWidth="9"
+              strokeLinecap="round"
             />
 
             <path
-              d="M232 98 C244 95 254 95 262 99 C267 102 266 107 259 111 C252 115 243 118 233 119 C229 120 227 118 226 114 C225 109 227 102 232 98 Z"
-              fill="url(#planeYellowPaint)"
+              d="M268 95 C286 94 302 97 318 105 C324 108 324 114 315 117 C303 121 290 124 278 125 C268 126 262 122 260 115 C258 107 260 99 268 95 Z"
+              fill="rgba(0,0,0,0.18)"
             />
 
-            <circle cx="323" cy="39" r="25" fill="#0f1012" />
-            <circle cx="323" cy="39" r="18" fill="url(#planeDarkPaint)" />
-            <circle cx="323" cy="39" r="30" fill="none" stroke="url(#planeYellowPaint)" strokeWidth="10" />
-            <circle cx="323" cy="39" r="7" fill="#111214" />
+            <circle cx="382" cy="33" r="28" fill="#0f1012" />
+            <circle cx="382" cy="33" r="20" fill="url(#planeDarkPaint)" />
+            <circle cx="382" cy="33" r="34" fill="none" stroke="url(#planeYellowPaint)" strokeWidth="11" />
+            <circle cx="382" cy="33" r="8" fill="#111214" />
 
             <g className="arcade-plane__propeller-group">
-              <ellipse cx="323" cy="39" rx="11" ry="56" fill="rgba(42,42,42,0.44)" />
-              <ellipse cx="323" cy="39" rx="56" ry="11" fill="rgba(42,42,42,0.18)" />
+              <ellipse cx="382" cy="33" rx="11" ry="62" fill="rgba(42,42,42,0.44)" />
+              <ellipse cx="382" cy="33" rx="62" ry="11" fill="rgba(42,42,42,0.18)" />
             </g>
           </svg>
         </div>

@@ -1600,8 +1600,8 @@ input {
 }
 
 .arcade-plane {
-  width: 166px;
-  height: 104px;
+  width: 184px;
+  height: 112px;
   margin-left: 0;
   margin-top: 0;
   transform: translate(-50%, -50%);
@@ -2043,7 +2043,7 @@ input {
 }
 
 .arcade-plane__propeller-group {
-  transform-origin: 323px 39px;
+  transform-origin: 382px 33px;
 }
 
 .arcade-plane--flying .arcade-plane__propeller-group {
