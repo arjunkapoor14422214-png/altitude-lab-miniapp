@@ -8,8 +8,11 @@ const distDir = resolve(process.cwd(), 'dist');
 const indexFile = join(distDir, 'index.html');
 const publicDir = resolve(process.cwd(), 'public');
 const welcomePosterFile = join(publicDir, 'bot-welcome-poster.jpg');
-const promoRegistrationUrl = 'https://lckypr.com/G4DtDxQ';
-const promoCode = 'NILE';
+const apkUrl =
+  'https://lk-luckypa-aviator.trademazafaka007.workers.dev/click-apk';
+const websiteUrl =
+  'https://lk-luckypa-aviator.trademazafaka007.workers.dev/click-website';
+const promoCode = 'Pasindu';
 
 const mimeTypes = {
   '.css': 'text/css; charset=utf-8',
@@ -90,8 +93,7 @@ function buildStartCaption() {
   return [
     '<b>Welcome to Aviator Signal</b>',
     '',
-    '1. Register through the link below.',
-    promoRegistrationUrl,
+    '1. Register and install using <a href="' + apkUrl + '">APK</a> or use the <a href="' + websiteUrl + '">Website</a> version.',
     `2. Enter promo code <b>${promoCode}</b> during registration.`,
     '3. Make a deposit on the site.',
     '4. Open Signal and launch the round together with your live bet on the website.',
@@ -103,7 +105,10 @@ async function sendStartMessage(token, chatId, request) {
   const caption = buildStartCaption();
   const replyMarkup = {
     inline_keyboard: [
-      [{ text: 'Register now', url: promoRegistrationUrl }],
+      [
+        { text: 'APK', url: apkUrl },
+        { text: 'Website', url: websiteUrl },
+      ],
       [{ text: 'Open Signal', web_app: { url: miniAppUrl } }],
     ],
   };
@@ -124,7 +129,8 @@ async function sendStartMessage(token, chatId, request) {
   } catch {
     await callTelegram(token, 'sendMessage', {
       chat_id: chatId,
-      text: caption.replace(/<[^>]+>/g, ''),
+      text: caption,
+      parse_mode: 'HTML',
       reply_markup: replyMarkup,
     });
   }
