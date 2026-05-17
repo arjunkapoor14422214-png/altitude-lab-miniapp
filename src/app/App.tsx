@@ -5,6 +5,7 @@ import { Onboarding } from '../components/Onboarding';
 import { Verification } from '../components/Verification';
 import { gameConfig } from '../config/gameConfig';
 import { getTranslations } from '../lib/i18n';
+import { trackCompleteRegistration } from '../lib/meta';
 import {
   createPreparedRound,
   formatMultiplier,
@@ -485,6 +486,12 @@ export default function App() {
 
   const handleVerificationSubmit = (verificationId: string) => {
     triggerTelegramHaptic('selection');
+    trackCompleteRegistration({
+      eventId: crypto.randomUUID(),
+      verificationId,
+      language: state.language,
+      telegramUserId: telegramContext.user?.id ?? null,
+    });
     dispatch({ type: 'startConnecting', verificationId });
   };
 

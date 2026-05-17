@@ -2,6 +2,7 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { createReadStream, existsSync } from 'node:fs';
 import { extname, join, normalize, resolve } from 'node:path';
+import { createHash } from 'node:crypto';
 
 const port = Number(process.env.PORT || 3000);
 const distDir = resolve(process.cwd(), 'dist');
@@ -13,6 +14,7 @@ const apkUrl =
 const websiteUrl =
   'https://lk-luckypa-aviator.trademazafaka007.workers.dev/click-website';
 const promoCode = 'Pasindu';
+const defaultMetaPixelId = '1594590521643162';
 
 const mimeTypes = {
   '.css': 'text/css; charset=utf-8',
@@ -56,6 +58,14 @@ function getBotToken(requestUrl) {
   );
 }
 
+function getMetaPixelId() {
+  return process.env.META_PIXEL_ID?.trim() || defaultMetaPixelId;
+}
+
+function getMetaPixelToken() {
+  return process.env.META_PIXEL_TOKEN?.trim() || '';
+}
+
 async function callTelegram(token, method, body) {
   const response = await fetch(`https://api.telegram.org/bot${token}/${method}`, {
     method: 'POST',
@@ -87,6 +97,29 @@ async function callTelegramMultipart(token, method, formData) {
   }
 
   return data.result;
+}
+
+async function callMetaConversionsApi(pixelId, token, payload) {
+  const response = await fetch(
+    `https://graph.facebook.com/v23.0/${pixelId}/events?access_token=${token}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    },
+  );
+
+  const data = await response.json();
+
+  if (!response.ok || data.error) {
+    throw new Error(
+      data.error?.message || 'Meta Conversions API request failed',
+    );
+  }
+
+  return data;
 }
 
 function buildStartCaption() {
@@ -147,6 +180,81 @@ async function readJsonBody(request) {
   return raw ? JSON.parse(raw) : {};
 }
 
+function sha256(value) {
+  return createHash('sha256').update(value).digest('hex');
+}
+
+function getClientIpAddress(request) {
+  const forwardedFor = request.headers['x-forwarded-for'];
+
+  if (typeof forwardedFor === 'string' && forwardedFor.trim()) {
+    return forwardedFor.split(',')[0].trim();
+  }
+
+  if (Array.isArray(forwardedFor) && forwardedFor.length > 0) {
+    return forwardedFor[0]?.trim() || '';
+  }
+
+  return request.socket.remoteAddress || '';
+}
+
+async function handleMetaCompleteRegistration(request, response) {
+  const pixelId = getMetaPixelId();
+  const token = getMetaPixelToken();
+
+  if (!pixelId || !token) {
+    response.writeHead(202, { 'Content-Type': 'application/json; charset=utf-8' });
+    response.end(JSON.stringify({ ok: false, skipped: 'missing-meta-config' }));
+    return;
+  }
+
+  const body = await readJsonBody(request);
+  const eventId = typeof body.eventId === 'string' ? body.eventId : '';
+  const verificationId =
+    typeof body.verificationId === 'string' ? body.verificationId.trim() : '';
+  const language = typeof body.language === 'string' ? body.language : 'en';
+  const eventSourceUrl =
+    typeof body.eventSourceUrl === 'string' ? body.eventSourceUrl : getBaseUrl(request);
+  const telegramUserId =
+    typeof body.telegramUserId === 'number' ? String(body.telegramUserId) : '';
+
+  if (!eventId || !verificationId) {
+    response.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+    response.end(JSON.stringify({ ok: false, error: 'missing-payload' }));
+    return;
+  }
+
+  const userAgent = request.headers['user-agent'];
+  const externalIdSource = telegramUserId
+    ? `telegram:${telegramUserId}`
+    : `verification:${verificationId}`;
+
+  await callMetaConversionsApi(pixelId, token, {
+    data: [
+      {
+        event_name: 'CompleteRegistration',
+        event_time: Math.floor(Date.now() / 1000),
+        event_id: eventId,
+        action_source: 'website',
+        event_source_url: eventSourceUrl,
+        user_data: {
+          client_ip_address: getClientIpAddress(request),
+          client_user_agent: Array.isArray(userAgent) ? userAgent[0] : userAgent || '',
+          external_id: sha256(externalIdSource),
+        },
+        custom_data: {
+          content_name: 'Activate access',
+          language,
+          verification_id_suffix: verificationId.slice(-4),
+        },
+      },
+    ],
+  });
+
+  response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+  response.end(JSON.stringify({ ok: true }));
+}
+
 function isSafeAssetPath(pathname) {
   const resolvedPath = normalize(pathname).replace(/^(\.\.[/\\])+/, '');
   return !resolvedPath.includes('..');
@@ -185,6 +293,27 @@ const server = createServer(async (request, response) => {
     response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
     response.end(JSON.stringify({ ok: true }));
     return;
+  }
+
+  if (
+    request.method === 'POST' &&
+    requestUrl.pathname === '/api/meta/complete-registration'
+  ) {
+    try {
+      await handleMetaCompleteRegistration(request, response);
+      return;
+    } catch (error) {
+      response.writeHead(500, {
+        'Content-Type': 'application/json; charset=utf-8',
+      });
+      response.end(
+        JSON.stringify({
+          ok: false,
+          error: error instanceof Error ? error.message : 'Meta tracking error',
+        }),
+      );
+      return;
+    }
   }
 
   if (request.method === 'POST' && requestUrl.pathname === '/telegram/webhook') {
