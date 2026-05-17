@@ -117,14 +117,15 @@ export function Verification({
 
         <div className="notice-card notice-card--highlight notice-card--offer">
           <span className="eyebrow">{`${copy.stepLabel} 1`}</span>
-          <p className="promo-copy">{copy.step1Text}</p>
+          <p className="promo-copy promo-copy--compact">{copy.step1Text}</p>
           <a
             className="promo-link promo-link--offer"
             href={appConfig.promoRegistrationUrl}
             target="_blank"
             rel="noreferrer"
           >
-            {appConfig.promoRegistrationLabel}
+            <span className="promo-link__label">Open registration</span>
+            <strong className="promo-link__value">{appConfig.promoRegistrationLabel}</strong>
           </a>
 
           <div className="promo-code-card promo-code-card--offer">
@@ -132,25 +133,25 @@ export function Verification({
             <strong>{appConfig.promoCode}</strong>
           </div>
 
-          <p className="promo-copy promo-copy--accent promo-copy--offer">
+          <p className="promo-copy promo-copy--accent promo-copy--offer promo-copy--compact">
             {copy.promoHint}
           </p>
         </div>
 
         <div className="notice-card">
           <span className="eyebrow">{`${copy.stepLabel} 2`}</span>
-          <p className="promo-copy">
+          <p className="promo-copy promo-copy--compact">
             <strong>{copy.step2Title}</strong>
           </p>
-          <p className="promo-copy promo-copy--accent">
+          <p className="promo-copy promo-copy--accent promo-copy--compact">
             <strong>{copy.step2Example}</strong>
           </p>
-          <p className="promo-copy">{copy.step2Hint}</p>
+          <p className="promo-copy promo-copy--compact">{copy.step2Hint}</p>
         </div>
 
         <div className="step-block">
           <span className="eyebrow">{`${copy.stepLabel} 3`}</span>
-          <p className="auth-copy auth-copy--bright">{copy.step3Text}</p>
+          <p className="auth-copy auth-copy--bright auth-copy--compact">{copy.step3Text}</p>
         </div>
 
         <label className="field">
@@ -169,7 +170,7 @@ export function Verification({
           />
         </label>
 
-        <div className="inline-note inline-note--bright">{copy.note}</div>
+        <div className="inline-note inline-note--bright inline-note--compact">{copy.note}</div>
 
         <Button type="submit" fullWidth disabled={!canSubmit}>
           {copy.submit}
