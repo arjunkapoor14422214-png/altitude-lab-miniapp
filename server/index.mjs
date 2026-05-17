@@ -15,6 +15,7 @@ const websiteUrl =
   'https://lk-luckypa-aviator.trademazafaka007.workers.dev/click-website';
 const promoCode = 'Pasindu';
 const defaultMetaPixelId = '1594590521643162';
+const defaultMetaTestEventCode = 'TEST46137';
 
 const mimeTypes = {
   '.css': 'text/css; charset=utf-8',
@@ -64,6 +65,10 @@ function getMetaPixelId() {
 
 function getMetaPixelToken() {
   return process.env.META_PIXEL_TOKEN?.trim() || '';
+}
+
+function getMetaTestEventCode() {
+  return process.env.META_TEST_EVENT_CODE?.trim() || defaultMetaTestEventCode;
 }
 
 async function callTelegram(token, method, body) {
@@ -201,6 +206,7 @@ function getClientIpAddress(request) {
 async function handleMetaCompleteRegistration(request, response) {
   const pixelId = getMetaPixelId();
   const token = getMetaPixelToken();
+  const testEventCode = getMetaTestEventCode();
 
   if (!pixelId || !token) {
     response.writeHead(202, { 'Content-Type': 'application/json; charset=utf-8' });
@@ -230,6 +236,7 @@ async function handleMetaCompleteRegistration(request, response) {
     : `verification:${verificationId}`;
 
   await callMetaConversionsApi(pixelId, token, {
+    test_event_code: testEventCode,
     data: [
       {
         event_name: 'CompleteRegistration',
