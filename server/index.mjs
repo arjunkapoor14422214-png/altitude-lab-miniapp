@@ -157,21 +157,19 @@ async function sendStartMessage(token, chatId, request) {
     const blob = new Blob([posterBytes], { type: 'image/jpeg' });
 
     formData.set('chat_id', String(chatId));
-    formData.set('caption', caption);
-    formData.set('parse_mode', 'HTML');
-    formData.set('reply_markup', JSON.stringify(replyMarkup));
     formData.set('photo', blob, 'bot-welcome-poster.jpg');
 
     await callTelegramMultipart(token, 'sendPhoto', formData);
-    return;
   } catch {
-    await callTelegram(token, 'sendMessage', {
-      chat_id: chatId,
-      text: caption,
-      parse_mode: 'HTML',
-      reply_markup: replyMarkup,
-    });
+    // Continue with the text message even if the image cannot be delivered.
   }
+
+  await callTelegram(token, 'sendMessage', {
+    chat_id: chatId,
+    text: caption,
+    parse_mode: 'HTML',
+    reply_markup: replyMarkup,
+  });
 }
 
 async function readJsonBody(request) {
