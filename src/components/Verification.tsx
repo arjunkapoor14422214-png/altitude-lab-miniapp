@@ -115,8 +115,8 @@ export function Verification({
         <span className="eyebrow">{copy.eyebrow}</span>
         <h1>{copy.title}</h1>
 
-        <div className="notice-card notice-card--highlight notice-card--offer notice-card--simplified">
-          <div className="verification-header">
+        <div className="verification-step">
+          <div className="verification-step__head">
             <span className="eyebrow">{`${copy.stepLabel} 1`}</span>
             <p className="promo-copy promo-copy--compact">{copy.step1Text}</p>
           </div>
@@ -141,8 +141,10 @@ export function Verification({
           </p>
         </div>
 
-        <div className="notice-card notice-card--compact">
-          <span className="eyebrow">{`${copy.stepLabel} 2`}</span>
+        <div className="verification-step verification-step--compact">
+          <div className="verification-step__head">
+            <span className="eyebrow">{`${copy.stepLabel} 2`}</span>
+          </div>
           <p className="promo-copy promo-copy--compact verification-id-title">
             <strong>{copy.step2Title}</strong>
           </p>
@@ -152,7 +154,7 @@ export function Verification({
           <p className="promo-copy promo-copy--mini">{copy.step2Hint}</p>
         </div>
 
-        <div className="step-block step-block--compact">
+        <div className="verification-step verification-step--compact">
           <span className="eyebrow">{`${copy.stepLabel} 3`}</span>
           <p className="auth-copy auth-copy--bright auth-copy--compact">{copy.step3Text}</p>
         </div>

@@ -38,7 +38,6 @@ type CompanySelectionCopy = {
   eyebrow: string;
   title: string;
   subtitle: string;
-  companyBadge: string;
   continue: string;
 };
 
@@ -180,7 +179,6 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       eyebrow: 'Company',
       title: 'Choose your company',
       subtitle: 'Select the company where you already have an active deposit before entering your ID.',
-      companyBadge: 'Deposit active',
       continue: 'Continue',
     },
     verification: {
@@ -327,7 +325,6 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       eyebrow: 'الشركة',
       title: 'اختر شركتك',
       subtitle: 'اختر الشركة التي لديك فيها إيداع نشط قبل إدخال المعرّف.',
-      companyBadge: 'إيداع نشط',
       continue: 'متابعة',
     },
     verification: {
@@ -474,7 +471,6 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       eyebrow: 'සමාගම',
       title: 'ඔබගේ සමාගම තෝරන්න',
       subtitle: 'ID එක ඇතුළත් කිරීමට පෙර ඔබ deposit එකක් ඇති සමාගම තෝරන්න.',
-      companyBadge: 'Deposit active',
       continue: 'ඉදිරියට',
     },
     verification: {
@@ -621,7 +617,6 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       eyebrow: 'Société',
       title: 'Choisissez votre société',
       subtitle: 'Sélectionnez la société où vous avez déjà un dépôt actif avant de saisir votre ID.',
-      companyBadge: 'Dépôt actif',
       continue: 'Continuer',
     },
     verification: {
@@ -768,7 +763,6 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       eyebrow: 'Компания',
       title: 'Выбери компанию',
       subtitle: 'Перед вводом ID выбери компанию, в которой у тебя уже есть депозит.',
-      companyBadge: 'Депозит активен',
       continue: 'Продолжить',
     },
     verification: {

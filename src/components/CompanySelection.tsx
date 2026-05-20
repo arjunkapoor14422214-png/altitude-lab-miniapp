@@ -7,7 +7,6 @@ interface CompanySelectionCopy {
   eyebrow: string;
   title: string;
   subtitle: string;
-  companyBadge: string;
   continue: string;
 }
 
@@ -52,7 +51,6 @@ export function CompanySelection({
                 </span>
                 <span className="company-option__meta">
                   <strong>{company.name}</strong>
-                  <span>{copy.companyBadge}</span>
                 </span>
                 <span className="company-option__check" aria-hidden="true">
                   {isSelected ? '●' : '○'}

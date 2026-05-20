@@ -476,6 +476,25 @@ input {
   line-height: 1.35;
 }
 
+.verification-step {
+  display: grid;
+  gap: 10px;
+  padding: 16px 16px 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 208, 74, 0.1);
+  background: linear-gradient(180deg, rgba(27, 23, 18, 0.84), rgba(17, 14, 11, 0.9));
+}
+
+.verification-step--compact {
+  gap: 6px;
+  padding: 14px 16px;
+}
+
+.verification-step__head {
+  display: grid;
+  gap: 6px;
+}
+
 .promo-copy {
   margin: 0;
   color: #f4e6d5;
@@ -490,6 +509,7 @@ input {
 .promo-copy--mini {
   font-size: 0.82rem;
   line-height: 1.34;
+  color: #d7c7b0;
 }
 
 .promo-copy--accent {
@@ -1920,18 +1940,18 @@ input {
 
 .promo-link--offer {
   width: 100%;
-  min-height: 58px;
-  padding: 10px 16px;
+  min-height: 54px;
+  padding: 10px 14px;
   border-radius: 16px;
-  border: 1px solid rgba(196, 228, 116, 0.34);
+  border: 1px solid rgba(255, 206, 84, 0.2);
   background:
-    radial-gradient(circle at top right, rgba(218, 244, 132, 0.12), transparent 38%),
-    linear-gradient(180deg, rgba(112, 143, 72, 0.98), rgba(79, 105, 52, 0.98));
-  color: #fbfaef;
+    radial-gradient(circle at top right, rgba(255, 223, 118, 0.08), transparent 38%),
+    linear-gradient(180deg, rgba(52, 41, 24, 0.98), rgba(31, 25, 16, 0.98));
+  color: #fff5df;
   box-shadow:
-    0 14px 26px rgba(0, 0, 0, 0.16),
-    0 0 0 1px rgba(235, 248, 187, 0.08),
-    inset 0 1px 0 rgba(245, 251, 220, 0.18);
+    0 12px 24px rgba(0, 0, 0, 0.16),
+    0 0 0 1px rgba(255, 219, 137, 0.04),
+    inset 0 1px 0 rgba(255, 245, 217, 0.08);
   justify-content: space-between;
   align-items: center;
   gap: 12px;
@@ -1940,9 +1960,9 @@ input {
 
 .promo-link--offer:hover {
   box-shadow:
-    0 16px 28px rgba(0, 0, 0, 0.18),
-    0 0 0 1px rgba(235, 248, 187, 0.12),
-    inset 0 1px 0 rgba(245, 251, 220, 0.22);
+    0 14px 26px rgba(0, 0, 0, 0.18),
+    0 0 0 1px rgba(255, 219, 137, 0.07),
+    inset 0 1px 0 rgba(255, 245, 217, 0.12);
 }
 
 .promo-link__label {
@@ -1968,24 +1988,24 @@ input {
 
 .promo-link__value {
   font-family: "Space Grotesk", "Bahnschrift", "Segoe UI", sans-serif;
-  font-size: 1rem;
+  font-size: 0.98rem;
   line-height: 1.15;
-  color: #fffdf2;
+  color: #ffdf79;
 }
 
 .promo-code-card--offer {
   position: relative;
   overflow: hidden;
-  border-color: rgba(232, 198, 92, 0.3);
+  border-color: rgba(232, 198, 92, 0.22);
   background:
-    radial-gradient(circle at 18% 22%, rgba(255, 229, 128, 0.18), transparent 32%),
-    radial-gradient(circle at top right, rgba(196, 210, 120, 0.1), transparent 42%),
-    linear-gradient(180deg, rgba(30, 38, 21, 0.98), rgba(16, 22, 12, 0.99));
+    radial-gradient(circle at 18% 22%, rgba(255, 229, 128, 0.12), transparent 32%),
+    radial-gradient(circle at top right, rgba(255, 208, 82, 0.08), transparent 42%),
+    linear-gradient(180deg, rgba(37, 30, 19, 0.98), rgba(20, 16, 11, 0.99));
   box-shadow:
     inset 0 1px 0 rgba(255, 250, 216, 0.08),
     inset 0 0 0 1px rgba(255, 216, 122, 0.05),
-    0 10px 24px rgba(0, 0, 0, 0.18);
-  padding: 11px 16px 13px;
+    0 10px 22px rgba(0, 0, 0, 0.14);
+  padding: 10px 14px 12px;
   gap: 4px;
 }
 
@@ -2016,7 +2036,7 @@ input {
 }
 
 .promo-copy--offer {
-  color: #ede2bf;
+  color: #d9c8ad;
 }
 
 .step-block {
@@ -2047,6 +2067,11 @@ input {
 
 .verification-id-example strong {
   color: #f2eb84;
+}
+
+.verification-step .promo-link--offer,
+.verification-step .promo-code-card--offer {
+  font-size: 1.06rem;
 }
 
 .status-item {
@@ -2523,11 +2548,6 @@ input {
 .company-option__meta strong {
   font-size: 1.1rem;
   color: #fff6e7;
-}
-
-.company-option__meta span {
-  color: #e5d1a0;
-  font-size: 0.94rem;
 }
 
 .company-option__check {
