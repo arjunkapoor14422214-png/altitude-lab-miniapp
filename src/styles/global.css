@@ -487,6 +487,11 @@ input {
   line-height: 1.38;
 }
 
+.promo-copy--mini {
+  font-size: 0.82rem;
+  line-height: 1.34;
+}
+
 .promo-copy--accent {
   color: #e5ff89;
   font-weight: 700;
@@ -2019,6 +2024,31 @@ input {
   gap: 6px;
 }
 
+.step-block--compact {
+  gap: 4px;
+}
+
+.verification-header {
+  display: grid;
+  gap: 6px;
+}
+
+.notice-card--simplified {
+  gap: 10px;
+}
+
+.notice-card--compact {
+  gap: 4px;
+}
+
+.verification-id-title strong {
+  color: #fff2dc;
+}
+
+.verification-id-example strong {
+  color: #f2eb84;
+}
+
 .status-item {
   opacity: 1;
   color: #ddcfb7;
@@ -2478,11 +2508,11 @@ input {
 }
 
 .company-option__logo-mark {
-  width: 28px;
-  height: 28px;
+  width: 100%;
+  height: 100%;
   display: block;
   object-fit: contain;
-  border-radius: 8px;
+  border-radius: 14px;
 }
 
 .company-option__meta {
@@ -2537,17 +2567,6 @@ input {
   overflow: hidden;
 }
 
-.signal-stage::before {
-  content: '';
-  position: absolute;
-  inset: auto -20% -12% -20%;
-  height: 160px;
-  background:
-    radial-gradient(circle at center, rgba(255, 177, 63, 0.14), transparent 42%),
-    linear-gradient(180deg, rgba(162, 16, 31, 0.12), transparent 80%);
-  pointer-events: none;
-}
-
 .signal-stage__status {
   position: relative;
   z-index: 1;
@@ -2583,6 +2602,7 @@ input {
   padding: 14px;
   aspect-ratio: 1;
   border-radius: 999px;
+  border: 0;
   background:
     radial-gradient(circle at center, rgba(255, 214, 112, 0.1), transparent 58%),
     conic-gradient(from -90deg, rgba(255, 216, 124, 0.14) 0deg, rgba(255, 216, 124, 0.14) var(--signal-progress), rgba(255, 255, 255, 0.06) var(--signal-progress), rgba(255, 255, 255, 0.06) 360deg);
@@ -2590,6 +2610,10 @@ input {
     inset 0 0 0 1px rgba(255, 222, 138, 0.07),
     0 20px 44px rgba(0, 0, 0, 0.28);
   perspective: 1600px;
+  cursor: pointer;
+  appearance: none;
+  color: inherit;
+  font: inherit;
 }
 
 .signal-token {
@@ -2654,9 +2678,9 @@ input {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 12px;
+  padding: 4px 6px;
   border-radius: 999px;
-  background: rgba(14, 12, 8, 0.52);
+  background: rgba(14, 12, 8, 0.22);
   color: #ffe9b0;
   font-size: 0.88rem;
   letter-spacing: 0.08em;
@@ -2664,23 +2688,18 @@ input {
 }
 
 .signal-face__brand-code {
-  display: inline-grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #ffd65f, #d7a200);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.24),
-    0 6px 16px rgba(120, 66, 0, 0.16);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
 }
 
 .signal-face__brand-mark {
-  width: 20px;
-  height: 20px;
+  width: 100%;
+  height: 100%;
   display: block;
   object-fit: contain;
-  border-radius: 6px;
 }
 
 .signal-face__plane {
@@ -2690,7 +2709,7 @@ input {
   filter:
     drop-shadow(0 16px 26px rgba(0, 0, 0, 0.34))
     drop-shadow(0 0 22px rgba(255, 206, 85, 0.16));
-  transform: rotate(-7deg) translateY(18px);
+  transform: rotate(-7deg) translateY(34px);
   user-select: none;
   pointer-events: none;
 }
@@ -2698,7 +2717,7 @@ input {
 .signal-face__copy {
   display: grid;
   gap: 6px;
-  margin-top: 14px;
+  margin-top: 38px;
 }
 
 .signal-face__copy strong,
@@ -2769,5 +2788,13 @@ input {
 
   .signal-face__brand {
     top: 20px;
+  }
+
+  .signal-face__plane {
+    transform: rotate(-7deg) translateY(38px);
+  }
+
+  .signal-face__copy {
+    margin-top: 42px;
   }
 }

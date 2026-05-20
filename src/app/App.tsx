@@ -609,7 +609,6 @@ export default function App() {
           targetMultiplier={state.preparedRound?.targetMultiplier ?? null}
           roundStage={state.roundStage}
           flightProgress={state.flightProgress}
-          signalDurationMs={state.preparedRound?.durationMs ?? 0}
           onStartRound={handleStartRound}
         />
       ) : null}

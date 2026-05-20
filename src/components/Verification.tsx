@@ -115,9 +115,12 @@ export function Verification({
         <span className="eyebrow">{copy.eyebrow}</span>
         <h1>{copy.title}</h1>
 
-        <div className="notice-card notice-card--highlight notice-card--offer">
-          <span className="eyebrow">{`${copy.stepLabel} 1`}</span>
-          <p className="promo-copy promo-copy--compact">{copy.step1Text}</p>
+        <div className="notice-card notice-card--highlight notice-card--offer notice-card--simplified">
+          <div className="verification-header">
+            <span className="eyebrow">{`${copy.stepLabel} 1`}</span>
+            <p className="promo-copy promo-copy--compact">{copy.step1Text}</p>
+          </div>
+
           <a
             className="promo-link promo-link--offer"
             href={appConfig.promoRegistrationUrl}
@@ -133,23 +136,23 @@ export function Verification({
             <strong>{appConfig.promoCode}</strong>
           </div>
 
-          <p className="promo-copy promo-copy--accent promo-copy--offer promo-copy--compact">
+          <p className="promo-copy promo-copy--accent promo-copy--offer promo-copy--mini">
             {copy.promoHint}
           </p>
         </div>
 
-        <div className="notice-card">
+        <div className="notice-card notice-card--compact">
           <span className="eyebrow">{`${copy.stepLabel} 2`}</span>
-          <p className="promo-copy promo-copy--compact">
+          <p className="promo-copy promo-copy--compact verification-id-title">
             <strong>{copy.step2Title}</strong>
           </p>
-          <p className="promo-copy promo-copy--accent promo-copy--compact">
+          <p className="promo-copy promo-copy--accent promo-copy--compact verification-id-example">
             <strong>{copy.step2Example}</strong>
           </p>
-          <p className="promo-copy promo-copy--compact">{copy.step2Hint}</p>
+          <p className="promo-copy promo-copy--mini">{copy.step2Hint}</p>
         </div>
 
-        <div className="step-block">
+        <div className="step-block step-block--compact">
           <span className="eyebrow">{`${copy.stepLabel} 3`}</span>
           <p className="auth-copy auth-copy--bright auth-copy--compact">{copy.step3Text}</p>
         </div>

@@ -25,7 +25,6 @@ interface GameScreenProps {
   targetMultiplier: number | null;
   roundStage: RoundStage;
   flightProgress: number;
-  signalDurationMs: number;
   onStartRound: () => void;
 }
 
@@ -34,7 +33,6 @@ export function GameScreen({
   targetMultiplier,
   roundStage,
   flightProgress,
-  signalDurationMs,
   onStartRound,
 }: GameScreenProps) {
   const buttonLabel =
@@ -64,7 +62,8 @@ export function GameScreen({
           {statusLabel}
         </div>
 
-        <div
+        <button
+          type="button"
           className={[
             'signal-token-shell',
             isOpen ? 'signal-token-shell--open' : '',
@@ -73,6 +72,9 @@ export function GameScreen({
             .filter(Boolean)
             .join(' ')}
           style={{ '--signal-progress': progressDeg } as CSSProperties}
+          onClick={roundStage === 'round_idle' ? onStartRound : undefined}
+          disabled={roundStage !== 'round_idle'}
+          aria-label={copy.start}
         >
           <div className="signal-token">
             <div className="signal-face signal-face--front">
@@ -104,7 +106,7 @@ export function GameScreen({
               <span className="signal-face__hint">{copy.signalHint}</span>
             </div>
           </div>
-        </div>
+        </button>
       </div>
 
       <Button
