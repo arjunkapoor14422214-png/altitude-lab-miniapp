@@ -2478,9 +2478,11 @@ input {
 }
 
 .company-option__logo-mark {
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   display: block;
+  object-fit: contain;
+  border-radius: 8px;
 }
 
 .company-option__meta {
@@ -2674,9 +2676,11 @@ input {
 }
 
 .signal-face__brand-mark {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   display: block;
+  object-fit: contain;
+  border-radius: 6px;
 }
 
 .signal-face__plane {
