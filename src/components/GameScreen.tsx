@@ -1,5 +1,7 @@
+import type { CSSProperties } from 'react';
+import planeSignalSprite from '../assets/plane-signal.png';
 import { Button } from './Button';
-import { PlaneAnimation } from './PlaneAnimation';
+import { formatMultiplier } from '../lib/multiplierGenerator';
 import type { RoundStage } from '../types/game';
 
 interface GameCopy {
@@ -7,58 +9,129 @@ interface GameCopy {
   start: string;
   running: string;
   reload: string;
-  waitingStatus: string;
-  flyingStatus: string;
-  explodedStatus: string;
-  exactPoint: string;
-  flightPoint: string;
-  hidden: string;
+  closedTitle: string;
+  closedHint: string;
+  signalLabel: string;
+  signalHint: string;
+  durationLabel: string;
+  durationSuffix: string;
+  readyStatus: string;
+  liveStatus: string;
+  resetStatus: string;
+  brand: string;
+  brandCode: string;
 }
 
 interface GameScreenProps {
   copy: GameCopy;
   targetMultiplier: number | null;
-  currentMultiplier: number;
   roundStage: RoundStage;
   flightProgress: number;
+  signalDurationMs: number;
   onStartRound: () => void;
 }
 
 export function GameScreen({
   copy,
   targetMultiplier,
-  currentMultiplier,
   roundStage,
   flightProgress,
+  signalDurationMs,
   onStartRound,
 }: GameScreenProps) {
-  const startButtonLabel =
+  const buttonLabel =
     roundStage === 'round_idle'
       ? copy.start
       : roundStage === 'round_running'
         ? copy.running
         : copy.reload;
 
-  return (
-    <section className="game-shell game-shell--arcade">
-      <div className="arcade-topline">{copy.topline}</div>
+  const isOpen = roundStage === 'round_running';
+  const isResetting = roundStage === 'round_finished';
+  const totalSeconds = Math.max(5, Math.min(30, Math.round(signalDurationMs / 1000) || 5));
+  const remainingSeconds = Math.max(
+    0,
+    Math.ceil((signalDurationMs * (1 - flightProgress)) / 1000),
+  );
+  const progressDeg = `${Math.max(0, Math.min(1, flightProgress)) * 360}deg`;
+  const statusLabel =
+    roundStage === 'round_running'
+      ? copy.liveStatus
+      : roundStage === 'round_finished'
+        ? copy.resetStatus
+        : copy.readyStatus;
 
-      <PlaneAnimation
-        copy={copy}
-        progress={flightProgress}
-        running={roundStage === 'round_running'}
-        finished={roundStage === 'round_finished'}
-        currentMultiplier={currentMultiplier}
-        targetMultiplier={targetMultiplier}
-      />
+  return (
+    <section className="game-shell game-shell--signal">
+      <div className="signal-topline">{copy.topline}</div>
+
+      <div className="signal-stage">
+        <div className="signal-stage__status">
+          <span className="signal-stage__dot" aria-hidden="true" />
+          {statusLabel}
+        </div>
+
+        <div
+          className={[
+            'signal-token-shell',
+            isOpen ? 'signal-token-shell--open' : '',
+            isResetting ? 'signal-token-shell--reset' : '',
+          ]
+            .filter(Boolean)
+            .join(' ')}
+          style={{ '--signal-progress': progressDeg } as CSSProperties}
+        >
+          <div className="signal-token">
+            <div className="signal-face signal-face--front">
+              <div className="signal-face__halo" aria-hidden="true" />
+              <div className="signal-face__brand">
+                <span className="signal-face__brand-code">{copy.brandCode}</span>
+                <span>{copy.brand}</span>
+              </div>
+              <img
+                className="signal-face__plane"
+                src={planeSignalSprite}
+                alt=""
+                aria-hidden="true"
+              />
+              <div className="signal-face__copy">
+                <strong>{copy.closedTitle}</strong>
+                <span>{copy.closedHint}</span>
+              </div>
+            </div>
+
+            <div className="signal-face signal-face--back">
+              <div className="signal-face__back-ring" aria-hidden="true" />
+              <span className="signal-face__label">{copy.signalLabel}</span>
+              <strong className="signal-face__value">
+                {targetMultiplier ? formatMultiplier(targetMultiplier) : 'x--'}
+              </strong>
+              <span className="signal-face__hint">{copy.signalHint}</span>
+              <div className="signal-face__timer">
+                <span>{copy.durationLabel}</span>
+                <strong>
+                  {Math.max(remainingSeconds, 1)} {copy.durationSuffix}
+                </strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="signal-stage__footer">
+          <span>{copy.durationLabel}</span>
+          <strong>
+            {totalSeconds} {copy.durationSuffix}
+          </strong>
+        </div>
+      </div>
 
       <Button
         fullWidth
-        className="arcade-start-button"
+        className="signal-start-button"
         onClick={onStartRound}
         disabled={roundStage !== 'round_idle'}
       >
-        {startButtonLabel}
+        {buttonLabel}
       </Button>
     </section>
   );

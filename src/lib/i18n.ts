@@ -18,7 +18,7 @@ type AppCopy = {
   connectSuccess: string;
   idlePrompt: string;
   roundStarted: (roundNumber: number) => string;
-  roundFinished: (roundNumber: number, multiplier: string) => string;
+  roundFinished: (roundNumber: number) => string;
   telegramContinue: string;
   telegramActivating: string;
 };
@@ -31,6 +31,14 @@ type OnboardingCopy = {
   insideItems: string[];
   startTitle: string;
   startItems: string[];
+  continue: string;
+};
+
+type CompanySelectionCopy = {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  companyBadge: string;
   continue: string;
 };
 
@@ -60,12 +68,17 @@ type GameCopy = {
   start: string;
   running: string;
   reload: string;
-  waitingStatus: string;
-  flyingStatus: string;
-  explodedStatus: string;
-  exactPoint: string;
-  flightPoint: string;
-  hidden: string;
+  closedTitle: string;
+  closedHint: string;
+  signalLabel: string;
+  signalHint: string;
+  durationLabel: string;
+  durationSuffix: string;
+  readyStatus: string;
+  liveStatus: string;
+  resetStatus: string;
+  brand: string;
+  brandCode: string;
 };
 
 type HistoryCopy = {
@@ -119,6 +132,7 @@ export type TranslationBundle = {
   languages: Record<SupportedLanguage, string>;
   app: AppCopy;
   onboarding: OnboardingCopy;
+  companySelection: CompanySelectionCopy;
   verification: VerificationCopy;
   game: GameCopy;
   history: HistoryCopy;
@@ -140,10 +154,9 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       updateProfile: 'You can update your training ID and activate the profile again.',
       startConnecting: 'Starting local activation for training mode...',
       connectSuccess: 'ID accepted. You can start training.',
-      idlePrompt: 'Press start to generate a new round.',
+      idlePrompt: 'Press start to activate the next signal.',
       roundStarted: (roundNumber) => `Round #${roundNumber} started.`,
-      roundFinished: (roundNumber, multiplier) =>
-        `Round #${roundNumber} finished at ${multiplier}.`,
+      roundFinished: (roundNumber) => `Signal #${roundNumber} closed.`,
       telegramContinue: 'Continue',
       telegramActivating: 'Activating...',
     },
@@ -164,6 +177,13 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
         'After activation, launch rounds in the app and follow the multiplier on the site in parallel.',
         'The app will show in advance where the plane will crash so you can follow the round movement.',
       ],
+      continue: 'Continue',
+    },
+    companySelection: {
+      eyebrow: 'Company',
+      title: 'Choose your company',
+      subtitle: 'Select the company where you already have an active deposit before entering your ID.',
+      companyBadge: 'Deposit active',
       continue: 'Continue',
     },
     verification: {
@@ -193,16 +213,21 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
     },
     game: {
       topline:
-        'Press start at the same time as the bet on the site and get the exact moment when the plane ends its flight.',
-      start: 'START',
-      running: 'FLIGHT...',
-      reload: 'RELOADING',
-      waitingStatus: 'Waiting for generation',
-      flyingStatus: 'Plane in flight',
-      explodedStatus: 'Plane exploded',
-      exactPoint: 'Exact point',
-      flightPoint: 'Flight point',
-      hidden: 'hidden',
+        'Press start together with your live bet on the website and hold the revealed signal until it closes back.',
+      start: 'START SIGNAL',
+      running: 'SIGNAL LIVE',
+      reload: 'RESETTING',
+      closedTitle: 'Signal locked',
+      closedHint: 'Press start to reveal the next signal.',
+      signalLabel: 'Signal',
+      signalHint: 'Keep this signal active while the timer is open.',
+      durationLabel: 'Visible for',
+      durationSuffix: 'sec',
+      readyStatus: 'Signal ready',
+      liveStatus: 'Signal revealed',
+      resetStatus: 'Closing signal',
+      brand: 'Aviator Signal',
+      brandCode: 'LP',
     },
     history: {
       eyebrow: 'Round journal',
@@ -279,10 +304,9 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       updateProfile: 'يمكنك تحديث معرف التدريب وتفعيل الملف مرة أخرى.',
       startConnecting: 'جارٍ بدء التفعيل المحلي لوضع التدريب...',
       connectSuccess: 'تم قبول المعرّف. يمكنك بدء التدريب.',
-      idlePrompt: 'اضغط ابدأ لإنشاء جولة جديدة.',
+      idlePrompt: 'اضغط ابدأ لتفعيل الإشارة التالية.',
       roundStarted: (roundNumber) => `بدأت الجولة #${roundNumber}.`,
-      roundFinished: (roundNumber, multiplier) =>
-        `انتهت الجولة #${roundNumber} عند ${multiplier}.`,
+      roundFinished: (roundNumber) => `تم إغلاق الإشارة #${roundNumber}.`,
       telegramContinue: 'متابعة',
       telegramActivating: 'جارٍ التفعيل...',
     },
@@ -303,6 +327,13 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
         'بعد التفعيل شغّل الجولات داخل التطبيق وراقب المضاعف على الموقع في الوقت نفسه.',
         'سيعرض التطبيق مسبقًا أين ستنفجر الطائرة حتى تتمكن من متابعة حركة الجولة.',
       ],
+      continue: 'متابعة',
+    },
+    companySelection: {
+      eyebrow: 'الشركة',
+      title: 'اختر شركتك',
+      subtitle: 'اختر الشركة التي لديك فيها إيداع نشط قبل إدخال المعرّف.',
+      companyBadge: 'إيداع نشط',
       continue: 'متابعة',
     },
     verification: {
@@ -332,16 +363,21 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
     },
     game: {
       topline:
-        'اضغط ابدأ في نفس لحظة الرهان على الموقع واحصل على اللحظة الدقيقة التي تنتهي فيها رحلة الطائرة.',
-      start: 'ابدأ',
-      running: 'جارية...',
-      reload: 'إعادة تحميل',
-      waitingStatus: 'بانتظار التوليد',
-      flyingStatus: 'الطائرة في الجو',
-      explodedStatus: 'انفجرت الطائرة',
-      exactPoint: 'النقطة الدقيقة',
-      flightPoint: 'نقطة الطيران',
-      hidden: 'مخفية',
+        'اضغط ابدأ مع رهانك المباشر على الموقع واحتفظ بالإشارة المفتوحة حتى تُغلق من جديد.',
+      start: 'ابدأ الإشارة',
+      running: 'الإشارة فعالة',
+      reload: 'إعادة الإغلاق',
+      closedTitle: 'الإشارة مغلقة',
+      closedHint: 'اضغط ابدأ لكشف الإشارة التالية.',
+      signalLabel: 'الإشارة',
+      signalHint: 'احتفظ بهذه الإشارة نشطة طوال مدة المؤقت.',
+      durationLabel: 'المدة',
+      durationSuffix: 'ث',
+      readyStatus: 'الإشارة جاهزة',
+      liveStatus: 'تم كشف الإشارة',
+      resetStatus: 'جارٍ إغلاق الإشارة',
+      brand: 'Aviator Signal',
+      brandCode: 'LP',
     },
     history: {
       eyebrow: 'سجل الجولات',
@@ -418,10 +454,9 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       updateProfile: 'ඔබගේ පුහුණු ID යාවත්කාලීන කර නැවත ප්‍රොෆයිලය සක්‍රීය කළ හැක.',
       startConnecting: 'පුහුණු මාදිලිය සඳහා දේශීය සක්‍රීයකරණය ආරම්භ කරමින්...',
       connectSuccess: 'ID පිළිගන්නා ලදී. දැන් පුහුණුව ආරම්භ කළ හැක.',
-      idlePrompt: 'නව වටයක් ජනනය කිරීමට Start ඔබන්න.',
+      idlePrompt: 'ඊළඟ signal එක සක්‍රීය කිරීමට Start ඔබන්න.',
       roundStarted: (roundNumber) => `වටය #${roundNumber} ආරම්භ විය.`,
-      roundFinished: (roundNumber, multiplier) =>
-        `වටය #${roundNumber} ${multiplier} හි අවසන් විය.`,
+      roundFinished: (roundNumber) => `Signal #${roundNumber} වැසී ගියේය.`,
       telegramContinue: 'ඉදිරියට',
       telegramActivating: 'සක්‍රීය කරමින්...',
     },
@@ -442,6 +477,13 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
         'සක්‍රීයකරණයෙන් පසු යෙදුම තුළ වට ආරම්භ කර, එකවර site එකේ multiplier එක නිරීක්ෂණය කරන්න.',
         'ගුවන් යානය කොතැනකදී කඩා වැටේද යන්න යෙදුම කලින්ම පෙන්වයි.',
       ],
+      continue: 'ඉදිරියට',
+    },
+    companySelection: {
+      eyebrow: 'සමාගම',
+      title: 'ඔබගේ සමාගම තෝරන්න',
+      subtitle: 'ID එක ඇතුළත් කිරීමට පෙර ඔබ deposit එකක් ඇති සමාගම තෝරන්න.',
+      companyBadge: 'Deposit active',
       continue: 'ඉදිරියට',
     },
     verification: {
@@ -471,16 +513,21 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
     },
     game: {
       topline:
-        'site එකේ bet එක සමඟ එකවර Start ඔබා, ගුවන් යානයේ ගමන අවසන් වන නිවැරදි මොහොත ලබා ගන්න.',
-      start: 'ආරම්භය',
-      running: 'පියාසරය...',
-      reload: 'නැවත පූරණය',
-      waitingStatus: 'ජනනය බලා සිටී',
-      flyingStatus: 'ගුවන් යානය පියාසර කරයි',
-      explodedStatus: 'ගුවන් යානය පුපුරා ගියා',
-      exactPoint: 'නිවැරදි ස්ථානය',
-      flightPoint: 'පියාසැරි ස්ථානය',
-      hidden: 'සඟවා ඇත',
+        'site එකේ live bet එක සමඟ Start ඔබා, signal එක නැවත වැසෙන තෙක් එය තබා ගන්න.',
+      start: 'START SIGNAL',
+      running: 'SIGNAL LIVE',
+      reload: 'RESETTING',
+      closedTitle: 'Signal locked',
+      closedHint: 'ඊළඟ signal එක පෙන්වීමට Start ඔබන්න.',
+      signalLabel: 'Signal',
+      signalHint: 'Timer එක පවතින කාලය පුරා මෙම signal එක භාවිතා කරන්න.',
+      durationLabel: 'Visible for',
+      durationSuffix: 'sec',
+      readyStatus: 'Signal ready',
+      liveStatus: 'Signal revealed',
+      resetStatus: 'Signal closing',
+      brand: 'Aviator Signal',
+      brandCode: 'LP',
     },
     history: {
       eyebrow: 'වට සටහන්',
@@ -557,10 +604,9 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       updateProfile: 'Vous pouvez mettre à jour votre ID d’entraînement et réactiver le profil.',
       startConnecting: 'Activation locale du mode entraînement en cours...',
       connectSuccess: 'ID accepté. Vous pouvez commencer l’entraînement.',
-      idlePrompt: 'Appuyez sur Start pour générer un nouveau round.',
+      idlePrompt: 'Appuyez sur Start pour activer le prochain signal.',
       roundStarted: (roundNumber) => `Round #${roundNumber} lancé.`,
-      roundFinished: (roundNumber, multiplier) =>
-        `Round #${roundNumber} terminé à ${multiplier}.`,
+      roundFinished: (roundNumber) => `Le signal #${roundNumber} s’est refermé.`,
       telegramContinue: 'Continuer',
       telegramActivating: 'Activation...',
     },
@@ -581,6 +627,13 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
         'Après activation, lancez les rounds dans l’application et suivez le multiplicateur sur le site en parallèle.',
         'L’application montrera à l’avance où l’avion va exploser afin que vous puissiez suivre le mouvement du round.',
       ],
+      continue: 'Continuer',
+    },
+    companySelection: {
+      eyebrow: 'Société',
+      title: 'Choisissez votre société',
+      subtitle: 'Sélectionnez la société où vous avez déjà un dépôt actif avant de saisir votre ID.',
+      companyBadge: 'Dépôt actif',
       continue: 'Continuer',
     },
     verification: {
@@ -610,16 +663,21 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
     },
     game: {
       topline:
-        'Appuyez sur Start au même moment que la mise sur le site et obtenez l’instant exact où l’avion termine son vol.',
-      start: 'DÉMARRER',
-      running: 'VOL...',
-      reload: 'RECHARGER',
-      waitingStatus: 'En attente de génération',
-      flyingStatus: 'Avion en vol',
-      explodedStatus: 'Avion explosé',
-      exactPoint: 'Point exact',
-      flightPoint: 'Point de vol',
-      hidden: 'masqué',
+        'Appuyez sur Start en même temps que votre mise en direct sur le site et gardez le signal ouvert jusqu’à sa fermeture.',
+      start: 'START SIGNAL',
+      running: 'SIGNAL LIVE',
+      reload: 'RÉINITIALISATION',
+      closedTitle: 'Signal verrouillé',
+      closedHint: 'Appuyez sur Start pour révéler le prochain signal.',
+      signalLabel: 'Signal',
+      signalHint: 'Gardez ce signal actif pendant toute la durée du minuteur.',
+      durationLabel: 'Visible',
+      durationSuffix: 'sec',
+      readyStatus: 'Signal prêt',
+      liveStatus: 'Signal révélé',
+      resetStatus: 'Fermeture du signal',
+      brand: 'Aviator Signal',
+      brandCode: 'LP',
     },
     history: {
       eyebrow: 'Journal des rounds',
@@ -696,10 +754,9 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       updateProfile: 'Можно обновить тренировочный ID и заново активировать профиль.',
       startConnecting: 'Запускаем локальную активацию тренировочного режима...',
       connectSuccess: 'ID принят. Можно начинать тренировку.',
-      idlePrompt: 'Нажми старт, чтобы сгенерировать новый раунд.',
+      idlePrompt: 'Нажми старт, чтобы активировать следующий сигнал.',
       roundStarted: (roundNumber) => `Раунд #${roundNumber} запущен.`,
-      roundFinished: (roundNumber, multiplier) =>
-        `Раунд #${roundNumber} завершен на ${multiplier}.`,
+      roundFinished: (roundNumber) => `Сигнал #${roundNumber} закрылся.`,
       telegramContinue: 'Продолжить',
       telegramActivating: 'Активация...',
     },
@@ -720,6 +777,13 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
         'После активации запускай раунды в приложении и параллельно следи за множителем на сайте.',
         'Приложение заранее покажет, где разобьется самолет, чтобы ты мог ориентироваться по движению раунда.',
       ],
+      continue: 'Продолжить',
+    },
+    companySelection: {
+      eyebrow: 'Компания',
+      title: 'Выбери компанию',
+      subtitle: 'Перед вводом ID выбери компанию, в которой у тебя уже есть депозит.',
+      companyBadge: 'Депозит активен',
       continue: 'Продолжить',
     },
     verification: {
@@ -749,16 +813,21 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
     },
     game: {
       topline:
-        'Нажми старт одновременно со ставкой на сайте и получи точный момент, когда самолет завершит полет.',
-      start: 'СТАРТ',
-      running: 'ПОЛЕТ...',
-      reload: 'ПЕРЕЗАГРУЗКА',
-      waitingStatus: 'Ожидает генерацию',
-      flyingStatus: 'Самолет в полете',
-      explodedStatus: 'Самолет взорвался',
-      exactPoint: 'Точная точка',
-      flightPoint: 'Точка полета',
-      hidden: 'скрыта',
+        'Нажми старт одновременно со своей ставкой на сайте и держи сигнал открытым, пока он не закроется обратно.',
+      start: 'СТАРТ СИГНАЛА',
+      running: 'СИГНАЛ АКТИВЕН',
+      reload: 'СБРОС',
+      closedTitle: 'Сигнал закрыт',
+      closedHint: 'Нажми старт, чтобы открыть следующий сигнал.',
+      signalLabel: 'Сигнал',
+      signalHint: 'Держи этот сигнал активным, пока открыт таймер.',
+      durationLabel: 'Открыт',
+      durationSuffix: 'сек',
+      readyStatus: 'Сигнал готов',
+      liveStatus: 'Сигнал открыт',
+      resetStatus: 'Сигнал закрывается',
+      brand: 'Aviator Signal',
+      brandCode: 'LP',
     },
     history: {
       eyebrow: 'Журнал раундов',

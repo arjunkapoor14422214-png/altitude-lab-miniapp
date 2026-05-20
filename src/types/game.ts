@@ -1,6 +1,13 @@
 import type { LanguageSource, RangeKey, SupportedLanguage } from './i18n';
 
-export type AppStage = 'onboarding' | 'verification' | 'connecting' | 'ready';
+export type CompanyId = 'luckypari';
+
+export type AppStage =
+  | 'onboarding'
+  | 'company_selection'
+  | 'verification'
+  | 'connecting'
+  | 'ready';
 
 export type RoundStage = 'round_idle' | 'round_running' | 'round_finished';
 
@@ -67,6 +74,7 @@ export interface RoundRecord {
 
 export interface StoredSession {
   onboardingSeen: boolean;
+  selectedCompany: CompanyId | null;
   verifiedId: string;
   history: RoundRecord[];
   roundCounter: number;

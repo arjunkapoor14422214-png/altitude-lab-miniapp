@@ -1,4 +1,5 @@
 import { useEffect, useEffectEvent, useReducer, useState } from 'react';
+import { CompanySelection } from '../components/CompanySelection';
 import { GameScreen } from '../components/GameScreen';
 import { LanguagePrompt } from '../components/LanguagePrompt';
 import { Onboarding } from '../components/Onboarding';
@@ -6,10 +7,7 @@ import { Verification } from '../components/Verification';
 import { gameConfig } from '../config/gameConfig';
 import { getTranslations } from '../lib/i18n';
 import { trackCompleteRegistration } from '../lib/meta';
-import {
-  createPreparedRound,
-  formatMultiplier,
-} from '../lib/multiplierGenerator';
+import { createPreparedRound } from '../lib/multiplierGenerator';
 import { loadSession, saveSession } from '../lib/storage';
 import {
   initTelegramApp,
@@ -22,6 +20,7 @@ import {
 } from '../lib/telegram';
 import type {
   AppStage,
+  CompanyId,
   PreparedRound,
   RoundRecord,
   RoundStage,
@@ -35,6 +34,7 @@ interface AppState {
   onboardingSeen: boolean;
   language: SupportedLanguage;
   languageSource: LanguageSource;
+  selectedCompany: CompanyId | null;
   verificationId: string;
   pendingVerificationId: string | null;
   preparedRound: PreparedRound | null;
@@ -47,21 +47,15 @@ interface AppState {
 
 type AppAction =
   | { type: 'completeOnboarding' }
-  | {
-      type: 'setLanguage';
-      language: SupportedLanguage;
-      source: LanguageSource;
-    }
+  | { type: 'setLanguage'; language: SupportedLanguage; source: LanguageSource }
   | { type: 'revisitOnboarding' }
+  | { type: 'selectCompany'; companyId: CompanyId }
+  | { type: 'openCompanySelection' }
   | { type: 'openVerification' }
   | { type: 'startConnecting'; verificationId: string }
   | { type: 'finishConnecting'; message: string }
   | { type: 'startRound'; round: PreparedRound }
-  | {
-      type: 'animateRound';
-      currentMultiplier: number;
-      flightProgress: number;
-    }
+  | { type: 'animateRound'; currentMultiplier: number; flightProgress: number }
   | { type: 'finishRound'; record: RoundRecord }
   | { type: 'resetRound' };
 
@@ -85,17 +79,21 @@ function createInitialState(session: StoredSession): AppState {
   const language = session.language ?? 'en';
   const copy = getTranslations(language).app;
   const verificationId = session.verifiedId;
+  const selectedCompany = session.selectedCompany;
 
   return {
     appStage: session.onboardingSeen
       ? verificationId
         ? 'ready'
-        : 'verification'
+        : selectedCompany
+          ? 'verification'
+          : 'company_selection'
       : 'onboarding',
     roundStage: 'round_idle',
     onboardingSeen: session.onboardingSeen,
     language,
     languageSource: session.language ? session.languageSource : 'manual',
+    selectedCompany,
     verificationId,
     pendingVerificationId: null,
     preparedRound: null,
@@ -115,7 +113,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return {
         ...state,
         onboardingSeen: true,
-        appStage: 'verification',
+        appStage: 'company_selection',
       };
 
     case 'setLanguage': {
@@ -136,6 +134,22 @@ function appReducer(state: AppState, action: AppAction): AppState {
         ...state,
         appStage: 'onboarding',
         pendingVerificationId: null,
+      };
+
+    case 'selectCompany':
+      return {
+        ...state,
+        selectedCompany: action.companyId,
+        appStage: 'verification',
+        activationMessage: copy.prepareProfile,
+      };
+
+    case 'openCompanySelection':
+      return {
+        ...state,
+        appStage: 'company_selection',
+        pendingVerificationId: null,
+        activationMessage: copy.prepareProfile,
       };
 
     case 'openVerification':
@@ -173,7 +187,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
         ...state,
         preparedRound: action.round,
         roundStage: 'round_running',
-        currentMultiplier: 1,
+        currentMultiplier: action.round.targetMultiplier,
         flightProgress: 0,
         activationMessage: copy.roundStarted(action.round.roundNumber),
       };
@@ -197,10 +211,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
         flightProgress: 1,
         history: [action.record, ...state.history].slice(0, gameConfig.historyLimit),
         roundCounter: action.record.roundNumber,
-        activationMessage: copy.roundFinished(
-          action.record.roundNumber,
-          formatMultiplier(action.record.targetMultiplier),
-        ),
+        activationMessage: copy.roundFinished(action.record.roundNumber),
       };
 
     case 'resetRound':
@@ -227,11 +238,6 @@ function formatRoundTime(date: Date, locale: string) {
 
 function randomInteger(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function animateMultiplier(progress: number, targetMultiplier: number) {
-  const value = Math.exp(Math.log(targetMultiplier) * progress);
-  return Math.min(targetMultiplier, Math.round(value * 100) / 100);
 }
 
 const defaultTelegramContext: TelegramContext = {
@@ -282,6 +288,7 @@ export default function App() {
   useEffect(() => {
     saveSession({
       onboardingSeen: state.onboardingSeen,
+      selectedCompany: state.selectedCompany,
       verifiedId: state.verificationId,
       history: state.history,
       roundCounter: state.roundCounter,
@@ -296,6 +303,7 @@ export default function App() {
     state.languageSource,
     state.onboardingSeen,
     state.roundCounter,
+    state.selectedCompany,
     state.verificationId,
   ]);
 
@@ -335,11 +343,10 @@ export default function App() {
 
       const elapsed = timestamp - startTime;
       const progress = Math.min(elapsed / round.durationMs, 1);
-      const nextValue = animateMultiplier(progress, round.targetMultiplier);
 
       dispatch({
         type: 'animateRound',
-        currentMultiplier: nextValue,
+        currentMultiplier: round.targetMultiplier,
         flightProgress: progress,
       });
 
@@ -391,7 +398,7 @@ export default function App() {
 
     const timeoutId = window.setTimeout(() => {
       dispatch({ type: 'resetRound' });
-    }, 1800);
+    }, 1100);
 
     return () => window.clearTimeout(timeoutId);
   }, [state.appStage, state.roundStage]);
@@ -420,6 +427,11 @@ export default function App() {
     }
 
     if (state.appStage === 'verification') {
+      dispatch({ type: 'openCompanySelection' });
+      return;
+    }
+
+    if (state.appStage === 'company_selection') {
       dispatch({ type: 'revisitOnboarding' });
       return;
     }
@@ -467,6 +479,7 @@ export default function App() {
     }
 
     const isVisible =
+      state.appStage === 'company_selection' ||
       state.appStage === 'verification' ||
       state.appStage === 'connecting' ||
       (state.appStage === 'ready' && state.roundStage !== 'round_running');
@@ -482,6 +495,20 @@ export default function App() {
   const handleContinueFromOnboarding = () => {
     triggerTelegramHaptic('selection');
     dispatch({ type: 'completeOnboarding' });
+  };
+
+  const handleSelectCompany = (companyId: CompanyId) => {
+    triggerTelegramHaptic('selection');
+    dispatch({ type: 'selectCompany', companyId });
+  };
+
+  const handleContinueFromCompanySelection = () => {
+    if (!state.selectedCompany) {
+      return;
+    }
+
+    triggerTelegramHaptic('selection');
+    dispatch({ type: 'openVerification' });
   };
 
   const handleVerificationSubmit = (verificationId: string) => {
@@ -549,6 +576,15 @@ export default function App() {
         />
       ) : null}
 
+      {state.appStage === 'company_selection' ? (
+        <CompanySelection
+          copy={copy.companySelection}
+          selectedCompany={state.selectedCompany}
+          onSelect={handleSelectCompany}
+          onContinue={handleContinueFromCompanySelection}
+        />
+      ) : null}
+
       {state.appStage === 'verification' ? (
         <Verification
           mode="form"
@@ -571,9 +607,9 @@ export default function App() {
         <GameScreen
           copy={copy.game}
           targetMultiplier={state.preparedRound?.targetMultiplier ?? null}
-          currentMultiplier={state.currentMultiplier}
           roundStage={state.roundStage}
           flightProgress={state.flightProgress}
+          signalDurationMs={state.preparedRound?.durationMs ?? 0}
           onStartRound={handleStartRound}
         />
       ) : null}

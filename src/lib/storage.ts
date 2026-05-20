@@ -1,11 +1,12 @@
 import { gameConfig } from '../config/gameConfig';
-import type { RoundRecord, StoredSession } from '../types/game';
+import type { CompanyId, RoundRecord, StoredSession } from '../types/game';
 import type { LanguageSource, RangeKey, SupportedLanguage } from '../types/i18n';
 
 const STORAGE_KEY = 'altitude-lab-session';
 
 const defaultSession: StoredSession = {
   onboardingSeen: false,
+  selectedCompany: null,
   verifiedId: '',
   history: [],
   roundCounter: 0,
@@ -13,6 +14,10 @@ const defaultSession: StoredSession = {
   languageSource: 'auto',
   hideLanguagePrompt: false,
 };
+
+function sanitizeCompany(value: unknown): CompanyId | null {
+  return value === 'luckypari' ? 'luckypari' : null;
+}
 
 function sanitizeLanguage(value: unknown): SupportedLanguage | null {
   if (
@@ -117,6 +122,7 @@ export function loadSession(): StoredSession {
 
     return {
       onboardingSeen: Boolean(parsed.onboardingSeen),
+      selectedCompany: sanitizeCompany(parsed.selectedCompany),
       verifiedId: sanitizeVerificationId(parsed.verifiedId),
       history,
       roundCounter: Math.max(

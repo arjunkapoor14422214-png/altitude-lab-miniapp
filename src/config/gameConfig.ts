@@ -64,8 +64,8 @@ export const gameConfig: GameConfig = {
     highMomentumBoost: 0.14,
   },
   animationSpeed: {
-    minDurationMs: 1000,
-    maxDurationMs: 62000,
+    minDurationMs: 5000,
+    maxDurationMs: 30000,
     exponentialRatePerSecond: 0.0768,
   },
   verificationDelayMin: 9000,
