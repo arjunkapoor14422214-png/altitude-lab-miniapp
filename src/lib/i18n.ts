@@ -72,13 +72,10 @@ type GameCopy = {
   closedHint: string;
   signalLabel: string;
   signalHint: string;
-  durationLabel: string;
-  durationSuffix: string;
   readyStatus: string;
   liveStatus: string;
   resetStatus: string;
   brand: string;
-  brandCode: string;
 };
 
 type HistoryCopy = {
@@ -221,13 +218,10 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       closedHint: 'Press start to reveal the next signal.',
       signalLabel: 'Signal',
       signalHint: 'Keep this signal active while the timer is open.',
-      durationLabel: 'Visible for',
-      durationSuffix: 'sec',
       readyStatus: 'Signal ready',
       liveStatus: 'Signal revealed',
       resetStatus: 'Closing signal',
       brand: 'Aviator Signal',
-      brandCode: 'LP',
     },
     history: {
       eyebrow: 'Round journal',
@@ -371,13 +365,10 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       closedHint: 'اضغط ابدأ لكشف الإشارة التالية.',
       signalLabel: 'الإشارة',
       signalHint: 'احتفظ بهذه الإشارة نشطة طوال مدة المؤقت.',
-      durationLabel: 'المدة',
-      durationSuffix: 'ث',
       readyStatus: 'الإشارة جاهزة',
       liveStatus: 'تم كشف الإشارة',
       resetStatus: 'جارٍ إغلاق الإشارة',
       brand: 'Aviator Signal',
-      brandCode: 'LP',
     },
     history: {
       eyebrow: 'سجل الجولات',
@@ -521,13 +512,10 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       closedHint: 'ඊළඟ signal එක පෙන්වීමට Start ඔබන්න.',
       signalLabel: 'Signal',
       signalHint: 'Timer එක පවතින කාලය පුරා මෙම signal එක භාවිතා කරන්න.',
-      durationLabel: 'Visible for',
-      durationSuffix: 'sec',
       readyStatus: 'Signal ready',
       liveStatus: 'Signal revealed',
       resetStatus: 'Signal closing',
       brand: 'Aviator Signal',
-      brandCode: 'LP',
     },
     history: {
       eyebrow: 'වට සටහන්',
@@ -671,13 +659,10 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       closedHint: 'Appuyez sur Start pour révéler le prochain signal.',
       signalLabel: 'Signal',
       signalHint: 'Gardez ce signal actif pendant toute la durée du minuteur.',
-      durationLabel: 'Visible',
-      durationSuffix: 'sec',
       readyStatus: 'Signal prêt',
       liveStatus: 'Signal révélé',
       resetStatus: 'Fermeture du signal',
       brand: 'Aviator Signal',
-      brandCode: 'LP',
     },
     history: {
       eyebrow: 'Journal des rounds',
@@ -821,13 +806,10 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       closedHint: 'Нажми старт, чтобы открыть следующий сигнал.',
       signalLabel: 'Сигнал',
       signalHint: 'Держи этот сигнал активным, пока открыт таймер.',
-      durationLabel: 'Открыт',
-      durationSuffix: 'сек',
       readyStatus: 'Сигнал готов',
       liveStatus: 'Сигнал открыт',
       resetStatus: 'Сигнал закрывается',
       brand: 'Aviator Signal',
-      brandCode: 'LP',
     },
     history: {
       eyebrow: 'Журнал раундов',
