@@ -122,13 +122,14 @@ export function Verification({
           </div>
 
           <a
-            className="promo-link promo-link--offer"
+            className="promo-link promo-link--offer promo-link--plain"
             href={appConfig.promoRegistrationUrl}
             target="_blank"
             rel="noreferrer"
           >
-            <span className="promo-link__label">Open registration</span>
-            <strong className="promo-link__value">{appConfig.promoRegistrationLabel}</strong>
+            <strong className="promo-link__value">
+              {appConfig.promoRegistrationLabel.toUpperCase()}
+            </strong>
           </a>
 
           <div className="promo-code-card promo-code-card--offer">
@@ -154,28 +155,26 @@ export function Verification({
           <p className="promo-copy promo-copy--mini">{copy.step2Hint}</p>
         </div>
 
-        <div className="verification-step verification-step--compact">
+        <div className="verification-step verification-step--compact verification-step--input">
           <span className="eyebrow">{`${copy.stepLabel} 3`}</span>
           <p className="auth-copy auth-copy--bright auth-copy--compact">{copy.step3Text}</p>
+          <label className="field field--embedded">
+            <span>{copy.inputLabel}</span>
+            <input
+              className="input"
+              placeholder={copy.inputPlaceholder}
+              value={value}
+              onChange={(event) =>
+                setValue(event.target.value.replace(/\D+/g, ''))
+              }
+              autoComplete="off"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              enterKeyHint="done"
+            />
+          </label>
+          <div className="inline-note inline-note--bright inline-note--compact">{copy.note}</div>
         </div>
-
-        <label className="field">
-          <span>{copy.inputLabel}</span>
-          <input
-            className="input"
-            placeholder={copy.inputPlaceholder}
-            value={value}
-            onChange={(event) =>
-              setValue(event.target.value.replace(/\D+/g, ''))
-            }
-            autoComplete="off"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            enterKeyHint="done"
-          />
-        </label>
-
-        <div className="inline-note inline-note--bright inline-note--compact">{copy.note}</div>
 
         <Button type="submit" fullWidth disabled={!canSubmit}>
           {copy.submit}

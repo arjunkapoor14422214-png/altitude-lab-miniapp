@@ -54,7 +54,10 @@ export function GameScreen({
 
   return (
     <section className="game-shell game-shell--signal">
-      <div className="signal-topline">{copy.topline}</div>
+      <div className="signal-heading">
+        <strong>AVIATOR SIGNAL</strong>
+        <span>{copy.topline}</span>
+      </div>
 
       <div className="signal-stage">
         <div className="signal-stage__status">
