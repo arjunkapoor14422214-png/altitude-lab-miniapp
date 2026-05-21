@@ -58,7 +58,7 @@ export function LanguagePrompt({
   onToggleDontShowAgain,
   onContinue,
 }: LanguagePromptProps) {
-  const copy = promptCopy.en;
+  const copy = promptCopy[selectedLanguage];
 
   return (
     <div className="language-prompt-layer">
