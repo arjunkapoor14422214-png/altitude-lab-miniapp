@@ -65,51 +65,53 @@ export function GameScreen({
           {statusLabel}
         </div>
 
-        <button
-          type="button"
-          className={[
-            'signal-token-shell',
-            isOpen ? 'signal-token-shell--open' : '',
-            isResetting ? 'signal-token-shell--reset' : '',
-          ]
-            .filter(Boolean)
-            .join(' ')}
-          style={{ '--signal-progress': progressDeg } as CSSProperties}
-          onClick={roundStage === 'round_idle' ? onStartRound : undefined}
-          disabled={roundStage !== 'round_idle'}
-          aria-label={copy.start}
-        >
-          <div className="signal-token">
-            <div className="signal-face signal-face--front">
-              <div className="signal-face__halo" aria-hidden="true" />
-              <div className="signal-face__brand">
-                <span className="signal-face__brand-code" aria-hidden="true">
-                  <img className="signal-face__brand-mark" src={lpLogo} alt="" />
-                </span>
-                <span>{copy.brand}</span>
+        <div className="signal-stage__body">
+          <button
+            type="button"
+            className={[
+              'signal-token-shell',
+              isOpen ? 'signal-token-shell--open' : '',
+              isResetting ? 'signal-token-shell--reset' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
+            style={{ '--signal-progress': progressDeg } as CSSProperties}
+            onClick={roundStage === 'round_idle' ? onStartRound : undefined}
+            disabled={roundStage !== 'round_idle'}
+            aria-label={copy.start}
+          >
+            <div className="signal-token">
+              <div className="signal-face signal-face--front">
+                <div className="signal-face__halo" aria-hidden="true" />
+                <div className="signal-face__brand">
+                  <span className="signal-face__brand-code" aria-hidden="true">
+                    <img className="signal-face__brand-mark" src={lpLogo} alt="" />
+                  </span>
+                  <span>{copy.brand}</span>
+                </div>
+                <img
+                  className="signal-face__plane"
+                  src={planeSignalSprite}
+                  alt=""
+                  aria-hidden="true"
+                />
+                <div className="signal-face__copy">
+                  <strong>{copy.closedTitle}</strong>
+                  <span>{copy.closedHint}</span>
+                </div>
               </div>
-              <img
-                className="signal-face__plane"
-                src={planeSignalSprite}
-                alt=""
-                aria-hidden="true"
-              />
-              <div className="signal-face__copy">
-                <strong>{copy.closedTitle}</strong>
-                <span>{copy.closedHint}</span>
-              </div>
-            </div>
 
-            <div className="signal-face signal-face--back">
-              <div className="signal-face__back-ring" aria-hidden="true" />
-              <span className="signal-face__label">{copy.signalLabel}</span>
-              <strong className="signal-face__value">
-                {targetMultiplier ? formatMultiplier(targetMultiplier) : 'x--'}
-              </strong>
-              <span className="signal-face__hint">{copy.signalHint}</span>
+              <div className="signal-face signal-face--back">
+                <div className="signal-face__back-ring" aria-hidden="true" />
+                <span className="signal-face__label">{copy.signalLabel}</span>
+                <strong className="signal-face__value">
+                  {targetMultiplier ? formatMultiplier(targetMultiplier) : 'x--'}
+                </strong>
+                <span className="signal-face__hint">{copy.signalHint}</span>
+              </div>
             </div>
-          </div>
-        </button>
+          </button>
+        </div>
       </div>
 
       <Button

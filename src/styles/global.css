@@ -2589,7 +2589,7 @@ input {
 .signal-stage {
   position: relative;
   display: grid;
-  align-content: space-between;
+  grid-template-rows: auto minmax(0, 1fr);
   gap: 14px;
   padding: 18px 18px 20px;
   min-height: clamp(520px, calc(100dvh - 290px), 760px);
@@ -2629,6 +2629,12 @@ input {
   box-shadow: 0 0 16px rgba(255, 175, 58, 0.36);
 }
 
+.signal-stage__body {
+  display: grid;
+  place-items: center;
+  min-height: 0;
+}
+
 .signal-token-shell {
   --signal-progress: 0deg;
   position: relative;
@@ -2636,7 +2642,7 @@ input {
   display: grid;
   place-items: center;
   width: min(100%, 320px);
-  margin: auto auto 8px;
+  margin: 0 auto;
   padding: 14px;
   aspect-ratio: 1;
   border-radius: 999px;
