@@ -1962,10 +1962,10 @@ input {
     0 12px 24px rgba(0, 0, 0, 0.16),
     0 0 0 1px rgba(255, 219, 137, 0.04),
     inset 0 1px 0 rgba(255, 245, 217, 0.08);
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 12px;
-  text-align: center;
+  text-align: left;
 }
 
 .promo-link--offer:hover {
@@ -1990,6 +1990,9 @@ input {
   color: #ffdf79;
   letter-spacing: 0.03em;
   text-transform: uppercase;
+  display: block;
+  width: 100%;
+  padding-left: 18px;
 }
 
 .promo-code-card--offer {
@@ -2557,7 +2560,8 @@ input {
 .game-shell--signal {
   gap: 16px;
   min-height: calc(100dvh - 36px);
-  align-content: center;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  align-content: stretch;
 }
 
 .signal-heading {
@@ -2585,8 +2589,10 @@ input {
 .signal-stage {
   position: relative;
   display: grid;
+  align-content: space-between;
   gap: 14px;
   padding: 18px 18px 20px;
+  min-height: clamp(520px, calc(100dvh - 290px), 760px);
   border-radius: 30px;
   border: 1px solid rgba(255, 201, 67, 0.18);
   background:
@@ -2630,7 +2636,7 @@ input {
   display: grid;
   place-items: center;
   width: min(100%, 320px);
-  margin: 4px auto;
+  margin: auto auto 8px;
   padding: 14px;
   aspect-ratio: 1;
   border-radius: 999px;
@@ -2741,7 +2747,7 @@ input {
   filter:
     drop-shadow(0 16px 26px rgba(0, 0, 0, 0.34))
     drop-shadow(0 0 22px rgba(255, 206, 85, 0.16));
-  transform: rotate(-7deg) translateY(34px);
+  transform: rotate(-7deg) translateY(48px);
   user-select: none;
   pointer-events: none;
 }
@@ -2749,7 +2755,7 @@ input {
 .signal-face__copy {
   display: grid;
   gap: 6px;
-  margin-top: 38px;
+  margin-top: 50px;
 }
 
 .signal-face__copy strong,
@@ -2808,6 +2814,7 @@ input {
 @media (max-width: 480px) {
   .signal-stage {
     padding: 16px 14px 18px;
+    min-height: calc(100dvh - 304px);
   }
 
   .signal-token-shell {
@@ -2823,10 +2830,10 @@ input {
   }
 
   .signal-face__plane {
-    transform: rotate(-7deg) translateY(38px);
+    transform: rotate(-7deg) translateY(54px);
   }
 
   .signal-face__copy {
-    margin-top: 42px;
+    margin-top: 56px;
   }
 }
