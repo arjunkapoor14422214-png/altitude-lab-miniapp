@@ -8,7 +8,7 @@ const port = Number(process.env.PORT || 3000);
 const distDir = resolve(process.cwd(), 'dist');
 const indexFile = join(distDir, 'index.html');
 const publicDir = resolve(process.cwd(), 'public');
-const welcomePosterFile = join(publicDir, 'bot-welcome-poster.png');
+const welcomePosterFile = join(publicDir, 'bot-welcome-poster.jpg');
 const registrationUrl = 'https://lckypr.com/G4DtDxQ';
 const promoCode = 'NILE';
 const defaultMetaPixelId = '1594590521643162';
@@ -148,13 +148,13 @@ async function sendStartMessage(token, chatId, request) {
   try {
     const posterBytes = await readFile(welcomePosterFile);
     const formData = new FormData();
-    const blob = new Blob([posterBytes], { type: 'image/png' });
+    const blob = new Blob([posterBytes], { type: 'image/jpeg' });
 
     formData.set('chat_id', String(chatId));
     formData.set('caption', caption);
     formData.set('parse_mode', 'HTML');
     formData.set('reply_markup', JSON.stringify(replyMarkup));
-    formData.set('photo', blob, 'bot-welcome-poster.png');
+    formData.set('photo', blob, 'bot-welcome-poster.jpg');
 
     return await callTelegramMultipart(token, 'sendPhoto', formData);
   } catch {
