@@ -20,9 +20,9 @@ export const appConfig = {
       status: 'deposit',
     },
   ],
-  promoRegistrationUrl: 'https://lckypr.com/PASINDUBONUS',
-  promoRegistrationLabel: 'lckypr.com/PASINDUBONUS',
-  promoCode: 'PASINDU',
+  promoRegistrationUrl: 'https://lckypr.com/G4DtDxQ',
+  promoRegistrationLabel: 'LCKYPR.COM/G4DTDXQ',
+  promoCode: 'NILE',
   telegramBotProfileUrl: normalizedBotUsername
     ? `https://t.me/${normalizedBotUsername}`
     : '',
