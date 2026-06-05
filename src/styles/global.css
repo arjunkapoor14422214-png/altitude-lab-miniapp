@@ -625,6 +625,11 @@ input {
     inset 0 1px 0 rgba(232, 247, 217, 0.14);
 }
 
+.promo-link--centered {
+  width: 100%;
+  justify-content: center;
+}
+
 .promo-code-card--offer {
   border-color: rgba(138, 173, 118, 0.28);
   background:
@@ -644,6 +649,47 @@ input {
   text-shadow:
     0 0 14px rgba(255, 208, 74, 0.12),
     0 0 24px rgba(150, 182, 84, 0.08);
+}
+
+.promo-code-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.promo-code-card--interactive {
+  width: 100%;
+  justify-items: center;
+  text-align: center;
+  cursor: pointer;
+}
+
+.promo-code-card--interactive span,
+.promo-code-card--interactive strong {
+  padding-left: 0;
+}
+
+.promo-copy-button {
+  min-width: 108px;
+  padding: 0 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 209, 99, 0.18);
+  background:
+    linear-gradient(180deg, rgba(50, 43, 28, 0.98), rgba(26, 22, 15, 0.99));
+  color: #f6df99;
+  font-family: "Space Grotesk", "Bahnschrift", "Segoe UI", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 10px 22px rgba(0, 0, 0, 0.16);
+}
+
+.promo-copy-button:hover {
+  transform: translateY(-1px);
 }
 
 .step-block {
@@ -2523,23 +2569,22 @@ input {
 .company-option__logo {
   display: grid;
   place-items: center;
-  width: 58px;
+  width: 118px;
   height: 58px;
   border-radius: 18px;
-  background:
-    radial-gradient(circle at 35% 30%, rgba(255, 239, 166, 0.2), transparent 36%),
-    linear-gradient(180deg, #ffd95e 0%, #d9a808 100%);
+  overflow: hidden;
+  background: rgba(20, 16, 28, 0.88);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.32),
-    0 12px 28px rgba(130, 75, 0, 0.2);
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 12px 28px rgba(0, 0, 0, 0.22);
 }
 
 .company-option__logo-mark {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: contain;
-  border-radius: 14px;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .company-option__meta {
@@ -2722,7 +2767,7 @@ input {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 6px;
+  padding: 4px 10px 4px 6px;
   border-radius: 999px;
   background: rgba(14, 12, 8, 0.22);
   color: #ffe9b0;
@@ -2735,15 +2780,18 @@ input {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
+  width: 88px;
   height: 42px;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .signal-face__brand-mark {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .signal-face__plane {
@@ -2818,6 +2866,14 @@ input {
 }
 
 @media (max-width: 480px) {
+  .promo-code-row {
+    grid-template-columns: 1fr;
+  }
+
+  .promo-copy-button {
+    min-height: 48px;
+  }
+
   .signal-stage {
     padding: 16px 14px 18px;
     min-height: calc(100dvh - 304px);

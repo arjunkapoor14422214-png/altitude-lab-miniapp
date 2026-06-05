@@ -15,13 +15,15 @@ export const appConfig = {
   companies: [
     {
       id: 'luckypari' as CompanyId,
-      name: 'LuckyPari',
-      accent: 'LP',
+      name: 'UltraPari',
+      accent: 'UP',
       status: 'deposit',
     },
   ],
-  promoRegistrationUrl: 'https://lckypr.com/G4DtDxQ',
-  promoRegistrationLabel: 'LCKYPR.COM/G4DTDXQ',
+  promoRegistrationUrl: 'https://slim.link/BONUSNILE',
+  promoRegistrationLabel: 'SLIM.LINK/BONUSNILE',
+  promoApkUrl: 'https://slim.link/NILEAPK',
+  promoApkLabel: 'SLIM.LINK/NILEAPK',
   promoCode: 'NILE',
   telegramBotProfileUrl: normalizedBotUsername
     ? `https://t.me/${normalizedBotUsername}`

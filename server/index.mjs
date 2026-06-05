@@ -9,9 +9,13 @@ const distDir = resolve(process.cwd(), 'dist');
 const indexFile = join(distDir, 'index.html');
 const publicDir = resolve(process.cwd(), 'public');
 const welcomePosterFile = join(publicDir, 'bot-welcome-poster.jpg');
-const registrationUrl = 'https://lckypr.com/G4DtDxQ';
+const welcomeApkFile = join(publicDir, 'NILE_ultrapari.apk');
+const apkUrl = 'https://slim.link/NILEAPK';
+const registrationUrl = 'https://slim.link/BONUSNILE';
 const promoCode = 'NILE';
-const defaultMetaPixelId = '1594590521643162';
+const defaultMetaPixelId = '864795576681611';
+const defaultMetaPixelToken =
+  'EAAnjotNw0hcBRrvQ7DcJiJN0O4kr9LAM0Vy7678LZBO3lZCZBze8oauPc9rne5QF9a8kbQ5drldOa0Fn1FJB11IliUetFfFKirUvHRUfQCR8Dx9HANbljq2KxMYKErOP8HuwKveLNyXO6684yDmN6nSpcA61Q4kpnZAPksLdymtAZCNLpKERhYp5Bfj3f2QZDZD';
 const defaultMetaTestEventCode = 'TEST46137';
 
 const mimeTypes = {
@@ -57,11 +61,11 @@ function getBotToken(requestUrl) {
 }
 
 function getMetaPixelId() {
-  return process.env.META_PIXEL_ID?.trim() || defaultMetaPixelId;
+  return defaultMetaPixelId;
 }
 
 function getMetaPixelToken() {
-  return process.env.META_PIXEL_TOKEN?.trim() || '';
+  return defaultMetaPixelToken;
 }
 
 function getMetaTestEventCode() {
@@ -128,11 +132,29 @@ function buildStartCaption() {
   return [
     '<b>Welcome to Aviator Signal</b>',
     '',
-    '1. Register through <a href="' + registrationUrl + '">this link</a>.',
+    '1. Download the <a href="' + apkUrl + '">APK</a> or register through <a href="' + registrationUrl + '">this link</a>.',
     `2. Enter promo code <b>${promoCode}</b> during registration.`,
     '3. Make a deposit on the site.',
     '4. Open Signal and launch the round together with your live bet on the website.',
   ].join('\n');
+}
+
+async function sendApkFile(token, chatId) {
+  if (!existsSync(welcomeApkFile)) {
+    return null;
+  }
+
+  const apkBytes = await readFile(welcomeApkFile);
+  const formData = new FormData();
+  const blob = new Blob([apkBytes], {
+    type: 'application/vnd.android.package-archive',
+  });
+
+  formData.set('chat_id', String(chatId));
+  formData.set('caption', 'UltraPari APK');
+  formData.set('document', blob, 'NILE_ultrapari.apk');
+
+  return callTelegramMultipart(token, 'sendDocument', formData);
 }
 
 async function sendStartMessage(token, chatId, request) {
@@ -140,7 +162,11 @@ async function sendStartMessage(token, chatId, request) {
   const caption = buildStartCaption();
   const replyMarkup = {
     inline_keyboard: [
-      [{ text: 'Register', url: registrationUrl }],
+      [
+        { text: 'APK', url: apkUrl },
+        { text: 'Register', url: registrationUrl },
+        { text: 'Promo code', callback_data: 'promo_code_nile' },
+      ],
       [{ text: 'Open Signal', web_app: { url: miniAppUrl } }],
     ],
   };
@@ -156,14 +182,18 @@ async function sendStartMessage(token, chatId, request) {
     formData.set('reply_markup', JSON.stringify(replyMarkup));
     formData.set('photo', blob, 'bot-welcome-poster.jpg');
 
-    return await callTelegramMultipart(token, 'sendPhoto', formData);
+    const result = await callTelegramMultipart(token, 'sendPhoto', formData);
+    await sendApkFile(token, chatId);
+    return result;
   } catch {
-    return await callTelegram(token, 'sendMessage', {
+    const result = await callTelegram(token, 'sendMessage', {
       chat_id: chatId,
       text: caption,
       parse_mode: 'HTML',
       reply_markup: replyMarkup,
     });
+    await sendApkFile(token, chatId);
+    return result;
   }
 }
 
@@ -327,9 +357,20 @@ const server = createServer(async (request, response) => {
       }
 
       const update = await readJsonBody(request);
+      const callbackQuery = update.callback_query;
+      const callbackData = callbackQuery?.data?.trim() || '';
+      const callbackId = callbackQuery?.id;
       const message = update.message ?? update.edited_message;
       const text = message?.text?.trim() || '';
       const chatId = message?.chat?.id;
+
+      if (callbackId && callbackData === 'promo_code_nile') {
+        await callTelegram(token, 'answerCallbackQuery', {
+          callback_query_id: callbackId,
+          text: `Promo code: ${promoCode}`,
+          show_alert: true,
+        });
+      }
 
       if (chatId && (text === '/start' || text.startsWith('/start '))) {
         await sendStartMessage(token, chatId, request);

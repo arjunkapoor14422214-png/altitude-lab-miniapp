@@ -8,6 +8,8 @@ interface VerificationCopy {
   stepLabel: string;
   step1Text: string;
   promoCodeLabel: string;
+  copyLabel: string;
+  copiedLabel: string;
   promoHint: string;
   step2Title: string;
   step2Example: string;
@@ -40,6 +42,7 @@ export function Verification({
 }: VerificationProps) {
   const [value, setValue] = useState(defaultValue.replace(/\D+/g, ''));
   const [completedSteps, setCompletedSteps] = useState(0);
+  const [promoCopied, setPromoCopied] = useState(false);
   const sanitizedValue = value.replace(/\D+/g, '');
   const canSubmit = sanitizedValue.length > 0;
 
@@ -74,6 +77,28 @@ export function Verification({
     }
 
     onSubmit(sanitizedValue);
+  };
+
+  const handleCopyPromo = async () => {
+    const promoValue = appConfig.promoCode;
+
+    try {
+      await navigator.clipboard.writeText(promoValue);
+      setPromoCopied(true);
+      window.setTimeout(() => setPromoCopied(false), 1800);
+    } catch {
+      const textArea = document.createElement('textarea');
+      textArea.value = promoValue;
+      textArea.setAttribute('readonly', '');
+      textArea.style.position = 'absolute';
+      textArea.style.left = '-9999px';
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setPromoCopied(true);
+      window.setTimeout(() => setPromoCopied(false), 1800);
+    }
   };
 
   if (mode === 'connecting') {
@@ -122,19 +147,33 @@ export function Verification({
           </div>
 
           <a
-            className="promo-link promo-link--offer promo-link--plain"
+            className="promo-link promo-link--offer promo-link--plain promo-link--centered"
             href={appConfig.promoRegistrationUrl}
             target="_blank"
             rel="noreferrer"
           >
             <strong className="promo-link__value">
-              {appConfig.promoRegistrationLabel.toUpperCase()}
+              {appConfig.promoRegistrationLabel}
             </strong>
           </a>
 
-          <div className="promo-code-card promo-code-card--offer">
-            <span>{copy.promoCodeLabel}</span>
-            <strong>{appConfig.promoCode}</strong>
+          <div className="promo-code-row">
+            <button
+              type="button"
+              className="promo-code-card promo-code-card--offer promo-code-card--interactive promo-code-card--centered"
+              onClick={handleCopyPromo}
+            >
+              <span>{copy.promoCodeLabel}</span>
+              <strong>{appConfig.promoCode}</strong>
+            </button>
+
+            <button
+              type="button"
+              className="promo-copy-button"
+              onClick={handleCopyPromo}
+            >
+              {promoCopied ? copy.copiedLabel : copy.copyLabel}
+            </button>
           </div>
 
           <p className="promo-copy promo-copy--accent promo-copy--offer promo-copy--mini">

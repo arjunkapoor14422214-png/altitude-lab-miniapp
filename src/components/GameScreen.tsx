@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import lpLogo from '../assets/lp-logo.jpg';
+import ultrapariBrand from '../assets/ultrapari-brand.png';
 import planeSignalSprite from '../assets/plane-signal.png';
 import { Button } from './Button';
 import { formatMultiplier } from '../lib/multiplierGenerator';
@@ -85,7 +85,7 @@ export function GameScreen({
                 <div className="signal-face__halo" aria-hidden="true" />
                 <div className="signal-face__brand">
                   <span className="signal-face__brand-code" aria-hidden="true">
-                    <img className="signal-face__brand-mark" src={lpLogo} alt="" />
+                    <img className="signal-face__brand-mark" src={ultrapariBrand} alt="" />
                   </span>
                   <span>{copy.brand}</span>
                 </div>

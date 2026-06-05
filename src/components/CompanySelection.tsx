@@ -1,6 +1,6 @@
 import { Button } from './Button';
 import { appConfig } from '../config/appConfig';
-import lpLogo from '../assets/lp-logo.jpg';
+import ultrapariBrand from '../assets/ultrapari-brand.png';
 import type { CompanyId } from '../types/game';
 
 interface CompanySelectionCopy {
@@ -47,7 +47,7 @@ export function CompanySelection({
                 onClick={() => onSelect(company.id)}
               >
                 <span className="company-option__logo" aria-hidden="true">
-                  <img className="company-option__logo-mark" src={lpLogo} alt="" />
+                  <img className="company-option__logo-mark" src={ultrapariBrand} alt="" />
                 </span>
                 <span className="company-option__meta">
                   <strong>{company.name}</strong>

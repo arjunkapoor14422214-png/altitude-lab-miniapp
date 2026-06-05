@@ -1,4 +1,4 @@
-import type { RangeKey, SupportedLanguage } from '../types/i18n';
+﻿import type { RangeKey, SupportedLanguage } from '../types/i18n';
 
 export const supportedLanguages: SupportedLanguage[] = ['en', 'ar', 'si', 'fr', 'ru'];
 
@@ -47,6 +47,8 @@ type VerificationCopy = {
   stepLabel: string;
   step1Text: string;
   promoCodeLabel: string;
+  copyLabel: string;
+  copiedLabel: string;
   promoHint: string;
   step2Title: string;
   step2Example: string;
@@ -187,12 +189,14 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       stepLabel: 'Step',
       step1Text: 'Register through the link below.',
       promoCodeLabel: 'Promo code',
+      copyLabel: 'Copy',
+      copiedLabel: 'Copied',
       promoHint: 'Enter the code during registration.',
-      step2Title: 'Your ID on the LuckyPari website',
+      step2Title: 'Your ID on the UltraPari website',
       step2Example: 'Example: 123456789',
       step2Hint: 'You can find it inside your personal profile.',
       step3Text: 'Enter your ID to activate access.',
-      inputLabel: 'ID on the LuckyPari website',
+      inputLabel: 'ID on the UltraPari website',
       inputPlaceholder: 'For example, 123456789',
       note: 'Verification usually takes 5 to 10 seconds.',
       submit: 'Activate access',
@@ -219,7 +223,7 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       readyStatus: 'Signal ready',
       liveStatus: 'Signal revealed',
       resetStatus: 'Closing signal',
-      brand: 'Aviator Signal',
+      brand: 'UltraPari Signal',
     },
     history: {
       eyebrow: 'Round journal',
@@ -333,12 +337,14 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       stepLabel: 'الخطوة',
       step1Text: 'للحصول على الوصول، يجب التسجيل عبر الرابط التالي:',
       promoCodeLabel: 'رمز ترويجي',
+      copyLabel: 'نسخ',
+      copiedLabel: 'تم النسخ',
       promoHint: 'أدخله أثناء التسجيل لتحصل على الوصول وحتى 150 دورة مجانية.',
-      step2Title: 'معرّفك على موقع LuckyPari',
+      step2Title: 'معرّفك على موقع UltraPari',
       step2Example: 'مثال: 123456789',
       step2Hint: 'ستجده على الموقع داخل ملفك الشخصي.',
       step3Text: 'أدخل معرّفك أدناه لتفعيل الوصول داخل التطبيق.',
-      inputLabel: 'المعرّف على موقع LuckyPari',
+      inputLabel: 'المعرّف على موقع UltraPari',
       inputPlaceholder: 'مثال: 123456789',
       note: 'بعد إرسال المعرّف ستبدأ عملية التحقق. تستغرق عادة من 5 إلى 10 ثوانٍ.',
       submit: 'تفعيل الوصول',
@@ -365,7 +371,7 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       readyStatus: 'الإشارة جاهزة',
       liveStatus: 'تم كشف الإشارة',
       resetStatus: 'جارٍ إغلاق الإشارة',
-      brand: 'Aviator Signal',
+      brand: 'UltraPari Signal',
     },
     history: {
       eyebrow: 'سجل الجولات',
@@ -479,12 +485,14 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       stepLabel: 'පියවර',
       step1Text: 'ප්‍රවේශය ලබා ගැනීමට, පහත link එකෙන් අනිවාර්යයෙන් ලියාපදිංචි වන්න:',
       promoCodeLabel: 'Promo code',
+      copyLabel: 'Copy',
+      copiedLabel: 'Copied',
       promoHint: 'ලියාපදිංචියේදී එය ඇතුළත් කර ප්‍රවේශය සහ 150 Free Spins දක්වා ලබා ගන්න.',
-      step2Title: 'LuckyPari site එකේ ඔබගේ ID',
+      step2Title: 'UltraPari site එකේ ඔබගේ ID',
       step2Example: 'උදාහරණය: 123456789',
       step2Hint: 'එය site එකේ ඔබගේ personal profile තුළ සොයා ගත හැක.',
       step3Text: 'යෙදුම තුළ ප්‍රවේශය සක්‍රීය කිරීමට ඔබගේ ID පහතින් ඇතුළත් කරන්න.',
-      inputLabel: 'LuckyPari site එකේ ID',
+      inputLabel: 'UltraPari site එකේ ID',
       inputPlaceholder: 'උදාහරණයක් ලෙස, 123456789',
       note: 'ID යැවූ පසු පරීක්ෂාව ආරම්භ වේ. සාමාන්‍යයෙන් තත්පර 5 සිට 10 දක්වා ගනී.',
       submit: 'ප්‍රවේශය සක්‍රීය කරන්න',
@@ -511,7 +519,7 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       readyStatus: 'Signal ready',
       liveStatus: 'Signal revealed',
       resetStatus: 'Signal closing',
-      brand: 'Aviator Signal',
+      brand: 'UltraPari Signal',
     },
     history: {
       eyebrow: 'වට සටහන්',
@@ -625,12 +633,14 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       stepLabel: 'Étape',
       step1Text: 'Pour obtenir l’accès, inscrivez-vous obligatoirement via le lien ci-dessous :',
       promoCodeLabel: 'Code promo',
+      copyLabel: 'Copier',
+      copiedLabel: 'Copié',
       promoHint: 'Saisissez-le lors de l’inscription pour recevoir l’accès ainsi que jusqu’à 150 Free Spins.',
-      step2Title: 'Votre ID sur le site LuckyPari',
+      step2Title: 'Votre ID sur le site UltraPari',
       step2Example: 'Exemple : 123456789',
       step2Hint: 'Vous le trouverez sur le site dans votre profil personnel.',
       step3Text: 'Saisissez votre ID ci-dessous pour activer l’accès dans l’application.',
-      inputLabel: 'ID sur le site LuckyPari',
+      inputLabel: 'ID sur le site UltraPari',
       inputPlaceholder: 'Par exemple, 123456789',
       note: 'Après l’envoi de l’ID, la vérification commencera. Cela prend généralement de 5 à 10 secondes.',
       submit: 'Activer l’accès',
@@ -657,7 +667,7 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       readyStatus: 'Signal prêt',
       liveStatus: 'Signal révélé',
       resetStatus: 'Fermeture du signal',
-      brand: 'Aviator Signal',
+      brand: 'UltraPari Signal',
     },
     history: {
       eyebrow: 'Journal des rounds',
@@ -771,12 +781,14 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       stepLabel: 'Шаг',
       step1Text: 'Зарегистрируйся по ссылке ниже.',
       promoCodeLabel: 'Промокод',
+      copyLabel: 'Скопировать',
+      copiedLabel: 'Скопировано',
       promoHint: 'Введи код при регистрации.',
-      step2Title: 'Твой ID на сайте LuckyPari',
+      step2Title: 'Твой ID на сайте UltraPari',
       step2Example: 'Например: 123456789',
       step2Hint: 'Он находится в твоем личном профиле.',
       step3Text: 'Введи ID, чтобы активировать доступ.',
-      inputLabel: 'ID на сайте LuckyPari',
+      inputLabel: 'ID на сайте UltraPari',
       inputPlaceholder: 'Например, 123456789',
       note: 'Проверка обычно занимает 5-10 секунд.',
       submit: 'Активировать доступ',
@@ -803,7 +815,7 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       readyStatus: 'Сигнал готов',
       liveStatus: 'Сигнал открыт',
       resetStatus: 'Сигнал закрывается',
-      brand: 'Aviator Signal',
+      brand: 'UltraPari Signal',
     },
     history: {
       eyebrow: 'Журнал раундов',
@@ -934,3 +946,5 @@ export function getRangeLabel(
 ): string {
   return getTranslations(language).ranges[rangeKey];
 }
+
+
