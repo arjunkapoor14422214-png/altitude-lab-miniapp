@@ -87,7 +87,6 @@ export function GameScreen({
                   <span className="signal-face__brand-code" aria-hidden="true">
                     <img className="signal-face__brand-mark" src={ultrapariWordmark} alt="" />
                   </span>
-                  <span>{copy.brand}</span>
                 </div>
                 <img
                   className="signal-face__plane"

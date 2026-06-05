@@ -2762,26 +2762,17 @@ input {
   top: 26px;
   left: 50%;
   transform: translateX(-50%);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 10px 4px 6px;
-  border-radius: 999px;
-  background: rgba(14, 12, 8, 0.22);
-  color: #ffe9b0;
-  font-size: 0.88rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  display: grid;
+  place-items: center;
+  width: 150px;
 }
 
 .signal-face__brand-code {
-  display: inline-flex;
+  display: grid;
   align-items: center;
   justify-content: center;
-  width: 132px;
-  height: 42px;
-  border-radius: 12px;
-  overflow: hidden;
+  width: 150px;
+  height: 48px;
 }
 
 .signal-face__brand-mark {
@@ -2797,8 +2788,12 @@ input {
   max-width: 210px;
   object-fit: contain;
   filter:
+    saturate(1.35)
+    hue-rotate(92deg)
+    brightness(1.08)
+    drop-shadow(0 0 16px rgba(173, 92, 255, 0.28))
     drop-shadow(0 16px 26px rgba(0, 0, 0, 0.34))
-    drop-shadow(0 0 22px rgba(255, 206, 85, 0.16));
+    drop-shadow(0 0 22px rgba(173, 92, 255, 0.24));
   transform: rotate(-7deg) translateY(48px);
   user-select: none;
   pointer-events: none;
