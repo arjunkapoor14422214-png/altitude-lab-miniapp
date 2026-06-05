@@ -476,6 +476,11 @@ input {
   line-height: 1.35;
 }
 
+.inline-note--error {
+  color: #ff8d8d;
+  font-weight: 700;
+}
+
 .verification-step {
   display: grid;
   gap: 10px;

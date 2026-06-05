@@ -56,6 +56,7 @@ type VerificationCopy = {
   step3Text: string;
   inputLabel: string;
   inputPlaceholder: string;
+  invalidId: string;
   note: string;
   submit: string;
   connectingEyebrow: string;
@@ -198,6 +199,7 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       step3Text: 'Enter your ID to activate access.',
       inputLabel: 'ID on the UltraPari website',
       inputPlaceholder: 'For example, 123456789',
+      invalidId: 'Invalid ID',
       note: 'Verification usually takes 5 to 10 seconds.',
       submit: 'Activate access',
       connectingEyebrow: 'Access check',
@@ -346,6 +348,7 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       step3Text: 'أدخل معرّفك أدناه لتفعيل الوصول داخل التطبيق.',
       inputLabel: 'المعرّف على موقع UltraPari',
       inputPlaceholder: 'مثال: 123456789',
+      invalidId: 'معرّف غير صحيح',
       note: 'بعد إرسال المعرّف ستبدأ عملية التحقق. تستغرق عادة من 5 إلى 10 ثوانٍ.',
       submit: 'تفعيل الوصول',
       connectingEyebrow: 'فحص الوصول',
@@ -494,6 +497,7 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       step3Text: 'යෙදුම තුළ ප්‍රවේශය සක්‍රීය කිරීමට ඔබගේ ID පහතින් ඇතුළත් කරන්න.',
       inputLabel: 'UltraPari site එකේ ID',
       inputPlaceholder: 'උදාහරණයක් ලෙස, 123456789',
+      invalidId: 'වැරදි ID',
       note: 'ID යැවූ පසු පරීක්ෂාව ආරම්භ වේ. සාමාන්‍යයෙන් තත්පර 5 සිට 10 දක්වා ගනී.',
       submit: 'ප්‍රවේශය සක්‍රීය කරන්න',
       connectingEyebrow: 'ප්‍රවේශ පරීක්ෂාව',
@@ -642,6 +646,7 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       step3Text: 'Saisissez votre ID ci-dessous pour activer l’accès dans l’application.',
       inputLabel: 'ID sur le site UltraPari',
       inputPlaceholder: 'Par exemple, 123456789',
+      invalidId: 'ID invalide',
       note: 'Après l’envoi de l’ID, la vérification commencera. Cela prend généralement de 5 à 10 secondes.',
       submit: 'Activer l’accès',
       connectingEyebrow: 'Vérification d’accès',
@@ -790,6 +795,7 @@ const translations: Record<SupportedLanguage, TranslationBundle> = {
       step3Text: 'Введи ID, чтобы активировать доступ.',
       inputLabel: 'ID на сайте UltraPari',
       inputPlaceholder: 'Например, 123456789',
+      invalidId: 'Неверный ID',
       note: 'Проверка обычно занимает 5-10 секунд.',
       submit: 'Активировать доступ',
       connectingEyebrow: 'Проверка доступа',

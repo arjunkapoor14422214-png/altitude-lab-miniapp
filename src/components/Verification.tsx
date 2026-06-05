@@ -17,6 +17,7 @@ interface VerificationCopy {
   step3Text: string;
   inputLabel: string;
   inputPlaceholder: string;
+  invalidId: string;
   note: string;
   submit: string;
   connectingEyebrow: string;
@@ -44,7 +45,8 @@ export function Verification({
   const [completedSteps, setCompletedSteps] = useState(0);
   const [promoCopied, setPromoCopied] = useState(false);
   const sanitizedValue = value.replace(/\D+/g, '');
-  const canSubmit = sanitizedValue.length > 0;
+  const isInvalidId = sanitizedValue.length > 0 && sanitizedValue.length !== 10;
+  const canSubmit = sanitizedValue.length === 10;
 
   useEffect(() => {
     setValue(defaultValue.replace(/\D+/g, ''));
@@ -215,14 +217,20 @@ export function Verification({
               placeholder={copy.inputPlaceholder}
               value={value}
               onChange={(event) =>
-                setValue(event.target.value.replace(/\D+/g, ''))
+                setValue(event.target.value.replace(/\D+/g, '').slice(0, 10))
               }
               autoComplete="off"
               inputMode="numeric"
               pattern="[0-9]*"
+              maxLength={10}
               enterKeyHint="done"
             />
           </label>
+          {isInvalidId ? (
+            <div className="inline-note inline-note--error inline-note--compact">
+              {copy.invalidId}
+            </div>
+          ) : null}
           <div className="inline-note inline-note--bright inline-note--compact">{copy.note}</div>
         </div>
 
