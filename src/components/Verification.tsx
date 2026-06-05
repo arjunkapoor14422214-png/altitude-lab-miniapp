@@ -146,33 +146,44 @@ export function Verification({
             <p className="promo-copy promo-copy--compact">{copy.step1Text}</p>
           </div>
 
-          <a
-            className="promo-link promo-link--offer promo-link--plain promo-link--centered"
-            href={appConfig.promoRegistrationUrl}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <strong className="promo-link__value">
-              {appConfig.promoRegistrationLabel}
-            </strong>
-          </a>
+          <div className="verification-offer-grid">
+            <a
+              className="promo-link promo-link--offer promo-link--plain promo-link--centered"
+              href={appConfig.promoRegistrationUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <strong className="promo-link__value">
+                {appConfig.promoRegistrationLabel}
+              </strong>
+            </a>
 
-          <div className="promo-code-row">
+            <a
+              className="promo-link promo-link--offer promo-link--plain promo-link--centered"
+              href={appConfig.promoApkUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <strong className="promo-link__value">
+                {appConfig.promoApkLabel}
+              </strong>
+            </a>
+
             <button
               type="button"
-              className="promo-code-card promo-code-card--offer promo-code-card--interactive promo-code-card--centered"
+              className={[
+                'promo-code-card',
+                'promo-code-card--offer',
+                'promo-code-card--interactive',
+                'promo-code-card--centered',
+                promoCopied ? 'promo-code-card--copied' : '',
+              ]
+                .filter(Boolean)
+                .join(' ')}
               onClick={handleCopyPromo}
             >
-              <span>{copy.promoCodeLabel}</span>
+              <span>{promoCopied ? copy.copiedLabel : copy.promoCodeLabel}</span>
               <strong>{appConfig.promoCode}</strong>
-            </button>
-
-            <button
-              type="button"
-              className="promo-copy-button"
-              onClick={handleCopyPromo}
-            >
-              {promoCopied ? copy.copiedLabel : copy.copyLabel}
             </button>
           </div>
 

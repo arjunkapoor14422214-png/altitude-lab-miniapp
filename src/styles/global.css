@@ -630,6 +630,11 @@ input {
   justify-content: center;
 }
 
+.verification-offer-grid {
+  display: grid;
+  gap: 10px;
+}
+
 .promo-code-card--offer {
   border-color: rgba(138, 173, 118, 0.28);
   background:
@@ -651,13 +656,6 @@ input {
     0 0 24px rgba(150, 182, 84, 0.08);
 }
 
-.promo-code-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 10px;
-  align-items: stretch;
-}
-
 .promo-code-card--interactive {
   width: 100%;
   justify-items: center;
@@ -670,26 +668,21 @@ input {
   padding-left: 0;
 }
 
-.promo-copy-button {
-  min-width: 108px;
-  padding: 0 16px;
-  border-radius: 18px;
-  border: 1px solid rgba(255, 209, 99, 0.18);
-  background:
-    linear-gradient(180deg, rgba(50, 43, 28, 0.98), rgba(26, 22, 15, 0.99));
-  color: #f6df99;
-  font-family: "Space Grotesk", "Bahnschrift", "Segoe UI", sans-serif;
-  font-size: 0.92rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 10px 22px rgba(0, 0, 0, 0.16);
+.promo-code-card--centered {
+  justify-items: center;
+  text-align: center;
 }
 
-.promo-copy-button:hover {
-  transform: translateY(-1px);
+.promo-code-card--copied {
+  border-color: rgba(164, 213, 112, 0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 10px 22px rgba(0, 0, 0, 0.14),
+    0 0 0 1px rgba(164, 213, 112, 0.08);
+}
+
+.promo-code-card--copied span {
+  color: #dff0b0;
 }
 
 .step-block {
@@ -2866,14 +2859,6 @@ input {
 }
 
 @media (max-width: 480px) {
-  .promo-code-row {
-    grid-template-columns: 1fr;
-  }
-
-  .promo-copy-button {
-    min-height: 48px;
-  }
-
   .signal-stage {
     padding: 16px 14px 18px;
     min-height: calc(100dvh - 304px);
