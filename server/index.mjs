@@ -8,7 +8,7 @@ const port = Number(process.env.PORT || 3000);
 const distDir = resolve(process.cwd(), 'dist');
 const indexFile = join(distDir, 'index.html');
 const publicDir = resolve(process.cwd(), 'public');
-const welcomePosterFile = join(publicDir, 'bot-welcome-poster.jpg');
+const welcomePosterFile = join(publicDir, 'bot-welcome-poster.png');
 const welcomeApkFile = join(publicDir, 'NILE_ultrapari.apk');
 const apkUrl = 'https://slim.link/NILEAPK';
 const registrationUrl = 'https://slim.link/BONUSNILE';
@@ -174,13 +174,13 @@ async function sendStartMessage(token, chatId, request) {
   try {
     const posterBytes = await readFile(welcomePosterFile);
     const formData = new FormData();
-    const blob = new Blob([posterBytes], { type: 'image/jpeg' });
+    const blob = new Blob([posterBytes], { type: 'image/png' });
 
     formData.set('chat_id', String(chatId));
     formData.set('caption', caption);
     formData.set('parse_mode', 'HTML');
     formData.set('reply_markup', JSON.stringify(replyMarkup));
-    formData.set('photo', blob, 'bot-welcome-poster.jpg');
+    formData.set('photo', blob, 'bot-welcome-poster.png');
 
     return await callTelegramMultipart(token, 'sendPhoto', formData);
   } catch {

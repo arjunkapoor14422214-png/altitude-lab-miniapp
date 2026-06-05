@@ -2562,7 +2562,7 @@ input {
 .company-option__logo {
   display: grid;
   place-items: center;
-  width: 118px;
+  width: 144px;
   height: 58px;
   border-radius: 18px;
   overflow: hidden;
@@ -2576,8 +2576,8 @@ input {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
-  object-position: center top;
+  object-fit: contain;
+  object-position: center center;
 }
 
 .company-option__meta {
@@ -2773,7 +2773,7 @@ input {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 88px;
+  width: 132px;
   height: 42px;
   border-radius: 12px;
   overflow: hidden;
@@ -2783,8 +2783,8 @@ input {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
-  object-position: center top;
+  object-fit: contain;
+  object-position: center center;
 }
 
 .signal-face__plane {
