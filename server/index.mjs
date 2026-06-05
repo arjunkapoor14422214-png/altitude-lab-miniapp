@@ -163,7 +163,7 @@ async function sendStartMessage(token, chatId, request) {
   const replyMarkup = {
     inline_keyboard: [
       [
-        { text: 'APK', url: apkUrl },
+        { text: 'APK', callback_data: 'send_apk_file' },
         { text: 'Register', url: registrationUrl },
         { text: 'Promo code', callback_data: 'promo_code_nile' },
       ],
@@ -182,18 +182,14 @@ async function sendStartMessage(token, chatId, request) {
     formData.set('reply_markup', JSON.stringify(replyMarkup));
     formData.set('photo', blob, 'bot-welcome-poster.jpg');
 
-    const result = await callTelegramMultipart(token, 'sendPhoto', formData);
-    await sendApkFile(token, chatId);
-    return result;
+    return await callTelegramMultipart(token, 'sendPhoto', formData);
   } catch {
-    const result = await callTelegram(token, 'sendMessage', {
+    return await callTelegram(token, 'sendMessage', {
       chat_id: chatId,
       text: caption,
       parse_mode: 'HTML',
       reply_markup: replyMarkup,
     });
-    await sendApkFile(token, chatId);
-    return result;
   }
 }
 
@@ -360,9 +356,18 @@ const server = createServer(async (request, response) => {
       const callbackQuery = update.callback_query;
       const callbackData = callbackQuery?.data?.trim() || '';
       const callbackId = callbackQuery?.id;
+      const callbackChatId = callbackQuery?.message?.chat?.id;
       const message = update.message ?? update.edited_message;
       const text = message?.text?.trim() || '';
       const chatId = message?.chat?.id;
+
+      if (callbackId && callbackData === 'send_apk_file' && callbackChatId) {
+        await callTelegram(token, 'answerCallbackQuery', {
+          callback_query_id: callbackId,
+          text: 'Sending APK...',
+        });
+        await sendApkFile(token, callbackChatId);
+      }
 
       if (callbackId && callbackData === 'promo_code_nile') {
         await callTelegram(token, 'answerCallbackQuery', {
