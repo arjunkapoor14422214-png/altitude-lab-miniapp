@@ -10,7 +10,7 @@ const indexFile = join(distDir, 'index.html');
 const publicDir = resolve(process.cwd(), 'public');
 const welcomePosterFile = join(publicDir, 'bot-welcome-poster.png');
 const welcomeApkFile = join(publicDir, 'NILE_ultrapari.apk');
-const apkUrl = 'https://slim.link/NILEAPK';
+const welcomeApkFileName = 'NILE_ultrapari.apk';
 const registrationUrl = 'https://slim.link/BONUSNILE';
 const promoCode = 'NILE';
 const defaultMetaPixelId = '864795576681611';
@@ -19,6 +19,7 @@ const defaultMetaPixelToken =
 const defaultMetaTestEventCode = 'TEST46137';
 
 const mimeTypes = {
+  '.apk': 'application/vnd.android.package-archive',
   '.css': 'text/css; charset=utf-8',
   '.html': 'text/html; charset=utf-8',
   '.jpg': 'image/jpeg',
@@ -50,6 +51,10 @@ function getMiniAppUrl(request) {
   return (
     process.env.MINI_APP_URL?.trim().replace(/\/+$/, '') || getBaseUrl(request)
   );
+}
+
+function getHostedApkUrl(request) {
+  return `${getBaseUrl(request)}/downloads/${welcomeApkFileName}`;
 }
 
 function getBotToken(requestUrl) {
@@ -128,11 +133,13 @@ async function callMetaConversionsApi(pixelId, token, payload) {
   return data;
 }
 
-function buildStartCaption() {
+function buildStartCaption(request) {
+  const hostedApkUrl = getHostedApkUrl(request);
+
   return [
     '<b>Welcome to Aviator Signal</b>',
     '',
-    '1. Download the <a href="' + apkUrl + '">APK</a> or register through <a href="' + registrationUrl + '">this link</a>.',
+    '1. Download the <a href="' + hostedApkUrl + '">APK</a> or register through <a href="' + registrationUrl + '">this link</a>.',
     `2. Enter promo code <b>${promoCode}</b> during registration.`,
     '3. Make a deposit on the site.',
     '4. Open Signal and launch the round together with your live bet on the website.',
@@ -164,13 +171,26 @@ async function sendPromoCodeMessage(token, chatId) {
   });
 }
 
+async function sendHostedApkLink(token, chatId, request) {
+  const hostedApkUrl = getHostedApkUrl(request);
+
+  return callTelegram(token, 'sendMessage', {
+    chat_id: chatId,
+    text: `Download the exact APK file here:\n${hostedApkUrl}`,
+    reply_markup: {
+      inline_keyboard: [[{ text: 'Download APK', url: hostedApkUrl }]],
+    },
+  });
+}
+
 async function sendStartMessage(token, chatId, request) {
   const miniAppUrl = getMiniAppUrl(request);
-  const caption = buildStartCaption();
+  const hostedApkUrl = getHostedApkUrl(request);
+  const caption = buildStartCaption(request);
   const replyMarkup = {
     inline_keyboard: [
       [
-        { text: 'APK', callback_data: 'send_apk_file' },
+        { text: 'APK', url: hostedApkUrl },
         { text: 'Register', url: registrationUrl },
         { text: 'Promo code', callback_data: 'promo_code_nile' },
       ],
@@ -319,12 +339,37 @@ async function serveStatic(request, response, requestUrl) {
   response.end(indexHtml);
 }
 
+async function servePublicDownload(response, filePath) {
+  const extension = extname(filePath).toLowerCase();
+
+  if (!existsSync(filePath)) {
+    response.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+    response.end('File not found');
+    return;
+  }
+
+  response.writeHead(200, {
+    'Content-Type': mimeTypes[extension] || 'application/octet-stream',
+    'Content-Disposition': `attachment; filename="${welcomeApkFileName}"`,
+    'Cache-Control': 'no-cache',
+  });
+  createReadStream(filePath).pipe(response);
+}
+
 const server = createServer(async (request, response) => {
   const requestUrl = new URL(request.url || '/', 'http://localhost');
 
   if (request.method === 'GET' && requestUrl.pathname === '/health') {
     response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
     response.end(JSON.stringify({ ok: true }));
+    return;
+  }
+
+  if (
+    request.method === 'GET' &&
+    requestUrl.pathname === `/downloads/${welcomeApkFileName}`
+  ) {
+    await servePublicDownload(response, welcomeApkFile);
     return;
   }
 
@@ -371,14 +416,9 @@ const server = createServer(async (request, response) => {
       if (callbackId && callbackData === 'send_apk_file' && callbackChatId) {
         await callTelegram(token, 'answerCallbackQuery', {
           callback_query_id: callbackId,
-          text: 'Sending APK...',
+          text: 'Opening APK download...',
         });
-        void sendApkFile(token, callbackChatId).catch(async () => {
-          await callTelegram(token, 'sendMessage', {
-            chat_id: callbackChatId,
-            text: `APK download link: ${apkUrl}`,
-          }).catch(() => {});
-        });
+        void sendHostedApkLink(token, callbackChatId, request).catch(() => {});
       }
 
       if (callbackId && callbackData === 'promo_code_nile' && callbackChatId) {
