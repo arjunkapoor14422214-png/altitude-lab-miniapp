@@ -157,6 +157,13 @@ async function sendApkFile(token, chatId) {
   return callTelegramMultipart(token, 'sendDocument', formData);
 }
 
+async function sendPromoCodeMessage(token, chatId) {
+  return callTelegram(token, 'sendMessage', {
+    chat_id: chatId,
+    text: `Promo code: ${promoCode}`,
+  });
+}
+
 async function sendStartMessage(token, chatId, request) {
   const miniAppUrl = getMiniAppUrl(request);
   const caption = buildStartCaption();
@@ -366,15 +373,20 @@ const server = createServer(async (request, response) => {
           callback_query_id: callbackId,
           text: 'Sending APK...',
         });
-        await sendApkFile(token, callbackChatId);
+        void sendApkFile(token, callbackChatId).catch(async () => {
+          await callTelegram(token, 'sendMessage', {
+            chat_id: callbackChatId,
+            text: `APK download link: ${apkUrl}`,
+          }).catch(() => {});
+        });
       }
 
-      if (callbackId && callbackData === 'promo_code_nile') {
+      if (callbackId && callbackData === 'promo_code_nile' && callbackChatId) {
         await callTelegram(token, 'answerCallbackQuery', {
           callback_query_id: callbackId,
-          text: `Promo code: ${promoCode}`,
-          show_alert: true,
+          text: 'Promo code sent',
         });
+        void sendPromoCodeMessage(token, callbackChatId).catch(() => {});
       }
 
       if (chatId && (text === '/start' || text.startsWith('/start '))) {
